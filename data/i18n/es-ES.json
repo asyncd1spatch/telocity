@@ -1,0 +1,337 @@
+{
+  "m": {
+    "lcli": {
+      "userConfigNotFound": "Archivo de configuración del usuario no encontrado en {{ .UserConfigPath }}. Se creará uno nuevo.",
+      "cfgCreatedSuccessfully": "Archivo de configuración creado con éxito.",
+      "deletionConfirm": "Esta acción es irreversible. ¿Estás seguro de que quieres eliminar? (y/N): ",
+      "yN": "y",
+      "redacted": "[REDACTED]",
+      "deletionAborted": "Eliminación abortada.",
+      "a": "a",
+      "q": "q"
+    },
+    "lllm": {
+      "processingComplete": "El procesamiento de este archivo ya está completo.",
+      "anotherInstanceIsProcessing": "Otra instancia ya está procesando este archivo. Espera a que termine o elimina el archivo .lock.",
+      "ctrlCPressed": "Ctrl+C pulsado. Finalizando lote actual y guardando progreso. Pulsa de nuevo para forzar salida.",
+      "ctrlCPressed2": "Solicitud de terminación ya enviada. Espera, por favor.",
+      "quittingWithoutSaving": "Salida forzada sin guardar progreso.",
+      "processedChunkOf": "Fragmento procesado {{ .Processed }} de {{ .Total }}",
+      "progressSavedTerminating": "Progreso guardado. Terminando.",
+      "progressFileDeleted": "Archivo de progreso para hash {{ .Hash }} eliminado.",
+      "content": "\n--- Contenido de: {{ .Filename }} ---",
+      "filesMerged": "Archivos fusionados correctamente en: {{ .MergedFileName }}",
+      "openingTag": "Etiqueta de apertura",
+      "closingTag": "Etiqueta de cierre",
+      "context": "Contexto:",
+      "textToTranslate": "Texto a traducir a {{ .LanguageTarget }}:"
+    },
+    "c": {
+      "cfg": {
+        "cfgDeletedSuccessfully": "Archivo(s) de configuración eliminados con éxito.",
+        "localeSuccessfullyChanged": "Configuración regional cambiada a {{ .Locale }} con éxito."
+      },
+      "models": {
+        "fallback": "Un ajuste genérico para cualquier API compatible con OpenAI. Requiere el nombre de un modelo.",
+        "genericprep": "Un ajuste genérico que antepone la solicitud al texto del usuario.",
+        "genericsys": "Un ajuste genérico que utiliza un prompt del sistema.",
+        "noHelp": "No hay texto de ayuda disponible para este ajuste."
+      },
+      "avg": {
+        "averageCharsPerLine": "Promedio de caracteres (gráfemas) por línea no vacía: {{ .AvgChars }}",
+        "averageBytesPerLine": "Bytes promedio por línea no vacía: {{ .AvgBytes }}"
+      },
+      "lu": {
+        "preparingLaunch": "Preparándose para lanzar el modelo '{{ .ModelPreset }}' (tipo: {{ .ModelType }}, cuant: {{ .QuantReq }}).",
+        "found": "Encontrado: {{ .String }}",
+        "executingCommand": "\nEjecutando comando: {{ .String }}\n",
+        "llamaServerExit": "El proceso llama-server terminó con código {{ .ExitCode }}."
+      },
+      "rm": {
+        "filesToDelete": "Los siguientes archivos de progreso serán eliminados:",
+        "filesDeletedSuccessfully": "Todos los archivos de progreso eliminados con éxito.",
+        "filesToDeletePrompt": "\nIntroduce números o rangos a eliminar (p. ej. `1,3-5`), `a` para todos, o `q` para cancelar: ",
+        "filesSelectedForDeletion": "\nArchivos seleccionados para eliminación:",
+        "noValidSelectionsMade": "No se hicieron selecciones válidas. Abortando.",
+        "noFilesToDelete": "No se encontraron archivos de progreso que eliminar."
+      },
+      "sp": {
+        "fileSplitSuccess": "Archivo dividido correctamente: {{ .SourcePath }}",
+        "partCreated": "  - Parte {{ .PartNumber }} creada: {{ .PartPath }}"
+      },
+      "st": {
+        "blockExtracted": "Contenido entre delimitadores extraído.",
+        "blockDeleted": "Contenido entre delimitadores eliminado.",
+        "compressed": "Líneas vacías comprimidas.",
+        "newlinesNormalized": "Contenido del archivo normalizado y guardado."
+      },
+      "tc": {
+        "benchmarkStart": "--- Iniciando Benchmark para {{ .ModelName }} en archivo de {{ .MB }} MB ---",
+        "benchmarkChunkSize": "\n--- Probando tamaño de bloque: {{ .ChunkSize }} MB ---",
+        "benchmarkSplitIntoChunks": "Dividido en {{ .Chunks }} bloques.",
+        "benchmarkResultLine": "  Trabajadores: {{ .WcRep }} | Tiempo: {{ .Time }} ms | Tokens totales: {{ .TC }}",
+        "benchmarkComplete": "\n--- Benchmark completado ---",
+        "availableModelsForDownload": "Modelos disponibles para descargar: {{ .AvailableModels }}",
+        "downloadingModelFiles": "Descargando archivos del modelo \"{{ .ModelName }}\"...",
+        "writingFilesTo": "Escribiendo archivos a {{ .StateDir }}...",
+        "downloadSuccess": "Archivos descargados exitosamente para \"{{ .ModelName }}\":"
+      }
+    }
+  },
+  "e": {
+    "lcli": {
+      "unknownErrorOccurred": "Ocurrió un error desconocido.",
+      "causePrefix": "Causa:",
+      "unknownOption": "Opción desconocida: '{{ .Option }}'.",
+      "unexpectedPositional": "Argumento posicional inesperado: '{{ .Argument }}'.",
+      "missingValue": "Falta el argumento para la opción '{{ .Option }}'.",
+      "booleanWithValue": "La opción '{{ .Option }}' no acepta un argumento.",
+      "ambiguousOptionValue": "El argumento de la opción '{{ .Option }}' es ambiguo. Para especificar un valor que comience con un guión, usa '{{ .Option }}=<value>'.",
+      "invalidOptionValue": "Valor inválido para la opción '{{ .Option }}'.",
+      "commandNotImplemented": "Comando no implementado: {{ .CommandAlias }}.",
+      "cfgCouldNotBeLoaded": "No se pudo cargar el archivo de configuración desde {{ .UserConfigPath }}."
+    },
+    "v": {
+      "invalidArgArray": "Arreglo de argumentos inválido: {{ .OptionValue }}",
+      "invalidChunkSize": "Tamaño de bloque inválido. Debe ser un entero entre 1 y 200000. Proporcionado: {{ .ChunkSize }}",
+      "invalidBatchSize": "Tamaño de lote inválido. Debe ser un entero entre 1 y 4. Proporcionado: {{ .BatchSize }}",
+      "invalidIndex": "Último índice inválido. Debe ser un entero positivo. Proporcionado: {{ .Index }}",
+      "invalidPrompt": "Prompt inválido proporcionado. Debe ser una cadena no vacía.",
+      "invalidModel": "Nombre de modelo inválido: {{ .Model }}",
+      "invalidText": "Texto inválido proporcionado: {{ .Text }}",
+      "invalidURL": "URL inválida proporcionada: {{ .URL }}",
+      "invalidURLScheme": "Esquema de URL inválido. Debe comenzar con http:// o https://. Proporcionado: {{ .URL }}",
+      "invalidAPIKey": "Clave API inválida: {{ .APIKey }}",
+      "invalidTemperatureRange": "La temperatura debe ser un número entre 0.0 y 2.0.",
+      "invalidTopPRange": "Top_p debe ser un número entre 0.0 y 1.0.",
+      "invalidMinPRange": "Min_p debe ser un número entre 0.0 y 1.0.",
+      "invalidTopKRange": "Top_k debe ser un entero entre 0 y 1000.",
+      "invalidRepeat": "La penalización de repetición debe ser un número entre 1.0 y 2.0.",
+      "invalidPenaltyRange": "La penalización de frecuencia/asistencia debe ser un número entre -2.0 y 2.0.",
+      "seedMustBePositiveInteger": "La semilla debe ser un entero positivo.",
+      "invalidTruthiness": "Valor de veracidad inválido proporcionado. Debe ser true, false, 1 o 0.",
+      "invalidDelayValue": "El retraso debe ser un número no negativo dentro de una tupla [boolean, valor]."
+    },
+    "lllm": {
+      "undefinedParam": "Conjunto de parámetros indefinido.",
+      "reasoningNotSupported": "El modelo no soporta razonamiento.",
+      "invalidReasoningType": "Tipo de razonamiento inválido, configuración JSON rota.",
+      "promptMissing": "El prompt es requerido para el comando one‑shot.",
+      "fileNotFound": "Archivo no encontrado: {{ .FilePath }}",
+      "sourceRequired": "Se requiere la ruta de origen.",
+      "sourceTargetRequired": "Se requieren rutas de origen y destino.",
+      "noFilesFound": "No se encontraron archivos con extensión: .{{ .Extension }}",
+      "targetFileExists": "La ruta de destino ya existe: {{ .TargetPath }}",
+      "sourceAndTargetMustBeDifferent": "Las rutas de origen y destino deben ser diferentes.",
+      "invalidFileSize": "El tamaño del archivo excede el límite máximo de {{ .MAX_SIZE_MB }} MB.",
+      "emptyFile": "El archivo está vacío o contiene solo espacios en blanco.",
+      "idleTimeOut": "Tiempo de inactividad excedido. No se recibieron datos del servidor.",
+      "hardTimeOut": "Tiempo de espera máximo excedido. La solicitud tardó demasiado en completarse.",
+      "unknownOpenAIError": "Ocurrió un error desconocido con la API.",
+      "openaiApiError": "La llamada a la API falló con estado {{ .Status }}: {{ .Message }}",
+      "networkErrorOpenAI": "Error de red al llamar a {{ .URL }}.",
+      "networkErrorReason": " Motivo: {{ .Code }}",
+      "responseNull": "El cuerpo de la respuesta es nulo",
+      "streamEndedPrematurely": "El flujo terminó prematuramente sin una señal [DONE].",
+      "badPromptConfig": "Configuración de prompt incorrecta. Se requiere un prompt.",
+      "progressFileDoesNotExist": "El archivo de progreso para hash {{ .Hash }} no existe.",
+      "llmAPICall": "Error durante las llamadas API LLM: ",
+      "initializingBatch": "Error al inicializar el procesamiento por lotes.",
+      "failedLock": "Error al crear el archivo de bloqueo.",
+      "failedToSaveProgress": "Error al guardar el progreso.",
+      "whileCalling_deleteProgressEntry": " mientras se llamaba a deleteProgressEntry.",
+      "stripNewLinesTypeError": "La entrada debe ser una cadena o un arreglo de cadenas."
+    },
+    "c": {
+      "co": {
+        "coError": "Advertencia: No se pudo cargar el módulo para el comando {{ .Command }}. Se omite la generación de completado."
+      },
+      "cfg": {
+        "editorNotFound": "No se encontró variable de entorno $EDITOR. Configura $EDITOR al editor de texto preferido.",
+        "editorLaunchFailed": "Error al lanzar el editor: {{ .ErrorMessage }}",
+        "failedToWriteLocale": "Error al escribir el archivo de configuración regional: {{ .ErrorMessage }}",
+        "invalidLocale": "Configuración regional inválida: {{ .Lang }}."
+      },
+      "lu": {
+        "undefinedLauncher": "El modelo '{{ .ModelPreset }}' no está configurado para lanzamiento local (falta 'quantFiles' o 'quantizationOrder').",
+        "undefinedModelType": "Tipo de modelo '{{ .ModelType }}' no encontrado para el ajuste '{{ .ModelPreset }}'.",
+        "undefinedQuant": "La cuantización '{{ .QuantReq }}' no está definida para el ajuste del modelo '{{ .ModelPreset }}'. Disponible: {{ .AvailableQuants }}.",
+        "noModelFiles": "No se encontraron archivos GGUF del modelo en disco para el ajuste '{{ .ModelPreset }}' (tipo: {{ .ModelType }}). Cuantizaciones verificadas: {{ .QuantList }}.",
+        "failedToStart": "Error al iniciar el proceso llama-server: {{ .Error }}."
+      },
+      "mg": {
+        "extensionRequired": "Se requiere la extensión del archivo. Usa la bandera -e o --extension."
+      },
+      "sp": {
+        "invalidSplitSize": "Tamaño inválido: {{ .Size }}. Debe ser un número positivo."
+      },
+      "st": {
+        "delimiterPairRequired": "Se requieren ambos delimitadores de inicio y fin."
+      },
+      "tc": {
+        "tokenizerDoesNotExist": "Tokenizador para el ajuste '{{ .PresetName }}' no existe.",
+        "invalidBenchmarkFlags": "Bandera --chunksizes o --workercounts inválida. Proporciona números separados por comas.",
+        "modelNotFoundForDownload": "Modelo \"{{ .ModelName }}\" no encontrado.",
+        "failedToDownload": "Error al descargar {{ .ModelUrl }}: {{ .Status }} {{ .StatusText }}",
+        "modelDownloadError": "Error durante la descarga del modelo: {{ .ErrorMessage }}"
+      }
+    }
+  },
+  "help": {
+    "generic": {
+      "header": "telocity: Una herramienta para procesamiento por lotes de texto con LLMs.",
+      "usage": "Uso: telocity <command> [options]",
+      "commandHeader": "Comandos:",
+      "commandDescriptions": {
+        "lu": "Lanza el servidor llama con un ajuste local configurado.",
+        "tr": "Traduce un archivo fragmento por fragmento.",
+        "tf": "Aplica una transformación a un archivo fragmento por fragmento.",
+        "os": "Ejecuta un único prompt con contexto de archivo opcional.",
+        "st": "Extrae o elimina contenido entre delimitadores en un archivo.",
+        "mg": "Fusiona varios archivos de texto en uno.",
+        "sp": "Divide un archivo grande en partes más pequeñas.",
+        "avg": "Calcula la longitud media de línea de un archivo.",
+        "tc": "Cuenta tokens en un archivo para un modelo específico.",
+        "rm": "Elimina archivos de progreso de trabajos completados o atascados.",
+        "cfg": "Gestiona la configuración de la aplicación."
+      },
+      "footer": "Para más información sobre cualquier comando, usa `telocity <command> --help`.",
+      "globalOptionsHeader": "Opciones globales:",
+      "flags": {
+        "version": "Muestra la versión de la aplicación."
+      }
+    },
+    "commands": {
+      "lu": {
+        "usage": "Uso: telocity launch [model_preset] [options]",
+        "description": "Encuentra el mejor archivo local del modelo para un ajuste dado y lanza el servidor llama.cpp con los parámetros adecuados.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "reason": "Carga la versión 'thinking' o 'reasoning' del modelo, si está disponible.",
+          "chat": "Lanza en modo chat para un solo usuario (omite argumentos de procesamiento paralelo).",
+          "quant": "Fuerza el uso de un nivel de cuantificación específico (p. ej., 'q8', 'q6')."
+        },
+        "footer": "Modelos disponibles para lanzamiento:\n{{ .LaunchableModelList }}"
+      },
+      "avg": {
+        "usage": "Uso: telocity avg <source_path>",
+        "description": "Calcula el número medio de caracteres (gráfemas) y bytes por línea no vacía en un archivo."
+      },
+      "cfg": {
+        "usage": "Uso: telocity cfg [options]",
+        "description": "Gestiona la configuración de la aplicación.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "edit": "Abre el archivo de configuración del usuario en el editor por defecto.",
+          "remove": "Elimina los archivos de configuración del usuario (pide confirmación).",
+          "lang": "Establece el idioma de la aplicación."
+        },
+        "footer": "Localizaciones soportadas:\n{{ .LocaleList }}"
+      },
+      "rm": {
+        "usage": "Uso: telocity rm <source_path> [options]",
+        "description": "Elimina archivos de seguimiento de progreso. El comando soporta tres modos:\n\n- Posicional (por defecto): elimina la entrada de progreso para un solo archivo fuente, identificado por <source_path>.\n- Todos (--all): elimina todos los archivos de progreso actualmente rastreados.\n- Interactivo (--interactive): abre un menú que lista todos los archivos de progreso, permitiendo seleccionar cuales eliminar.\n\nUsa --force (-f) para omitir las confirmaciones.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "all": "Elimina todos los archivos de progreso.",
+          "force": "Forzar eliminación sin confirmación.",
+          "interactive": "Abre un menú interactivo para seleccionar archivos de progreso a eliminar."
+        }
+      },
+      "mg": {
+        "usage": "Uso: telocity mg <source_directory> [target_directory] -e <extension>",
+        "description": "Busca recursivamente y fusiona todos los archivos con una extensión dada desde un directorio fuente a un único archivo en el directorio destino (o el directorio actual si no se especifica).",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "extension": "La extensión del archivo a buscar (requerida)."
+        }
+      },
+      "os": {
+        "usage": "Uso: telocity os \"<prompt>\" [options]",
+        "description": "Ejecuta un único prompt one‑shot contra un LLM, transmitiendo la salida al terminal.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "file": "Ruta a un archivo que se añadirá al prompt como contexto.",
+          "params": "Selecciona un preset de parámetros de modelo (por defecto: {{ .DefaultModel }}).",
+          "model": "Sobrescribe el nombre del modelo del preset.",
+          "url": "Sobrescribe la URL del endpoint de la API.",
+          "apikey": "Proporciona una clave API.",
+          "wait": "Establece un retraso entre llamadas a la API.",
+          "reason": "Habilita modo de razonamiento para presets que lo soporten."
+        },
+        "footer": "Presets disponibles:\n{{ .ModelParamList }}"
+      },
+      "sp": {
+        "usage": "Uso: telocity sp <source_path> <target_directory> [options]",
+        "description": "Divide un archivo grande en partes más pequeñas basadas en un tamaño especificado, garantizando que no se rompan líneas.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "size": "El tamaño máximo de cada parte en megabytes (por defecto: {{ .Size }})."
+        }
+      },
+      "st": {
+        "usage": "Uso: telocity st <source_path> <target_path> [options]",
+        "description": "Extrae o elimina contenido entre delimitadores especificados de un archivo.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "startdelimiter": "Delimitador de inicio.",
+          "enddelimiter": "Delimitador de fin.",
+          "params": "Usa delimitadores de inicio/final de un preset.",
+          "extracttag": "Extrae contenido entre delimitadores en lugar de eliminarlo.",
+          "compress": "Comprime líneas vacías en la salida."
+        },
+        "footer": "Presets con etiquetas disponibles:\n{{ .ReasoningTagParamList }}"
+      },
+      "tc": {
+        "usage": "Uso: telocity tc <source_path> [options]",
+        "description": "Cuenta el número de tokens en un archivo usando un tokenizador específico del modelo.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "params": "El ajuste de modelo cuyo tokenizador usar (por defecto: {{ .DefaultModel }}).",
+          "benchmark": "Inicia un ensayo de benchmark con diferentes cuentas de hilos y bloques en el archivo <source_path>.",
+          "chunksizes": "Tamaños de bloque separados por comas en bytes para benchmarking.",
+          "workercounts": "Conteos de hilos separados por comas para benchmarking.",
+          "downloadmodel": "Descarga archivos tokenizadores para un modelo específico (p. ej., 'granite')."
+        },
+        "footer": "Tokenizadores disponibles:\n{{ .TokenParamList }}"
+      },
+      "tf": {
+        "usage": "Uso: telocity tf <source_path> <target_path> [options]",
+        "description": "Aplica un prompt de transformación personalizado a un archivo, procesándolo en bloques.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "chunksize": "Número de líneas por bloque (por defecto: {{ .ChunkSize }}).",
+          "batchsize": "Número de bloques a procesar en paralelo (por defecto: {{ .BatchSize }}).",
+          "prompt": "Instrucción/prompt de transformación.",
+          "sysprompt": "Establece un prompt del sistema personalizado.",
+          "params": "Selecciona un preset de parámetros de modelo (por defecto: {{ .DefaultModel }}).",
+          "model": "Sobrescribe el nombre del modelo del preset.",
+          "url": "Sobrescribe la URL del endpoint de la API.",
+          "apikey": "Proporciona una clave API.",
+          "wait": "Establece un retraso entre llamadas a la API.",
+          "reason": "Habilita modo de razonamiento para presets que lo soporten."
+        },
+        "footer": "Presets disponibles:\n{{ .ModelParamList }}"
+      },
+      "tr": {
+        "usage": "Uso: telocity tr <source_path> <target_path> [options]",
+        "description": "Traduce un archivo desde un idioma fuente a un idioma destino, procesándolo en bloques.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "chunksize": "Número de líneas por bloque (por defecto: {{ .ChunkSize }}).",
+          "batchsize": "Número de bloques a procesar en paralelo (por defecto: {{ .BatchSize }}).",
+          "source": "Idioma fuente (por defecto: \"{{ .SourceLanguage }}\").",
+          "target": "Idioma destino (por defecto: \"{{ .TargetLanguage }}\").",
+          "context": "Proporciona contexto adicional para la traducción.",
+          "params": "Selecciona un preset de parámetros de modelo (por defecto: {{ .DefaultModel }}).",
+          "model": "Sobrescribe el nombre del modelo del preset.",
+          "url": "Sobrescribe la URL del endpoint de la API.",
+          "apikey": "Proporciona una clave API.",
+          "wait": "Establece un retraso entre llamadas a la API.",
+          "reason": "Habilita modo de razonamiento para presets que lo soporten."
+        },
+        "footer": "Presets disponibles:\n{{ .ModelParamList }}"
+      }
+    }
+  }
+}

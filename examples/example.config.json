@@ -1,0 +1,75 @@
+{
+  "//comment": "example for reasoning model switching",
+  "qwen": {
+    "reasoningType": "reason_and_instruct",
+    "metadata": {
+      "helptext_key": "models.genericsys",
+      "stripTags": { "start": "<think>", "end": "</think>" },
+      "localPreset": true
+    },
+    "instruct": {
+      "prompt": {
+        "defSys": [true, "{{MAIN_TL_INSTRUCTIONS}}", "system", false],
+        "defPrep": [false, "", "", false]
+      },
+      "model": {
+        "delay": [false, 0.1],
+        "llmbackend": "openai",
+        "url": "http://localhost:8080/v1/chat/completions",
+        "temperature": [true, 0.7],
+        "top_p": [true, 0.8],
+        "top_k": [true, 20],
+        "min_p": [true, 0.0],
+        "repeat_penalty": [true, 1.0],
+        "model": [true, "qwen"]
+      }
+    },
+    "reasoning": {
+      "prompt": {
+        "defSys": [true, "{{MAIN_TL_INSTRUCTIONS}}", "system", false],
+        "defPrep": [false, "", "", false]
+      },
+      "model": {
+        "delay": [false, 0.1],
+        "llmbackend": "openai",
+        "url": "http://localhost:8080/v1/chat/completions",
+        "temperature": [true, 0.6],
+        "top_p": [true, 0.95],
+        "top_k": [true, 20],
+        "min_p": [true, 0.0],
+        "repeat_penalty": [true, 1.0],
+        "model": [true, "qwen"]
+      }
+    },
+    "quantFiles": {
+      "instruct": {
+        "q8": {
+          "file": "qwen3-4b-q8_0.gguf",
+          "args": [
+            "--reasoning-format",
+            "deepseek",
+            "--chat-template-kwargs",
+            "{\"enable_thinking\": false}",
+            "--ctx-size",
+            "32768"
+          ],
+          "np": ["--parallel", "4"]
+        }
+      },
+      "reasoning": {
+        "q8": {
+          "file": "qwen3-4b-q8_0.gguf",
+          "args": [
+            "--reasoning-format",
+            "deepseek",
+            "--chat-template-kwargs",
+            "{\"enable_thinking\": true}",
+            "--ctx-size",
+            "32768"
+          ],
+          "np": ["--parallel", "4"]
+        }
+      }
+    }
+  }
+}

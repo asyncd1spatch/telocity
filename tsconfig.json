@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "types": ["bun-types", "./src/libs/types/build-constants.d.ts"],
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "module": "Preserve",
+    "moduleDetection": "force",
+    "noEmit": true,
+    "allowJs": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "resolveJsonModule": true
+  }
+}

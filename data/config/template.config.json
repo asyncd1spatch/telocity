@@ -1,0 +1,251 @@
+{
+  "DEFAULT_MODEL": "gptoss",
+  "MAX_SIZE_MB": 10,
+  "HUMAN_TIMEOUT": 5,
+  "SOURCE_LANGUAGE": "Simplified Chinese",
+  "TARGET_LANGUAGE": "English",
+  "TERMINAL_PREPEND": "Never use markdown or any special formatting. Only plaintext.",
+  "DEFAULT_TF_PROMPT": "Never use markdown or any special formatting. Write a summary of the following file.",
+  "EMPTY_FIELD": [false, "", "", false],
+  "TEMPLATES": {
+    "MAIN_TL_INSTRUCTIONS": "Translate any text you're given from {{ .LanguageSource }} into {{ .LanguageTarget }}. No commentary."
+  },
+  "FALLBACK_VALUES": {
+    "chunkSize": "20",
+    "batchSize": "4",
+    "model": [false, ""],
+    "url": "http://localhost:8080/v1/chat/completions",
+    "apiKey": "",
+    "temperature": [true, 1.0],
+    "top_p": [true, 1.0]
+  },
+  "LLAMACPP_CMD": "C:\\largedrivesonly\\ai\\soft\\llamacpp\\llama-server.exe",
+  "MODELS_LOCATION": "C:\\largedrivesonly\\ai\\Models\\LLM",
+  "LLAMACPP_BASE_ARGS": ["--jinja"],
+  "QUANTIZATION_ORDER": ["q4", "q4h"],
+  "PARAM_CONFIGS": {
+    "online_api": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.fallback",
+        "localPreset": false
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 60],
+          "llmbackend": "openai",
+          "model": [false, ""],
+          "temperature": [true, 1.0],
+          "top_p": [true, 1.0]
+        }
+      }
+    },
+    "gprep": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "localPreset": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "openai",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 0.8],
+          "top_p": [true, 1.0],
+          "top_k": [true, 100],
+          "min_p": [true, 0.0],
+          "repeat_penalty": [true, 1.0],
+          "model": [true, "testmodel"]
+        }
+      }
+    },
+    "gptoss": {
+      "reasoningType": "reason_and_instruct",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "stripTags": { "start": "<|channel|>analysis", "end": "<|channel|>final<|message|>" },
+        "localPreset": true
+      },
+      "instruct": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "openai",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 0.0],
+          "top_p": [true, 1.0],
+          "top_k": [true, 100],
+          "min_p": [true, 0.0],
+          "repeat_penalty": [true, 1.0],
+          "model": [true, "gptoss-instruct"]
+        }
+      },
+      "reasoning": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "openai",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 1.0],
+          "top_p": [true, 1.0],
+          "top_k": [true, 100],
+          "min_p": [true, 0.0],
+          "repeat_penalty": [true, 1.0],
+          "model": [true, "gptoss-reasoning"]
+        }
+      },
+      "quantFiles": {
+        "instruct": {
+          "q4": {
+            "file": "gpt-oss-20b-mxfp4.gguf",
+            "args": [
+              "--ctx-size",
+              "32768",
+              "--reasoning-format",
+              "deepseek",
+              "--chat-template-kwargs",
+              "{\"reasoning_effort\": \"low\"}",
+              "--n-cpu-moe",
+              "11"
+            ],
+            "np": ["--parallel", "4"]
+          }
+        },
+        "reasoning": {
+          "q4": {
+            "file": "gpt-oss-20b-mxfp4.gguf",
+            "args": [
+              "--ctx-size",
+              "32768",
+              "--reasoning-format",
+              "deepseek",
+              "--chat-template-kwargs",
+              "{\"reasoning_effort\": \"medium\"}",
+              "--n-cpu-moe",
+              "11"
+            ],
+            "np": ["--parallel", "4"]
+          },
+          "q4h": {
+            "file": "gpt-oss-20b-mxfp4.gguf",
+            "args": [
+              "--ctx-size",
+              "32768",
+              "--reasoning-format",
+              "deepseek",
+              "--chat-template-kwargs",
+              "{\"reasoning_effort\": \"high\"}",
+              "--n-cpu-moe",
+              "11"
+            ],
+            "np": ["--parallel", "4"]
+          }
+        }
+      }
+    },
+    "gemma": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "localPreset": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "openai",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 0.0],
+          "top_p": [true, 1.0],
+          "top_k": [true, 100],
+          "min_p": [true, 0.0],
+          "repeat_penalty": [true, 1.0],
+          "model": [true, "gemma"]
+        }
+      },
+      "quantFiles": {
+        "q4": {
+          "file": "gemma-3-4b-it-q4_0_s.gguf",
+          "fileMMPROJ": "mmproj-google_gemma-3-4b-it-f16.gguf",
+          "args": ["--ctx-size", "32768"],
+          "np": ["--parallel", "4"]
+        }
+      }
+    },
+    "gemma3n": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep"
+      },
+      "quantFiles": {
+        "q4": {
+          "file": "gemma-3n-e4b-it-q4_0.gguf",
+          "args": ["--ctx-size", "32768"],
+          "np": ["--parallel", "4"]
+        }
+      }
+    },
+    "gemma3ne2b": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep"
+      },
+      "quantFiles": {
+        "q4": {
+          "file": "gemma-3n-e2b-it-q4_0.gguf",
+          "args": ["--ctx-size", "32768"],
+          "np": ["--parallel", "4"]
+        }
+      }
+    },
+    "granite": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "localPreset": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [true, "You are a helpful assistant. Please ensure responses are accurate.", "system", true],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "openai",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 0.0],
+          "top_p": [true, 1.0],
+          "top_k": [true, 100],
+          "min_p": [true, 0.0],
+          "repeat_penalty": [true, 1.0],
+          "model": [true, "granite"]
+        }
+      },
+      "quantFiles": {
+        "q4": {
+          "file": "granite-4.0-h-tiny-q4_0.gguf",
+          "args": ["--ctx-size", "32768"],
+          "np": ["--parallel", "4"]
+        }
+      }
+    }
+  }
+}
