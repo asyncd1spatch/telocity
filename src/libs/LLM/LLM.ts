@@ -222,8 +222,9 @@ export class LLM {
   protected readonly seed?: NumberParam;
   protected readonly systemPrompt?: PromptParam;
   protected readonly prependPrompt?: PromptParam;
-  protected readonly batchSize: number = 3;
-  protected readonly chunkSize: number = 5;
+  protected readonly batchSize: number = 1;
+  protected readonly concurrency: number = 1;
+  protected readonly chunkSize: number = 1;
   protected readonly abrtTimeout;
   protected readonly appState: AppState;
   public completion: (

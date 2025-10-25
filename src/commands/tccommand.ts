@@ -1,4 +1,3 @@
-import { cpus } from "node:os";
 import path from "node:path";
 import {
   AppStateSingleton,
@@ -11,6 +10,7 @@ import {
   isNodeError,
   log,
   red,
+  runConcur,
   simpleTemplate,
   yellow,
 } from "../libs/core";
@@ -44,16 +44,6 @@ export default class TcCommand implements Command {
     return {
       params: { type: "string", short: "p", default: appConfig.DEFAULT_MODEL },
       help: { type: "boolean", short: "h" },
-      benchmark: { type: "boolean", short: "b", default: false },
-      chunksizes: {
-        type: "string",
-        short: "c",
-        default: "500000,1000000,2000000",
-      },
-      workercounts: {
-        type: "string",
-        short: "w",
-      },
       downloadmodel: { type: "string", short: "d" },
     } as const;
   }
@@ -111,10 +101,12 @@ export default class TcCommand implements Command {
     );
 
     try {
-      const [modelResponse, configResponse] = await Promise.all([
-        fetch(modelUrl!),
-        fetch(configUrl!),
-      ]);
+      const tasks = [
+        () => fetch(modelUrl!),
+        () => fetch(configUrl!),
+      ] as const;
+
+      const [modelResponse, configResponse] = await runConcur(tasks);
 
       if (!modelResponse.ok) {
         throw createError(
@@ -137,12 +129,16 @@ export default class TcCommand implements Command {
 
       log(simpleTemplate(appState.s.m.c.tc.writingFilesTo, { StateDir: baseDir }));
 
-      const modelData = await modelResponse.arrayBuffer();
-      const configData = await configResponse.arrayBuffer();
+      const [modelData, configData] = await runConcur(
+        [
+          () => modelResponse.arrayBuffer(),
+          () => configResponse.arrayBuffer(),
+        ] as const,
+      );
 
-      await Promise.all([
-        Bun.write(modelDestPath, modelData),
-        Bun.write(configDestPath, configData),
+      await runConcur([
+        () => Bun.write(modelDestPath, modelData),
+        () => Bun.write(configDestPath, configData),
       ]);
 
       log(simpleTemplate(appState.s.m.c.tc.downloadSuccess, { ModelName: modelName }));
@@ -181,7 +177,7 @@ export default class TcCommand implements Command {
     return chunks;
   }
 
-  private async _runNormalCount(normalizedText: string, model: string) {
+  private async _countTok(normalizedText: string, model: string) {
     const specialTokensCount = await countTokens(model, "", {
       add_special_tokens: true,
     });
@@ -199,84 +195,6 @@ export default class TcCommand implements Command {
     const tokenCount = textOnlyTokenCount + specialTokensCount;
 
     log(`${model}:`, yellow(tokenCount.toString()));
-  }
-
-  private async _runBenchmark(
-    normalizedText: string,
-    textSize: number,
-    model: string,
-    argValues: TcCommandArgs,
-  ) {
-    const appState = AppStateSingleton.getInstance();
-    log(
-      simpleTemplate(appState.s.m.c.tc.benchmarkStart, {
-        ModelName: model,
-        MB: (textSize / 1024 / 1024).toFixed(2),
-      }),
-    );
-
-    const chunkSizes = argValues.chunksizes
-      .split(",")
-      .map(Number)
-      .filter((n) => !isNaN(n) && n > 0);
-    const workerCounts = (argValues.workercounts ?? `2,4,${cpus().length}`)
-      .split(",")
-      .map(Number)
-      .filter((n) => !isNaN(n) && n > 0);
-
-    if (chunkSizes.length === 0 || workerCounts.length === 0) {
-      errlog(red(appState.s.e.c.tc.invalidBenchmarkFlags));
-      return;
-    }
-
-    const specialTokensCount = await countTokens(model, "", {
-      add_special_tokens: true,
-    });
-
-    for (const chunkSize of chunkSizes) {
-      log(
-        simpleTemplate(appState.s.m.c.tc.benchmarkChunkSize, {
-          ChunkSize: (chunkSize / 1024 / 1024).toFixed(2),
-        }),
-      );
-
-      const chunks = this._chunkText(normalizedText, chunkSize);
-      const inputs = chunks.map((chunk) => ({
-        text: chunk,
-        options: { add_special_tokens: false },
-      }));
-      log(
-        simpleTemplate(appState.s.m.c.tc.benchmarkSplitIntoChunks, {
-          Chunks: chunks.length,
-        }),
-      );
-
-      for (const numWorkers of workerCounts) {
-        const startTime = performance.now();
-        const counts = await countTokensInParallel(model, inputs, {
-          numWorkers,
-        });
-        const endTime = performance.now();
-        const duration = (endTime - startTime).toFixed(2);
-
-        const textOnlyTokenCount = counts.reduce(
-          (sum, count) => sum + count,
-          0,
-        );
-        const totalTokenCount = textOnlyTokenCount + specialTokensCount;
-
-        const wcRep = yellow(numWorkers.toString().padStart(2));
-        const timeRep = red(duration.padStart(8, " "));
-        log(
-          simpleTemplate(appState.s.m.c.tc.benchmarkResultLine, {
-            WcRep: wcRep,
-            Time: timeRep,
-            TC: totalTokenCount,
-          }),
-        );
-      }
-    }
-    log(appState.s.m.c.tc.benchmarkComplete);
   }
 
   async execute(argv: string[]): Promise<number> {
@@ -307,12 +225,10 @@ export default class TcCommand implements Command {
       return 0;
     }
 
-    let textSize: number;
     let normalizedText: string;
 
     if (!process.stdin.isTTY) {
       const text = await Bun.stdin.text();
-      textSize = Buffer.byteLength(text);
       normalizedText = stripGarbageNewLines(text);
     } else {
       if (!positionals[1]) {
@@ -327,7 +243,6 @@ export default class TcCommand implements Command {
       await validateFiles(sourcePath);
 
       const sourceFile = Bun.file(sourcePath);
-      textSize = sourceFile.size;
       const rawText = await sourceFile.text();
       normalizedText = stripGarbageNewLines(rawText);
     }
@@ -347,11 +262,7 @@ export default class TcCommand implements Command {
       return 1;
     }
 
-    if (argValues.benchmark) {
-      await this._runBenchmark(normalizedText, textSize, presetName, argValues);
-    } else {
-      await this._runNormalCount(normalizedText, presetName);
-    }
+    await this._countTok(normalizedText, presetName);
 
     return 0;
   }

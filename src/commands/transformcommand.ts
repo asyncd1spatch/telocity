@@ -11,9 +11,6 @@ import {
 import { dummy, getPresetHelpText, UILLMIO } from "../libs/LLM";
 import type { Command, ConfigModelVariant, LLMConfigurableProps, Message, PromptParam } from "../libs/types";
 
-export const defaultChunkSize = "200000";
-export const defaultBatchSize = "1";
-
 export default class TransformCommand implements Command {
   static get allowPositionals() {
     return true;
@@ -21,24 +18,35 @@ export default class TransformCommand implements Command {
   static get positionalCompletion() {
     return "file" as const;
   }
+  static get defaultChunkSize() {
+    return "200000";
+  }
+  static get defaultBatchSize() {
+    return "1";
+  }
+  static get defaultParallel() {
+    return "1";
+  }
   static get helpReplacements() {
     return {
-      ChunkSize: defaultChunkSize,
-      BatchSize: defaultBatchSize,
+      ChunkSize: this.defaultBatchSize,
+      BatchSize: this.defaultBatchSize,
+      Parallel: this.defaultParallel,
       DefaultModel: appConfig.DEFAULT_MODEL,
     };
   }
   static get options() {
     return {
-      chunksize: { type: "string", short: "c", default: defaultChunkSize },
-      batchsize: { type: "string", short: "b", default: defaultBatchSize },
+      chunksize: { type: "string", short: "c", default: this.defaultChunkSize },
+      batchsize: { type: "string", short: "b", default: this.defaultBatchSize },
+      parallel: { type: "string", default: this.defaultParallel },
       model: { type: "string", short: "m" },
       params: { type: "string", short: "p", default: appConfig.DEFAULT_MODEL },
       prompt: { type: "string", short: "i" },
       sysprompt: { type: "string", short: "s" },
       url: { type: "string", short: "u" },
       apikey: { type: "string", short: "k", default: appConfig.FALLBACK_VALUES.apiKey },
-      wait: { type: "string", short: "w" },
+      wait: { type: "string" },
       reason: { type: "boolean", short: "r" },
       help: { type: "boolean", short: "h" },
     } as const;
@@ -148,6 +156,7 @@ export default class TransformCommand implements Command {
     const options: LLMConfigurableProps = {
       chunkSize: Number(argValues.chunksize),
       batchSize: Number(argValues.batchsize),
+      concurrency: Number(argValues.parallel),
       apiKey: argValues.apikey,
       systemPrompt: sysPromptFinal,
       prependPrompt: prependPromptFinal,

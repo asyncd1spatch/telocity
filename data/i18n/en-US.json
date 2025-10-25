@@ -66,11 +66,6 @@
         "newlinesNormalized": "File content normalized and saved."
       },
       "tc": {
-        "benchmarkStart": "--- Starting Benchmark for {{ .ModelName }} on {{ .MB }} MB file ---",
-        "benchmarkChunkSize": "\n--- Testing Chunk Size: {{ .ChunkSize }} MB ---",
-        "benchmarkSplitIntoChunks": "Split into {{ .Chunks }} chunks.",
-        "benchmarkResultLine": "  Workers: {{ .WcRep }} | Time: {{ .Time }} ms | Total Tokens: {{ .TC }}",
-        "benchmarkComplete": "\n--- Benchmark Complete ---",
         "availableModelsForDownload": "Available models for download: {{ .AvailableModels }}",
         "downloadingModelFiles": "Downloading model files for \"{{ .ModelName }}\"...",
         "writingFilesTo": "Writing files to {{ .StateDir }}...",
@@ -95,7 +90,7 @@
     "v": {
       "invalidArgArray": "Invalid argument array provided: {{ .OptionValue }}",
       "invalidChunkSize": "Invalid chunk size. Must be an integer between 1 and 200000. Provided: {{ .ChunkSize }}",
-      "invalidBatchSize": "Invalid batch size. Must be an integer between 1 and 4. Provided: {{ .BatchSize }}",
+      "invalidBatchSize": "Invalid batch size. Must be an integer between 1 and 64. Provided: {{ .BatchSize }}",
       "invalidIndex": "Invalid lastIndex. Must be a positive integer. Provided: {{ .Index }}",
       "invalidPrompt": "Invalid prompt provided. Must be a non-empty string.",
       "invalidModel": "Invalid model name provided: {{ .Model }}",
@@ -171,7 +166,6 @@
       },
       "tc": {
         "tokenizerDoesNotExist": "Tokenizer for preset '{{ .PresetName }}' does not exist.",
-        "invalidBenchmarkFlags": "Invalid --chunksizes or --workercounts. Please provide comma-separated numbers.",
         "modelNotFoundForDownload": "Model \"{{ .ModelName }}\" not found.",
         "failedToDownload": "Failed to download {{ .ModelUrl }}: {{ .Status }} {{ .StatusText }}",
         "modelDownloadError": "Error during model download: {{ .ErrorMessage }}"
@@ -257,7 +251,6 @@
           "model": "Override the model name from the preset.",
           "url": "Override the API endpoint URL.",
           "apikey": "Provide an API key.",
-          "wait": "Set a delay between API calls.",
           "reason": "Enable reasoning mode for presets that support it."
         },
         "footer": "Available Presets:\n{{ .ModelParamList }}"
@@ -289,9 +282,6 @@
         "flags": {
           "help": "Show this help message.",
           "params": "The model preset whose tokenizer to use (default: {{ .DefaultModel }}).",
-          "benchmark": "Start a benchmark round of varying thread counts and chunks on the <source_path> file.",
-          "chunksizes": "Comma-separated chunk sizes in bytes for benchmarking.",
-          "workercounts": "Comma-separated thread counts for benchmarking.",
           "downloadmodel": "Download tokenizer files for a specific model (e.g., 'granite')."
         },
         "footer": "Available Tokenizers:\n{{ .TokenParamList }}"
@@ -302,7 +292,8 @@
         "flags": {
           "help": "Show this help message.",
           "chunksize": "Number of lines per chunk (default: {{ .ChunkSize }}).",
-          "batchsize": "Number of chunks to process in parallel (default: {{ .BatchSize }}).",
+          "batchsize": "Number of chunks to process per batch (default: {{ .BatchSize }}).",
+          "parallel": "Concurrency limit (default: {{ .Parallel }}).",
           "prompt": "The transformation instruction/prompt.",
           "sysprompt": "Set a custom system prompt.",
           "params": "Select a model parameter preset (default: {{ .DefaultModel }}).",
@@ -320,7 +311,8 @@
         "flags": {
           "help": "Show this help message.",
           "chunksize": "Number of lines per chunk (default: {{ .ChunkSize }}).",
-          "batchsize": "Number of chunks to process in parallel (default: {{ .BatchSize }}).",
+          "batchsize": "Number of chunks to process per batch (default: {{ .BatchSize }}).",
+          "parallel": "Concurrency limit (default: {{ .Parallel }}).",
           "source": "Source language (default: \"{{ .SourceLanguage }}\").",
           "target": "Target language (default: \"{{ .TargetLanguage }}\").",
           "context": "Provide additional context for the translation.",

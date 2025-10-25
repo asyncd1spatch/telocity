@@ -11,6 +11,7 @@ import {
   isNodeError,
   log,
   red,
+  runConcur,
   simpleTemplate,
   yellowBright,
 } from "../libs/core";
@@ -111,11 +112,14 @@ export default class CfgCommand implements Command {
       const answer = await rl.question(appState.s.m.lcli.deletionConfirm);
       rl.close();
       if (answer.trim().toLowerCase() === appState.s.m.lcli.yN) {
-        const deletePromises = [Bun.file(cfgPath).delete()];
+        const deleteTasks = [
+          () => Bun.file(cfgPath).delete(),
+        ];
         if (localeExists) {
-          deletePromises.push(Bun.file(localePath).delete());
+          deleteTasks.push(() => Bun.file(localePath).delete());
         }
-        await Promise.all(deletePromises);
+
+        await runConcur(deleteTasks);
 
         log(yellowBright(appState.s.m.c.cfg.cfgDeletedSuccessfully));
         return 0;

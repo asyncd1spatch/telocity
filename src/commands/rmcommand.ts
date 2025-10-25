@@ -7,6 +7,7 @@ import {
   generateHelpText,
   log,
   red,
+  runConcur,
   yellowBright,
 } from "../libs/core";
 import { deleteProgressEntry, findAllProgressEntries, stripGarbageNewLines } from "../libs/LLM";
@@ -92,8 +93,10 @@ export default class RMCommand implements Command {
     };
 
     const deleteFiles = async (filesToDelete: string[]) => {
-      const deletePromises = filesToDelete.map((file) => Bun.file(file).delete());
-      await Promise.all(deletePromises);
+      const deleteTasks = filesToDelete.map(
+        (file) => () => Bun.file(file).delete(),
+      );
+      await runConcur(deleteTasks, { concurrency: 64 });
       log(yellowBright(appState.s.m.c.rm.filesDeletedSuccessfully));
     };
 

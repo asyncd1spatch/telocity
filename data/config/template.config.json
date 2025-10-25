@@ -13,6 +13,7 @@
   "FALLBACK_VALUES": {
     "chunkSize": "20",
     "batchSize": "4",
+    "parallel": "4",
     "model": [false, ""],
     "url": "http://localhost:8080/v1/chat/completions",
     "apiKey": "",

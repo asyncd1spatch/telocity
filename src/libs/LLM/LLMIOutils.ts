@@ -11,6 +11,7 @@ import {
   isTypeError,
   log,
   red,
+  runConcur,
   simpleTemplate,
 } from "../core";
 
@@ -55,13 +56,13 @@ export async function findAllProgressEntries(protectedFiles: string[]) {
     .map((file) => path.join(appState.STATE_DIR, file))
     .filter((file) => !protectedFiles.includes(path.basename(file)));
 
-  const formattedFileNamesList = await Promise.all(
-    jsonFiles.map(async (file, i) => {
-      const raw = await Bun.file(file).text();
-      const data = JSON.parse(raw) as { fileName?: string };
-      return `[${i + 1}]${data.fileName ?? ""} ${path.basename(file)}`;
-    }),
-  );
+  const tasks = jsonFiles.map((file, i) => async () => {
+    const raw = await Bun.file(file).text();
+    const data = JSON.parse(raw) as { fileName?: string };
+    return `[${i + 1}]${data.fileName ?? ""} ${path.basename(file)}`;
+  });
+
+  const formattedFileNamesList = await runConcur(tasks, { concurrency: 64 });
 
   return [formattedFileNamesList, jsonFiles] as const;
 }

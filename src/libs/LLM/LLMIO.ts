@@ -11,6 +11,7 @@ import {
   isNodeError,
   log,
   red,
+  runConcur,
   simpleTemplate,
   V,
   yellow,
@@ -50,7 +51,16 @@ function getArgConfig() {
     batchSize: {
       prop: "batchSize",
       validate: V.num(
-        { minExclusive: 0, max: 4, integer: true, allowNaN: false },
+        { minExclusive: 0, max: 64, integer: true, allowNaN: false },
+        appState.s.e.v.invalidBatchSize,
+        "INVALID_BATCH_SIZE",
+        "{{ .BatchSize }}",
+      ),
+    },
+    concurrency: {
+      prop: "concurrency",
+      validate: V.num(
+        { minExclusive: 0, max: 64, integer: true, allowNaN: false },
         appState.s.e.v.invalidBatchSize,
         "INVALID_BATCH_SIZE",
         "{{ .BatchSize }}",
@@ -207,6 +217,7 @@ export class LLMIO extends LLM {
         prependPrompt: this.prependPrompt,
         chunkSize: this.chunkSize,
         batchSize: this.batchSize,
+        concurrency: this.concurrency,
       };
 
       await Bun.write(fStatePath, JSON.stringify(stateToSave, null, 2));
@@ -235,11 +246,9 @@ export class LLMIO extends LLM {
       this.lastIndex,
       this.lastIndex + this.batchSize,
     );
-    const result = await Promise.all(
-      batch.map((chunk) => {
-        return this.completion(this.formatMessages(chunk));
-      }),
-    );
+    const tasks = batch.map(chunk => () => this.completion(this.formatMessages(chunk)));
+    const result = await runConcur(tasks, { concurrency: this.concurrency });
+
     return result;
   }
 

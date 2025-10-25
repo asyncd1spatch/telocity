@@ -30,7 +30,6 @@ export default class OneShotCommand implements Command {
       params: { type: "string", short: "p", default: appConfig.DEFAULT_MODEL },
       url: { type: "string", short: "u" },
       apikey: { type: "string", short: "k", default: appConfig.FALLBACK_VALUES.apiKey },
-      wait: { type: "string", short: "w" },
       reason: { type: "boolean", short: "r" },
       help: { type: "boolean", short: "h" },
     } as const;
@@ -53,6 +52,7 @@ export default class OneShotCommand implements Command {
 
     const chunkSize = "200000";
     const batchSize = "1";
+    const parallel = "1";
     let text = "";
 
     const oneshotHelp = () => {
@@ -160,6 +160,7 @@ export default class OneShotCommand implements Command {
     const options: LLMConfigurableProps = {
       chunkSize: Number(chunkSize),
       batchSize: Number(batchSize),
+      concurrency: Number(parallel),
       apiKey: argValues.apikey,
       systemPrompt: sysPromptFinal,
       prependPrompt: prependPromptFinal,
@@ -167,9 +168,6 @@ export default class OneShotCommand implements Command {
       url: argValues.url || llmModelParams.url || appConfig.FALLBACK_VALUES.url,
       model: argValues.model ? [true, argValues.model] : llmModelParams.model,
     };
-    if (argValues.wait) {
-      options.delay = [false, Number(argValues.wait)];
-    }
 
     const initArgs: [LLMConfigurableProps, ((messages: Message[]) => Promise<string>)?] = [options];
     if (appState.DEBUG_MODE) {

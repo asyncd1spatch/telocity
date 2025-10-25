@@ -57,6 +57,7 @@ export interface LLMConfigurableProps {
   lastIndex?: number;
   chunkSize: number;
   batchSize: number;
+  concurrency: number;
 }
 
 export type ConfigurablePropValue = LLMConfigurableProps[keyof LLMConfigurableProps];
@@ -155,6 +156,7 @@ export type ParamConfigs = Record<string, ModelConfig>;
 interface AppConfigFallbackValues {
   chunkSize: string;
   batchSize: string;
+  parallel: string;
   model: StringParam;
   url: string;
   apiKey: string;

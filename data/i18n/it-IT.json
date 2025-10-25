@@ -13,7 +13,7 @@
     "lllm": {
       "processingComplete": "L'elaborazione di questo file è già completa.",
       "anotherInstanceIsProcessing": "Un'altra istanza sta già elaborando questo file. Attendi che finisca o rimuovi il file .lock.",
-      "ctrlCPressed": "Ctrl+C premuto. Completamento del batch corrente e salvataggio del progresso. Premi di nuovo per forzare l'uscita.",
+      "ctrlCPressed": "Ctrl+C premuto. Terminazione del batch corrente e salvataggio del progresso. Premi di nuovo per forzare l'uscita.",
       "ctrlCPressed2": "Terminazione già richiesta. Attendi.",
       "quittingWithoutSaving": "Uscita forzata senza salvare il progresso.",
       "processedChunkOf": "Chunk elaborato {{ .Processed }} di {{ .Total }}",
@@ -66,15 +66,10 @@
         "newlinesNormalized": "Contenuto del file normalizzato e salvato."
       },
       "tc": {
-        "benchmarkStart": "--- Avvio benchmark per {{ .ModelName }} su file di {{ .MB }} MB ---",
-        "benchmarkChunkSize": "\n--- Test dimensione chunk: {{ .ChunkSize }} MB ---",
-        "benchmarkSplitIntoChunks": "Diviso in {{ .Chunks }} chunk.",
-        "benchmarkResultLine": "  Lavoratori: {{ .WcRep }} | Tempo: {{ .Time }} ms | Token totali: {{ .TC }}",
-        "benchmarkComplete": "\n--- Benchmark completato ---",
         "availableModelsForDownload": "Modelli disponibili per il download: {{ .AvailableModels }}",
         "downloadingModelFiles": "Download dei file del modello per \"{{ .ModelName }}\"...",
         "writingFilesTo": "Scrittura dei file in {{ .StateDir }}...",
-        "downloadSuccess": "File per \"{{ .ModelName }}\" scaricati con successo:"
+        "downloadSuccess": "File scaricati con successo per \"{{ .ModelName }}\":"
       }
     }
   },
@@ -86,7 +81,7 @@
       "unexpectedPositional": "Argomento posizionale inatteso: '{{ .Argument }}'.",
       "missingValue": "L'opzione '{{ .Option }}' richiede un valore.",
       "booleanWithValue": "L'opzione '{{ .Option }}' non accetta un valore.",
-      "ambiguousOptionValue": "Valore dell'opzione '{{ .Option }}' ambiguo. Per specificare un valore che inizia con un trattino, usa '{{ .Option }}=<value>'.",
+      "ambiguousOptionValue": "Il valore dell'opzione '{{ .Option }}' è ambiguo. Per specificare un valore che inizia con un trattino, usa '{{ .Option }}=<value>'.",
       "invalidOptionValue": "Valore fornito per l'opzione '{{ .Option }}' non valido.",
       "commandNotImplemented": "Comando non implementato: {{ .CommandAlias }}.",
       "cfgCouldNotBeLoaded": "Impossibile caricare il file di configurazione da {{ .UserConfigPath }}."
@@ -94,7 +89,7 @@
     "v": {
       "invalidArgArray": "Array di argomenti non valido fornito: {{ .OptionValue }}",
       "invalidChunkSize": "Dimensione chunk non valida. Deve essere un intero tra 1 e 200000. Fornito: {{ .ChunkSize }}",
-      "invalidBatchSize": "Dimensione batch non valida. Deve essere un intero tra 1 e 4. Fornito: {{ .BatchSize }}",
+      "invalidBatchSize": "Dimensione batch non valida. Deve essere un intero tra 1 e 64. Fornito: {{ .BatchSize }}",
       "invalidIndex": "lastIndex non valido. Deve essere un intero positivo. Fornito: {{ .Index }}",
       "invalidPrompt": "Prompt fornito non valido. Deve essere una stringa non vuota.",
       "invalidModel": "Nome modello fornito non valido: {{ .Model }}",
@@ -134,7 +129,7 @@
       "responseNull": "Il corpo della risposta è nullo",
       "streamEndedPrematurely": "Lo stream è terminato prematuramente senza un segnale [DONE].",
       "badPromptConfig": "Configurazione del prompt errata. È richiesto un prompt.",
-      "progressFileDoesNotExist": "File di progresso per l'hash {{ .Hash }} non esiste.",
+      "progressFileDoesNotExist": "Il file di progresso per l'hash {{ .Hash }} non esiste.",
       "llmAPICall": "Errore durante le chiamate API LLM: ",
       "initializingBatch": "Errore durante l'inizializzazione del batch.",
       "failedLock": "Impossibile creare il file di lock.",
@@ -160,17 +155,16 @@
         "failedToStart": "Impossibile avviare il processo llama-server: {{ .Error }}."
       },
       "mg": {
-        "extensionRequired": "L'estensione del file è obbligatoria. Usa la flag -e o --extension."
+        "extensionRequired": "L'estensione del file è richiesta. Usa il flag -e o --extension."
       },
       "sp": {
         "invalidSplitSize": "Dimensione non valida: {{ .Size }}. Deve essere un numero positivo."
       },
       "st": {
-        "delimiterPairRequired": "Entrambi i delimitatori di inizio e fine sono obbligatori."
+        "delimiterPairRequired": "Entrambi i delimitatori di inizio e fine sono richiesti."
       },
       "tc": {
         "tokenizerDoesNotExist": "Il tokenizer per il preset '{{ .PresetName }}' non esiste.",
-        "invalidBenchmarkFlags": "Flag --chunksizes o --workercounts non validi. Fornisci numeri separati da virgola.",
         "modelNotFoundForDownload": "Modello \"{{ .ModelName }}\" non trovato.",
         "failedToDownload": "Impossibile scaricare {{ .ModelUrl }}: {{ .Status }} {{ .StatusText }}",
         "modelDownloadError": "Errore durante il download del modello: {{ .ErrorMessage }}"
@@ -192,7 +186,7 @@
         "sp": "Dividi un file grande in parti più piccole.",
         "avg": "Calcola la lunghezza media delle righe di un file.",
         "tc": "Conta i token in un file per un modello specifico.",
-        "rm": "Rimuovi file di progresso per lavori completati o bloccati.",
+        "rm": "Rimuove i file di progresso per lavori completati o bloccati.",
         "cfg": "Gestisci la configurazione dell'applicazione."
       },
       "footer": "Per ulteriori informazioni su un comando, usa `telocity <comando> --help`.",
@@ -235,7 +229,7 @@
           "help": "Mostra questo messaggio di aiuto.",
           "all": "Rimuovi tutti i file di progresso.",
           "force": "Forza l'eliminazione senza conferma.",
-          "interactive": "Apri un menu interattivo per selezionare i file di progresso da eliminare."
+          "interactive": "Apri un menu interattivo per selezionare quali file di progresso eliminare."
         }
       },
       "mg": {
@@ -243,7 +237,7 @@
         "description": "Trova ricorsivamente e unisce tutti i file con una determinata estensione da una directory di origine in un unico file nella directory di destinazione (o nella directory corrente se non specificata).",
         "flags": {
           "help": "Mostra questo messaggio di aiuto.",
-          "extension": "L'estensione del file da cercare (obbligatoria)."
+          "extension": "L'estensione del file da cercare (richiesta)."
         }
       },
       "os": {
@@ -254,9 +248,8 @@
           "file": "Percorso di un file da aggiungere al prompt come contesto.",
           "params": "Seleziona un preset di parametro modello (predefinito: {{ .DefaultModel }}).",
           "model": "Sovrascrivi il nome del modello dal preset.",
-          "url": "Sovrascrivi l'URL dell'endpoint API.",
+          "url": "Sovrascrivi l'URL del punto finale API.",
           "apikey": "Fornisci una chiave API.",
-          "wait": "Imposta un delay tra le chiamate API.",
           "reason": "Abilita la modalità ragionamento per i preset che la supportano."
         },
         "footer": "Preset disponibili:\n{{ .ModelParamList }}"
@@ -266,7 +259,7 @@
         "description": "Divide un file grande in parti più piccole basate su una dimensione specificata, garantendo che le righe non vengano spezzate.",
         "flags": {
           "help": "Mostra questo messaggio di aiuto.",
-          "size": "La dimensione massima di ogni parte in megabyte (predefinita: {{ .Size }})."
+          "size": "La dimensione massima di ogni parte in megabyte (predefinito: {{ .Size }})."
         }
       },
       "st": {
@@ -288,9 +281,6 @@
         "flags": {
           "help": "Mostra questo messaggio di aiuto.",
           "params": "Il preset del modello il cui tokenizer usare (predefinito: {{ .DefaultModel }}).",
-          "benchmark": "Avvia una sessione di benchmark con vari thread e chunk sul file <source_path>.",
-          "chunksizes": "Dimensioni chunk separate da virgola in byte per il benchmark.",
-          "workercounts": "Conteggi thread separati da virgola per il benchmark.",
           "downloadmodel": "Scarica i file tokenizer per un modello specifico (es. 'granite')."
         },
         "footer": "Tokenizer disponibili:\n{{ .TokenParamList }}"
@@ -301,12 +291,13 @@
         "flags": {
           "help": "Mostra questo messaggio di aiuto.",
           "chunksize": "Numero di righe per chunk (predefinito: {{ .ChunkSize }}).",
-          "batchsize": "Numero di chunk da elaborare in parallelo (predefinito: {{ .BatchSize }}).",
+          "batchsize": "Numero di chunk da elaborare per batch (predefinito: {{ .BatchSize }}).",
+          "parallel": "Limite di concorrenza (predefinito: {{ .Parallel }}).",
           "prompt": "L'istruzione/prompt di trasformazione.",
           "sysprompt": "Imposta un prompt di sistema personalizzato.",
           "params": "Seleziona un preset di parametro modello (predefinito: {{ .DefaultModel }}).",
           "model": "Sovrascrivi il nome del modello dal preset.",
-          "url": "Sovrascrivi l'URL dell'endpoint API.",
+          "url": "Sovrascrivi l'URL del punto finale API.",
           "apikey": "Fornisci una chiave API.",
           "wait": "Imposta un delay tra le chiamate API.",
           "reason": "Abilita la modalità ragionamento per i preset che la supportano."
@@ -319,13 +310,14 @@
         "flags": {
           "help": "Mostra questo messaggio di aiuto.",
           "chunksize": "Numero di righe per chunk (predefinito: {{ .ChunkSize }}).",
-          "batchsize": "Numero di chunk da elaborare in parallelo (predefinito: {{ .BatchSize }}).",
+          "batchsize": "Numero di chunk da elaborare per batch (predefinito: {{ .BatchSize }}).",
+          "parallel": "Limite di concorrenza (predefinito: {{ .Parallel }}).",
           "source": "Lingua di origine (predefinito: \"{{ .SourceLanguage }}\").",
           "target": "Lingua di destinazione (predefinito: \"{{ .TargetLanguage }}\").",
           "context": "Fornisci contesto aggiuntivo per la traduzione.",
           "params": "Seleziona un preset di parametro modello (predefinito: {{ .DefaultModel }}).",
           "model": "Sovrascrivi il nome del modello dal preset.",
-          "url": "Sovrascrivi l'URL dell'endpoint API.",
+          "url": "Sovrascrivi l'URL del punto finale API.",
           "apikey": "Fornisci una chiave API.",
           "wait": "Imposta un delay tra le chiamate API.",
           "reason": "Abilita la modalità ragionamento per i preset che la supportano."

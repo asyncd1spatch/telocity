@@ -121,4 +121,9 @@ export interface GenericHelpSection extends BaseHelpSection {
   globalOptionsHeader: string;
 }
 
+export interface RunConcurOpts {
+  concurrency?: number;
+  allSettled?: boolean;
+}
+
 export type LanguageStrings = typeof enUS;

@@ -28,6 +28,7 @@ export default class TranslateCommand implements Command {
     return {
       ChunkSize: appConfig.FALLBACK_VALUES.chunkSize,
       BatchSize: appConfig.FALLBACK_VALUES.batchSize,
+      Parallel: appConfig.FALLBACK_VALUES.parallel,
       SourceLanguage: appConfig.SOURCE_LANGUAGE,
       TargetLanguage: appConfig.TARGET_LANGUAGE,
       DefaultModel: appConfig.DEFAULT_MODEL,
@@ -37,6 +38,7 @@ export default class TranslateCommand implements Command {
     return {
       chunksize: { type: "string", short: "c", default: appConfig.FALLBACK_VALUES.chunkSize },
       batchsize: { type: "string", short: "b", default: appConfig.FALLBACK_VALUES.batchSize },
+      parallel: { type: "string", default: appConfig.FALLBACK_VALUES.parallel },
       model: { type: "string", short: "m" },
       params: { type: "string", short: "p", default: appConfig.DEFAULT_MODEL },
       source: { type: "string", short: "s", default: appConfig.SOURCE_LANGUAGE },
@@ -44,7 +46,7 @@ export default class TranslateCommand implements Command {
       context: { type: "string", short: "i", default: "" },
       url: { type: "string", short: "u" },
       apikey: { type: "string", short: "k", default: appConfig.FALLBACK_VALUES.apiKey },
-      wait: { type: "string", short: "w" },
+      wait: { type: "string" },
       reason: { type: "boolean", short: "r" },
       help: { type: "boolean", short: "h" },
     } as const;
@@ -163,6 +165,7 @@ export default class TranslateCommand implements Command {
     const options: LLMConfigurableProps = {
       chunkSize: Number(argValues.chunksize),
       batchSize: Number(argValues.batchsize),
+      concurrency: Number(argValues.parallel),
       apiKey: argValues.apikey,
       systemPrompt: sysPromptFinal,
       prependPrompt: prependPromptFinal,

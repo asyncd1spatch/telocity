@@ -1,7 +1,7 @@
 import { serialize } from "bun:jsc";
 import { cpus } from "node:os";
 import path from "node:path";
-import { AppStateSingleton, createError, errlog } from "../core";
+import { AppStateSingleton, createError, errlog, runConcur } from "../core";
 import type { TokenizerConfig, TokenizerJSON } from "./tokenizertypes";
 
 async function loadTokenizerData(
@@ -92,48 +92,45 @@ export async function countTokensInParallel(
   const workerPromises = chunks
     .filter((chunk) => chunk.length > 0)
     .map(
-      (chunk): Promise<number[]> => {
-        const devWorkerPath = new URL("../../../tokenworker.ts", import.meta.url);
-        const compiledWorkerPath = "./tokenworker.ts";
+      (chunk): () => Promise<number[]> => {
+        return () => {
+          const devWorkerPath = new URL("../../../tokenworker.ts", import.meta.url);
+          const compiledWorkerPath = "./tokenworker.ts";
 
-        const workerUrl = typeof __IS_COMPILED__ !== "undefined" && __IS_COMPILED__
-          ? compiledWorkerPath
-          : devWorkerPath;
-        const worker = new Worker(workerUrl);
+          const workerUrl = typeof __IS_COMPILED__ !== "undefined" && __IS_COMPILED__
+            ? compiledWorkerPath
+            : devWorkerPath;
+          const worker = new Worker(workerUrl);
 
-        const workerPayload = {
-          sharedTokenizerBuffer,
-          sharedConfigBuffer,
-          inputs: chunk,
-        };
-
-        const promise = new Promise<number[]>((resolve, reject) => {
-          worker.onmessage = (event: MessageEvent<number[]>) => {
-            resolve(event.data);
+          const workerPayload = {
+            sharedTokenizerBuffer,
+            sharedConfigBuffer,
+            inputs: chunk,
           };
-          worker.onerror = (event: ErrorEvent) => {
-            event.preventDefault();
-            reject(event.error || new Error(event.message));
-          };
-          worker.addEventListener("close", (event: Event) => {
-            const code = (event as CloseEvent).code;
-            if (code && code !== 0) {
-              reject(
-                new Error(`Worker stopped with non-zero exit code: ${code}`),
-              );
-            }
+
+          const promise = new Promise<number[]>((resolve, reject) => {
+            worker.onmessage = (event: MessageEvent<number[]>) => resolve(event.data);
+            worker.onerror = (event: ErrorEvent) => {
+              event.preventDefault();
+              reject(event.error || new Error(event.message));
+            };
+            worker.addEventListener("close", (event: Event) => {
+              const code = (event as CloseEvent).code;
+              if (code && code !== 0) {
+                reject(new Error(`Worker stopped with non-zero exit code: ${code}`));
+              }
+            });
           });
-        });
 
-        worker.postMessage(workerPayload);
+          worker.postMessage(workerPayload);
 
-        return promise.finally(() => {
-          worker.terminate();
-        });
+          return promise.finally(() => worker.terminate());
+        };
       },
     );
 
-  const results = await Promise.all(workerPromises);
+  const results = await runConcur(workerPromises, { concurrency: 16 });
+
   return results.flat();
 }
 
