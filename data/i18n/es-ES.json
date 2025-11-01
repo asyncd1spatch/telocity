@@ -1,0 +1,420 @@
+{
+  "m": {
+    "lcli": {
+      "userConfigNotFound": "No se ha encontrado el archivo de configuración de usuario en {{ .UserConfigPath }}. Se creará uno nuevo.",
+      "cfgCreatedSuccessfully": "Archivo de configuración creado correctamente.",
+      "deletionConfirm": "Esta acción no es reversible. ¿Está seguro de que desea eliminar? (y/N): ",
+      "yN": "y",
+      "redacted": "[REDACTED]",
+      "deletionAborted": "Eliminación abortada.",
+      "a": "a",
+      "q": "q"
+    },
+    "lllm": {
+      "processingComplete": "El procesamiento de este archivo ya está completo.",
+      "anotherInstanceIsProcessing": "Otra instancia está procesando este archivo. Por favor, espere a que termine o elimine el archivo .lock.",
+      "ctrlCPressed": "Se pulsó Ctrl+C. Se finalizará el lote actual y se guardará el progreso. Pulse nuevamente para salir forzadamente.",
+      "ctrlCPressed2": "Ya se solicitó la terminación. Por favor, espere.",
+      "quittingWithoutSaving": "Salida forzada sin guardar el progreso.",
+      "processedChunkOf": "Procesado el fragmento {{ .Processed }} de {{ .Total }}",
+      "progressSavedTerminating": "Progreso guardado. Se está terminando.",
+      "progressFileDeleted": "Archivo de progreso para el hash {{ .Hash }} eliminado.",
+      "content": "\n--- Contenido desde: {{ .Filename }} ---",
+      "filesMerged": "Archivos fusionados correctamente en: {{ .MergedFileName }}",
+      "openingTag": "Etiqueta de apertura",
+      "closingTag": "Etiqueta de cierre",
+      "context": "Contexto:",
+      "textToTranslate": "Texto a traducir al {{ .LanguageTarget }}:",
+      "generatingRequests": "Generando {{ .Count }} solicitudes para procesamiento en lote...",
+      "sourceEmpty": "El archivo fuente está vacío o contiene solo espacios en blanco. No se ha generado salida.",
+      "wroteEntries": "Se escribieron correctamente {{ .Count }} entradas en {{ .TargetPath }}"
+    },
+    "c": {
+      "cfg": {
+        "cfgDeletedSuccessfully": "Archivo de configuración eliminado correctamente.",
+        "localeSuccessfullyChanged": "El idioma se ha cambiado correctamente a {{ .Locale }}."
+      },
+      "models": {
+        "fallback": "Un preset genérico para cualquier API compatible con OpenAI. Se requiere un nombre de modelo.",
+        "genericprep": "Un preset genérico que añade el prompt al texto del usuario.",
+        "genericsys": "Un preset genérico que utiliza un prompt de sistema.",
+        "noHelp": "No hay texto de ayuda disponible para este preset."
+      },
+      "avg": {
+        "averageCharsPerLine": "Promedio de caracteres (grafemas) por línea no vacía: {{ .AvgChars }}",
+        "averageBytesPerLine": "Promedio de bytes por línea no vacía: {{ .AvgBytes }}"
+      },
+      "lu": {
+        "preparingLaunch": "Preparando el lanzamiento del modelo '{{ .ModelPreset }}' (tipo: {{ .ModelType }}, cuantización: {{ .QuantReq }}).",
+        "found": "Encontrado: {{ .String }}",
+        "executingCommand": "\nEjecutando comando: {{ .String }}\n",
+        "llamaServerExit": "El proceso llama-server terminó con código {{ .ExitCode }}."
+      },
+      "rm": {
+        "filesToDelete": "Los siguientes archivos de progreso se eliminarán:",
+        "filesDeletedSuccessfully": "Todos los archivos de progreso eliminados correctamente.",
+        "filesToDeletePrompt": "\nIntroduzca números o rangos para eliminar (por ejemplo, `1,3-5`), `a` para todos, o `q` para cancelar: ",
+        "filesSelectedForDeletion": "\nArchivos seleccionados para eliminar:",
+        "noValidSelectionsMade": "No se han realizado selecciones válidas. Se aborta.",
+        "noFilesToDelete": "No se encontraron archivos de progreso para eliminar."
+      },
+      "sp": {
+        "fileSplitSuccess": "Archivo dividido correctamente: {{ .SourcePath }}",
+        "partCreated": "  - Parte {{ .PartNumber }} creada: {{ .PartPath }}"
+      },
+      "st": {
+        "blockExtracted": "Contenido entre delimitadores extraído.",
+        "blockDeleted": "Contenido entre delimitadores eliminado.",
+        "compressed": "Líneas vacías comprimidas.",
+        "newlinesNormalized": "Contenido del archivo normalizado y guardado."
+      },
+      "tc": {
+        "availableModelsForDownload": "Modelos disponibles para descargar: {{ .AvailableModels }}",
+        "downloadingModelFiles": "Descargando archivos del modelo para \"{{ .ModelName }}\"...",
+        "writingFilesTo": "Escribiendo archivos en {{ .StateDir }}...",
+        "downloadSuccess": "Descargados correctamente los archivos para \"{{ .ModelName }}\":",
+        "removedFailedWorker": "Eliminado un trabajador fallido. El tamaño del pool es ahora {{ .PoolSize }}."
+      },
+      "ch": {
+        "loadingSession": "Cargando sesión desde {{ .Path }}...",
+        "creatingNewSession": "Creando nueva sesión en {{ .Path }}...",
+        "defaultSystemPrompt": "Eres un asistente útil.",
+        "welcome": "Bienvenido al chat '{{ .ChatName }}'!",
+        "typeHelp": "Escribe un mensaje o escribe /help para ver los comandos.",
+        "exiting": "Saliendo de la sesión de chat. Adiós!",
+        "availableCommands": "Comandos disponibles:\n  /exit, /quit    - Salir de la sesión de chat.\n  /stats          - Mostrar estadísticas de la sesión (conteo de tokens, etc.).\n  /forcegen       - Forzar una nueva respuesta desde la conversación actual.\n  /delete <index> - Eliminar el mensaje en el índice especificado.\n  /browse         - Entrar en navegador interactivo de mensajes.\n  /insert <path>  - Colocar un archivo de texto o imagen para incluirse en el próximo mensaje.",
+        "deletedMessage": "Mensaje eliminado en el índice {{ .Index }}.",
+        "imageQueued": "Imagen '{{ .FilePath }}' colocada para el próximo mensaje.",
+        "textQueued": "Texto desde '{{ .FilePath }}' colocado para el próximo mensaje.",
+        "imageCountSuffix": " [+{{ .Count }} imagen(es)]",
+        "statsDisplay": "Preset: {{ .Preset }} | Modo: {{ .Mode }} | Modelo: {{ .Model }} | Mensajes: {{ .Messages }} | Contexto: {{ .Tokens }}/{{ .Limit }} ({{ .Usage }}%)",
+        "exitedBrowseMode": "Salido del modo de navegación.",
+        "viewingMessageHeader": "--- VISTO EL MENSAJE {{ .Index }} ({{ .Role }}) ---",
+        "pressAnyKeyToReturn": "--- Pulse cualquier tecla para volver a la lista ---",
+        "browseModeHeader": "--- MODO DE NAVEGACIÓN ---",
+        "browseModeInstructions": "Flechas arriba/abajo: Navegar | Del: Eliminar | Enter: Ver | Esc/q: Salir",
+        "statusBarTokens": " Tokens: {{ .Total }}/{{ .Limit }} ({{ .Usage }}%)",
+        "statusBarHelp": " Tipo /help para comandos ",
+        "headerTitle": " Chat: {{ .SessionName }} ",
+        "insertedFileHeader": "\n\n--- Contenido desde: {{ .FileName }} ---\n\n"
+      }
+    }
+  },
+  "e": {
+    "lcli": {
+      "unknownErrorOccurred": "Se ha producido un error desconocido.",
+      "causePrefix": "Causa:",
+      "unknownOption": "Opción desconocida: '{{ .Option }}'.",
+      "unexpectedPositional": "Argumento posicional inesperado: '{{ .Argument }}'.",
+      "missingValue": "El argumento de la opción '{{ .Option }}' está faltando.",
+      "booleanWithValue": "La opción '{{ .Option }}' no acepta un argumento.",
+      "ambiguousOptionValue": "El argumento de la opción '{{ .Option }}' es ambiguo. Para especificar un valor que comience con guion, use '{{ .Option }}=<value>'.",
+
+      "invalidOptionValue": "Valor inválido proporcionado para la opción '{{ .Option }}'.",
+      "commandNotImplemented": "Comando no implementado: {{ .CommandAlias }}.",
+      "cfgCouldNotBeLoaded": "No se pudo cargar el archivo de configuración desde {{ .UserConfigPath }}.",
+      "listFormatWidthWarning": "Advertencia: No hay suficiente espacio para formatear la descripción de lista."
+    },
+    "v": {
+      "invalidArgArray": "Argumento array inválido proporcionado: {{ .OptionValue }}",
+      "invalidChunkSize": "Tamaño de fragmento inválido. Debe ser un entero entre 1 y 200000. Proporcionado: {{ .ChunkSize }}",
+      "invalidBatchSize": "Tamaño del lote inválido. Debe ser un entero entre 1 y 64. Proporcionado: {{ .BatchSize }}",
+      "invalidIndex": "Índice inválido. Debe ser un entero positivo. Proporcionado: {{ .Index }}",
+      "invalidPrompt": "Prompt proporcionado inválido. Debe ser una cadena no vacía.",
+      "invalidModel": "Nombre de modelo proporcionado inválido: {{ .Model }}",
+      "invalidText": "Texto proporcionado inválido: {{ .Text }}",
+      "invalidURL": "URL proporcionada inválida: {{ .URL }}",
+      "invalidURLScheme": "Esquema de URL inválido. Debe comenzar con http:// o https://. Proporcionado: {{ .URL }}",
+      "invalidAPIKey": "Clave API proporcionada inválida: {{ .APIKey }}",
+      "invalidTemperatureRange": "La temperatura debe ser un número entre 0.0 y 2.0.",
+      "invalidTopPRange": "Top_p debe ser un número entre 0.0 y 1.0.",
+      "invalidMinPRange": "Min_p debe ser un número entre 0.0 y 1.0.",
+      "invalidTopKRange": "Top_k debe ser un entero entre 0 y 1000.",
+      "invalidRepeat": "El penalización de repetición debe ser un número entre 1.0 y 2.0.",
+      "invalidPenaltyRange": "La penalización de frecuencia/ausencia debe ser un número entre -2.0 y 2.0.",
+      "seedMustBePositiveInteger": "El seed debe ser un entero positivo.",
+      "invalidTruthiness": "Valor de verdad inválido proporcionado. Debe ser true, false, 1 o 0.",
+      "invalidDelayValue": "La demora debe ser un número no negativo dentro de un par [booleano, valor].",
+      "invalidImageArray": "Entrada de imagen inválida. Se esperaba un array de URIs de datos, pero se recibió: {{ .Value }}",
+      "invalidDataURI": "Formato de imagen inválido. Se esperaba una cadena de URI de datos que comience con 'data:', pero se recibió: {{ .Value }}",
+      "unsupportedImageType": "Advertencia: El patrón de glob de imagen {{ .Args }} no coincidió con ningún archivo soportado.",
+      "unsupportedImageType2": "Saltando tipo de imagen no soportado \"{{ .Ext }}\" para el archivo: {{ .Image }}",
+      "missingImageExtension": "No se pudo determinar el tipo de imagen para el archivo '{{ .FilePath }}'. Asegúrese de que el archivo tenga una extensión válida.",
+      "imageNotFound": "Advertencia: No se encontró el archivo de imagen, se salta: {{ .Image }}"
+    },
+    "lllm": {
+      "undefinedParam": "Parámetro no definido.",
+      "reasoningNotSupported": "El modelo no soporta razonamiento.",
+      "invalidReasoningType": "Tipo de razonamiento inválido, configuración JSON dañada.",
+      "promptMissing": "Se requiere un prompt para el comando oneshot.",
+      "fileNotFound": "Archivo no encontrado: {{ .FilePath }}",
+      "sourceRequired": "Se requiere la ruta de origen.",
+      "sourceTargetRequired": "Se requieren las rutas de origen y destino.",
+      "noFilesFound": "No se encontraron archivos con extensión: .{{ .Extension }}",
+      "targetFileExists": "La ruta de destino ya existe: {{ .TargetPath }}",
+      "sourceAndTargetMustBeDifferent": "Las rutas de origen y destino deben ser diferentes.",
+      "invalidFileSize": "El tamaño del archivo excede el límite máximo de {{ .MAX_SIZE_MB }} MB.",
+      "emptyFile": "El archivo está vacío o contiene solo espacios en blanco.",
+      "idleTimeOut": "Se ha superado el tiempo de inactividad. No se recibió datos del servidor.",
+      "hardTimeOut": "Se ha superado el tiempo duro. La solicitud tardó demasiado en completarse.",
+      "tExceeded": "Se ha superado el tiempo de inactividad",
+      "unknownOpenAIError": "Se produjo un error desconocido con la API.",
+      "openaiApiError": "La llamada a la API falló con código {{ .Status }}: {{ .Message }}",
+      "networkErrorOpenAI": "Error de red al llamar a {{ .URL }}.",
+      "networkErrorReason": " Razón: {{ .Code }}",
+      "responseNull": "El cuerpo de respuesta es nulo",
+      "streamEndedPrematurely": "El flujo terminó prematuramente sin una señal [DONE].",
+      "badPromptConfig": "Configuración de prompt incorrecta. Se requiere un prompt.",
+      "progressFileDoesNotExist": "No existe el archivo de progreso para el hash {{ .Hash }}.",
+      "llmAPICall": "Error durante la llamada a la API del LLM: ",
+      "initializingBatch": "Error al inicializar el procesamiento en lote.",
+      "failedLock": "No se pudo crear el archivo de bloqueo.",
+      "failedToSaveProgress": "No se pudo guardar el progreso.",
+      "whileCalling_deleteProgressEntry": " mientras se llamaba a deleteProgressEntry.",
+      "stripNewLinesTypeError": "La entrada debe ser una cadena o un array de cadenas.",
+      "invalidFormat": "Formato inválido '{{ .Format }}'. Se soportan los formatos 'openai' y 'gemini'.",
+      "jsonlGenError": "Se produjo un error durante la generación del archivo JSONL.",
+      "idleTimeoutExceeded": "Se ha superado el tiempo de inactividad"
+    },
+    "c": {
+      "co": {
+        "coError": "Advertencia: No se pudo cargar el módulo para el comando {{ .Command }}. Se omite la generación de completación."
+      },
+      "cfg": {
+        "editorNotFound": "No se encontró la variable de entorno $EDITOR. Por favor, establezca $EDITOR en su editor preferido.",
+        "editorLaunchFailed": "Fallo al lanzar el editor: {{ .ErrorMessage }}",
+        "failedToWriteLocale": "Fallo al escribir el archivo de idioma: {{ .ErrorMessage }}",
+        "invalidLocale": "Idioma inválido: {{ .Lang }}."
+      },
+      "lu": {
+        "undefinedLauncher": "El modelo '{{ .ModelPreset }}' no está configurado para lanzamiento local (faltan 'quantFiles' o 'quantizationOrder').",
+        "undefinedModelType": "Tipo de modelo '{{ .ModelType }}' no encontrado para el preset '{{ .ModelPreset }}'.",
+        "undefinedQuant": "La cuantización '{{ .QuantReq }}' no está definida para el preset de modelo '{{ .ModelPreset }}'. Disponible: {{ .AvailableQuants }}.",
+        "noModelFiles": "No se encontraron archivos de modelo GGUF en disco para el preset '{{ .ModelPreset }}' (tipo: {{ .ModelType }}). Se comprobó cuantización: {{ .QuantList }}.",
+        "failedToStart": "Fallo al iniciar el proceso llama-server: {{ .Error }}."
+      },
+      "mg": {
+        "extensionRequired": "Se requiere extensión de archivo. Use la opción -e o --extension."
+      },
+      "rm": {
+        "unknownMode": "Modo desconocido"
+      },
+      "sp": {
+        "invalidSplitSize": "Tamaño inválido: {{ .Size }}. Debe ser un número positivo."
+      },
+      "st": {
+        "delimiterPairRequired": "Se requieren tanto el delimitador de inicio como el de cierre."
+      },
+      "tc": {
+        "tokenizerDoesNotExist": "No existe el tokenizador para el preset '{{ .PresetName }}'.",
+        "modelNotFoundForDownload": "Modelo \"{{ .ModelName }}\" no encontrado.",
+        "failedToDownload": "Fallo al descargar {{ .ModelUrl }}: {{ .Status }} {{ .StatusText }}",
+        "modelDownloadError": "Error durante la descarga del modelo: {{ .ErrorMessage }}",
+        "tokenizerLoadFailed": "Fallo al cargar los datos del tokenizador para \"{{ .TokenizerName }}\". Asegúrese de que '{{ .JsonPath }}' y '{{ .ConfigPath }}' existan y sean archivos JSON válidos. Error: {{ .Error }}",
+        "tokenizerFilesNotFound": "Fallo al cargar los archivos del tokenizador para {{ .TokenizerName }}",
+        "unhandledWorkerError": "Error no gestionado en el trabajador de tokens: {{ .Message }}",
+        "poolShuttingDown": "El pool de trabajadores está cerrándose.",
+        "poolShutdownJobCancelled": "El pool de trabajadores está cerrándose. La tarea {{ .JobID }} ha sido cancelada."
+      },
+      "ch": {
+        "chatNameMissing": "Error: Se requiere un nombre para la sesión de chat.",
+        "sessionLoadError": "Error: No se pudo cargar ni analizar el archivo de sesión en {{ .Path }}.",
+        "chatLoopError": "Se produjo un error inesperado durante la sesión de chat: {{ .Error }}",
+        "contextLimitExceeded": "Se ha superado el límite de contexto de {{ .Limit }} tokens (actualmente en {{ .Total }}). Use /delete <index> o /browse para eliminar mensajes.",
+        "invalidDeleteIndex": "Error: Índice de mensaje inválido. Por favor, proporcione un número entre 1 y {{ .Count }}.",
+        "unknownCommand": "Error: Comando desconocido '/{{ .Command }}'. Escriba /help para ver la lista de comandos.",
+        "insertUsage": "Uso: /insert <ruta-del-archivo>"
+      }
+    }
+  },
+  "help": {
+    "generic": {
+      "header": "telocity: Una herramienta para procesar texto en lotes con LLMs.",
+      "usage": "Uso: telocity <command> [opciones]",
+      "commandHeader": "Comandos:",
+      "commandDescriptions": {
+        "lu": "Inicia el servidor llama usando un preset configurado.",
+        "tr": "Traduce un archivo fragmento por fragmento.",
+        "tf": "Aplica un prompt de transformación a un archivo fragmento por fragmento.",
+        "os": "Ejecuta un prompt único con contexto opcional de archivo.",
+        "ch": "Inicia una sesión interactiva con un LLM.",
+        "bg": "Genera un archivo JSONL para procesamiento en lotes.",
+        "st": "Elimina o extrae contenido entre delimitadores en un archivo.",
+        "mg": "Une varios archivos de texto en un solo archivo.",
+        "sp": "Divide un archivo grande en partes más pequeñas.",
+        "avg": "Calcula la longitud promedio de línea de un archivo.",
+        "tc": "Cuenta los tokens en un archivo para un modelo específico.",
+        "rm": "Elimina archivos de progreso para tareas completadas o atascadas.",
+        "cfg": "Gestiona la configuración de la aplicación."
+      },
+      "footer": "Para más información sobre cualquier comando, use `telocity <command> --help`.",
+      "globalOptionsHeader": "Opciones globales:",
+      "flags": {
+        "version": "Muestra la versión de la aplicación."
+      }
+    },
+    "commands": {
+      "lu": {
+        "usage": "Uso: telocity launch [model_preset] [opciones]",
+        "description": "Busca el mejor archivo local de modelo disponible para un preset dado y arranca el servidor llama.cpp con los parámetros adecuados.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "reason": "Carga la versión 'thinking' o 'reasoning' del modelo, si está disponible.",
+          "chat": "Inicia en modo de chat para un solo usuario (omite los argumentos de procesamiento paralelo).",
+          "quant": "Fuerza el uso de un nivel específico de cuantización (por ejemplo, 'q8', 'q6')."
+        },
+        "footer": "Modelos disponibles para lanzar:\n{{ .LaunchableModelList }}"
+      },
+      "avg": {
+        "usage": "Uso: telocity avg <source_path>",
+        "description": "Calcula el número promedio de caracteres (grafemas) y bytes por línea no vacía en un archivo."
+      },
+      "cfg": {
+        "usage": "Uso: telocity cfg [opciones]",
+        "description": "Gestiona la configuración de la aplicación.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "edit": "Abre el archivo de configuración del usuario en el editor predeterminado.",
+          "remove": "Elimina los archivos de configuración del usuario (con confirmación).",
+          "lang": "Establece el idioma de la aplicación."
+        },
+        "footer": "Idiomas soportados:\n{{ .LocaleList }}"
+      },
+      "rm": {
+        "usage": "Uso: telocity rm <source_path> [opciones]",
+        "description": "Elimina los archivos de seguimiento de progreso. El comando soporta tres modos:\n\n- Posicional (por defecto): Elimina la entrada de progreso para un archivo fuente único, identificado por <source_path>.\n- Todos (--all): Elimina todos los archivos de progreso actualmente seguidos.\n- Interactivo (--interactive): Abre un menú que lista todos los archivos de progreso, permitiendo seleccionar específicamente los que se eliminarán.\n\nUse --force (-f) para omitir las preguntas de confirmación.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "all": "Elimina todos los archivos de progreso.",
+          "force": "Eliminación forzada sin confirmación.",
+          "interactive": "Abre un menú interactivo para seleccionar qué archivos de progreso eliminar."
+        }
+      },
+      "mg": {
+        "usage": "Uso: telocity mg <source_directory> [target_directory] -e <extension>",
+        "description": "Busca recursivamente y une todos los archivos con una extensión dada desde un directorio fuente en un solo archivo en el directorio de destino (o en el directorio actual si no se especifica).",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "extension": "La extensión del archivo a buscar (requerida)."
+        }
+      },
+      "os": {
+        "usage": "Uso: telocity os \"<prompt>\" [opciones]",
+        "description": "Ejecuta un prompt único contra un LLM. Puede incluir contexto de un archivo (--file), entrada estándar (stdin) y imágenes (--image), luego transmite la salida del LLM al terminal.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "file": "Ruta a un archivo de texto para añadirse como contexto al prompt.",
+          "image": "Ruta a imagen(es) para contexto visual. Soporta patrones globales y listas separadas por comas (por ejemplo, \"img1.jpg,*.png\"). Formatos soportados: png, jpg/jpeg, gif, webp.",
+          "params": "Selecciona un preset de parámetros del modelo (por defecto: {{ .DefaultModel }}).",
+          "model": "Sobrescribe el nombre del modelo especificado en el preset.",
+          "url": "Sobrescribe la URL del punto de acceso de la API.",
+          "apikey": "Proporciona una clave API para la solicitud.",
+          "reason": "Activa el modo de razonamiento para presets que lo soporten."
+        },
+        "footer": "Preset disponibles:\n{{ .ModelParamList }}"
+      },
+      "sp": {
+        "usage": "Uso: telocity sp <source_path> <target_directory> [opciones]",
+        "description": "Divide un archivo grande en partes más pequeñas según un tamaño especificado, asegurándose de que las líneas no se rompan.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "size": "El tamaño máximo de cada parte en megabytes (por defecto: {{ .Size }})."
+        }
+      },
+      "st": {
+        "usage": "Uso: telocity st <source_path> <target_path> [opciones]",
+        "description": "Elimina o extrae contenido entre delimitadores especificados desde un archivo.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "startdelimiter": "El delimitador de inicio.",
+          "enddelimiter": "El delimitador final.",
+          "params": "Usa los delimitadores de inicio/final de un preset.",
+          "extracttag": "Extrae el contenido entre delimitadores en lugar de eliminarlo.",
+          "compress": "Comprime líneas vacías en la salida."
+        },
+        "footer": "Preset disponibles con etiquetas:\n{{ .ReasoningTagParamList }}"
+      },
+      "tc": {
+        "usage": "Uso: telocity tc <source_path> [opciones]",
+        "description": "Cuenta el número de tokens en un archivo usando un tokenizador específico del modelo.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "params": "El preset del modelo cuyo tokenizador usar (por defecto: {{ .DefaultModel }}).",
+          "downloadmodel": "Descarga los archivos de tokenizador para un modelo específico (por ejemplo, 'qwen')."
+        },
+        "footer": "Tokenizadores disponibles:\n{{ .TokenParamList }}"
+      },
+      "tf": {
+        "usage": "Uso: telocity tf <source_path> <target_path> [opciones]",
+        "description": "Aplica un prompt de transformación a un archivo fuente, procesándolo en fragmentos. Al usar `--image`, el archivo fuente debe contener el prompt para las imágenes. En este modo, evite establecer un tamaño personalizado de `--chunksize` para asegurar que el prompt se procese como unidad única.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "chunksize": "Número de líneas por fragmento (por defecto: {{ .ChunkSize }}).",
+          "batchsize": "Número de fragmentos a procesar por lote (por defecto: {{ .BatchSize }}).",
+          "parallel": "Límite de concurrencia (por defecto: {{ .Parallel }}).",
+          "prompt": "Una instrucción opcional para añadirse al contenido del archivo fuente. Generalmente se omite al usar la opción --image.",
+          "image": "Ruta a imagen(es) para contexto visual. Soporta patrones globales y listas separadas por comas (por ejemplo, \"img1.jpg,*.png\"). Formatos soportados: png, jpg/jpeg, gif, webp.",
+          "sysprompt": "Establece un prompt de sistema personalizado.",
+          "params": "Selecciona un preset de parámetros del modelo (por defecto: {{ .DefaultModel }}).",
+          "model": "Sobrescribe el nombre del modelo desde el preset.",
+          "url": "Sobrescribe la URL del punto de acceso de la API.",
+          "apikey": "Proporciona una clave API.",
+          "wait": "Establece un retraso entre llamadas a la API.",
+          "reason": "Activa el modo de razonamiento para presets que lo soporten."
+        },
+        "footer": "Preset disponibles:\n{{ .ModelParamList }}"
+      },
+      "tr": {
+        "usage": "Uso: telocity tr <source_path> <target_path> [opciones]",
+        "description": "Traduce un archivo desde un idioma fuente a uno objetivo, procesándolo en fragmentos.",
+        "flags": {
+          "help": "Muestra este mensaje de ayuda.",
+          "chunksize": "Número de líneas por fragmento (por defecto: {{ .ChunkSize }}).",
+          "batchsize": "Número de fragmentos a procesar por lote (por defecto: {{ .BatchSize }}).",
+          "parallel": "Límite de concurrencia (por defecto: {{ .Parallel }}).",
+          "source": "Idioma fuente (por defecto: \"{{ .SourceLanguage }}\").",
+          "target": "Idioma objetivo (por defecto: \"{{ .TargetLanguage }}\").",
+          "context": "Proporciona contexto adicional para la traducción.",
+          "params": "Selecciona un preset de parámetros del modelo (por defecto: {{ .DefaultModel }}).",
+          "model": "Sobrescribe el nombre del modelo desde el preset.",
+          "url": "Sobrescribe la URL del punto de acceso de la API.",
+          "apikey": "Proporciona una clave API.",
+          "wait": "Establece un retraso entre llamadas a la API.",
+          "reason": "Activa el modo de razonamiento para presets que lo soporten."
+        },
+        "footer": "Preset disponibles:\n{{ .ModelParamList }}"
+      },
+      "bg": {
+        "usage": "Uso: telocity bg [opciones] <source_file> <target_jsonl_file>",
+        "description": "Genera un archivo JSONL para procesamiento en lotes de traducciones desde un archivo de texto fuente.",
+        "flags": {
+          "format": "Formato de salida del archivo JSONL. Soportado: 'openai', 'gemini'. (por defecto: openai)",
+          "chunksize": "Número de líneas por fragmento/peticion. (por defecto: {{ .ChunkSize }})",
+          "model": "Sobrescribe el modelo especificado en el conjunto de parámetros.",
+          "params": "Conjunto de parámetros a usar para la configuración del prompt y del modelo. (por defecto: {{ .DefaultModel }})",
+          "source": "Idioma fuente para los prompts de traducción.",
+          "target": "Idioma objetivo para los prompts de traducción.",
+          "context": "Contexto adicional a incluir en el prompt para cada fragmento.",
+          "reason": "Usa la variante 'reasoning' del conjunto de parámetros seleccionado.",
+          "help": "Muestra este mensaje de ayuda."
+        },
+        "footer": "\nConjuntos de parámetros disponibles:\n{{ .ModelParamList }}"
+      },
+      "ch": {
+        "usage": "Uso: llm-cli ch [opciones] <chat-name>",
+        "description": "Inicia una sesión interactiva con un LLM. El historial de chat y la configuración se guardan en un archivo llamado <chat-name>.json en el directorio de estado de la aplicación.",
+        "flags": {
+          "file": "Añade un archivo de texto al primer mensaje de una nueva sesión de chat.",
+          "image": "Añade uno o más archivos de imagen (separados por comas o patrón glob) al primer mensaje de una nueva sesión de chat.",
+          "model": "Sobrescribe el modelo especificado por el conjunto de parámetros.",
+          "params": "El preset de parámetros a usar para el LLM. Consulte la lista a continuación.",
+          "context-limit": "Establece el límite máximo de tokens para el contexto del chat.",
+          "apikey": "Clave API para el servicio de LLM.",
+          "url": "Sobrescribe la URL para el servicio de LLM.",
+          "help": "Muestra este mensaje de ayuda."
+        },
+        "footer": "Dentro del chat, escriba /help para ver los comandos interactivos disponibles como /exit, /stats, /delete, /browse y /insert.\n\nConjuntos de parámetros disponibles:\n{{ .ModelParamList }}"
+      }
+    }
+  }
+}

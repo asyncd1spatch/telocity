@@ -1,0 +1,420 @@
+{
+  "m": {
+    "lcli": {
+      "userConfigNotFound": "ユーザー設定ファイルが {{ .UserConfigPath }} に見つかりません。新しいファイルを作成します。",
+      "cfgCreatedSuccessfully": "設定ファイルが正常に作成されました。",
+      "deletionConfirm": "この操作は逆転できません。本当に削除しますか？(y/N): ",
+      "yN": "y",
+      "redacted": "[REDACTED]",
+      "deletionAborted": "削除を中止しました。",
+      "a": "a",
+      "q": "q"
+    },
+    "lllm": {
+      "processingComplete": "このファイルの処理はすでに完了しています。",
+      "anotherInstanceIsProcessing": "別のインスタンスがすでにこのファイルを処理中です。待機するか、.lock ファイルを削除してください。",
+      "ctrlCPressed": "Ctrl+C が押されました。現在のバッチを終了し、進行状況を保存します。再度押すと強制終了されます。",
+      "ctrlCPressed2": "終了要求が既にされています。待機してください。",
+      "quittingWithoutSaving": "進行状況を保存せずに強制終了しました。",
+      "processedChunkOf": "処理済みのチャンク {{ .Processed }} / {{ .Total }}",
+      "progressSavedTerminating": "進行状況が保存されました。終了します。",
+      "progressFileDeleted": "ハッシュ {{ .Hash }} の進行ファイルが削除されました。",
+      "content": "\n--- {{ .Filename }} からのコンテンツ ---",
+      "filesMerged": "ファイルが成功して {{ .MergedFileName }} にマージされました。",
+      "openingTag": "開始タグ",
+      "closingTag": "終了タグ",
+      "context": "コンテキスト:",
+      "textToTranslate": "{{ .LanguageTarget }} に翻訳するテキスト:",
+      "generatingRequests": "{{ .Count }} 個のバッチ処理用リクエストを生成中...",
+      "sourceEmpty": "ソースファイルが空または空白のみです。出力は生成されません。",
+      "wroteEntries": "{{ .Count }} 個の項目を {{ .TargetPath }} に正常に書き込みました"
+    },
+    "c": {
+      "cfg": {
+        "cfgDeletedSuccessfully": "設定ファイルが正常に削除されました。",
+        "localeSuccessfullyChanged": "ロケールが成功して {{ .Locale }} に変更されました。"
+      },
+      "models": {
+        "fallback": "OpenAIと互換性のあるAPI用の汎用プリセット。モデル名が必要です。",
+        "genericprep": "ユーザーのテキストにプロンプトをプレフィックスする汎用プリセット。",
+        "genericsys": "システムプロンプトを使用する汎用プリセット。",
+        "noHelp": "このプリセットにはヘルプテキストがありません。"
+      },
+      "avg": {
+        "averageCharsPerLine": "非空行あたりの平均文字数（グラフェム）: {{ .AvgChars }}",
+        "averageBytesPerLine": "非空行あたりの平均バイト数: {{ .AvgBytes }}"
+      },
+      "lu": {
+        "preparingLaunch": "モデル '{{ .ModelPreset }}' を起動準備中 (タイプ: {{ .ModelType }}、量子化: {{ .QuantReq }})。",
+        "found": "見つかりました: {{ .String }}",
+        "executingCommand": "\n実行コマンド: {{ .String }}\n",
+        "llamaServerExit": "llama-server プロセスがコード {{ .ExitCode }} で終了しました。"
+      },
+      "rm": {
+        "filesToDelete": "次の進行ファイルが削除されます:",
+        "filesDeletedSuccessfully": "すべての進行ファイルが正常に削除されました。",
+        "filesToDeletePrompt": "\n削除する番号または範囲を入力してください (例: `1,3-5`)、`a` ですべて、`q` でキャンセル: ",
+        "filesSelectedForDeletion": "\n削除対象のファイル:",
+        "noValidSelectionsMade": "有効な選択がありません。中止します。",
+        "noFilesToDelete": "削除すべき進行ファイルが見つかりません。"
+      },
+      "sp": {
+        "fileSplitSuccess": "ファイルを成功して分割しました: {{ .SourcePath }}",
+        "partCreated": "  - パート {{ .PartNumber }} が作成されました: {{ .PartPath }}"
+      },
+      "st": {
+        "blockExtracted": "デリミタ間のコンテンツが抽出されました。",
+        "blockDeleted": "デリミタ間のコンテンツが削除されました。",
+        "compressed": "空行が圧縮されました。",
+        "newlinesNormalized": "ファイルコンテンツが正常化され保存されました。"
+      },
+      "tc": {
+        "availableModelsForDownload": "ダウンロード可能なモデル: {{ .AvailableModels }}",
+        "downloadingModelFiles": "\"{{ .ModelName }}\" のモデルファイルをダウンロード中...",
+        "writingFilesTo": "ファイルを {{ .StateDir }} に書き込み中...",
+        "downloadSuccess": "\"{{ .ModelName }}\" のファイルが正常にダウンロードされました：",
+        "removedFailedWorker": "失敗したワーカーを削除しました。プールサイズは現在 {{ .PoolSize }} です。"
+      },
+      "ch": {
+        "loadingSession": "{{ .Path }} からセッションを読み込み中...",
+        "creatingNewSession": "{{ .Path }} に新しいセッションを作成中...",
+        "defaultSystemPrompt": "あなたは役立つアシスタントです。",
+        "welcome": "チャット '{{ .ChatName }}' へようこそ！",
+        "typeHelp": "メッセージを入力するか、/help を入力してコマンドを確認してください。",
+        "exiting": "チャットセッションを終了します。さようなら！",
+        "availableCommands": "利用可能なコマンド:\n  /exit, /quit    - チャットセッションを終了。\n  /stats          - セッションの統計（トークン数など）を表示。\n  /forcegen       - 現在の会話から新しい応答を強制生成。\n  /delete <index> - 指定されたインデックスのメッセージを削除。\n  /browse         - インタラクティブなメッセージブラウザに入ります。\n  /insert <path>  - 次のメッセージにテキストまたは画像ファイルを追加。",
+        "deletedMessage": "インデックス {{ .Index }} のメッセージが削除されました。",
+        "imageQueued": "画像 '{{ .FilePath }}' が次のメッセージに並べられました。",
+        "textQueued": "'{{ .FilePath }}' のテキストが次のメッセージに並べられました。",
+        "imageCountSuffix": " [+{{ .Count }} 画像]",
+        "statsDisplay": "プリセット: {{ .Preset }} | モード: {{ .Mode }} | モデル: {{ .Model }} | メッセージ数: {{ .Messages }} | コンテキスト: {{ .Tokens }}/{{ .Limit }} ({{ .Usage }}%)",
+        "exitedBrowseMode": "ブラウザモードを終了しました。",
+        "viewingMessageHeader": "--- メッセージ {{ .Index }} ({{ .Role }}) を表示中 ---",
+        "pressAnyKeyToReturn": "--- 任意のキーを押してリストに戻る ---",
+        "browseModeHeader": "--- ブラウザモード ---",
+        "browseModeInstructions": "上/下: 遷移 | Del: 削除 | Enter: 表示 | Esc/q: 終了",
+        "statusBarTokens": "トークン: {{ .Total }}/{{ .Limit }} ({{ .Usage }}%)",
+        "statusBarHelp": " コマンドは /help を入力してください ",
+        "headerTitle": " チャット: {{ .SessionName }} ",
+        "insertedFileHeader": "\n\n--- {{ .FileName }} からのコンテンツ ---\n\n"
+      }
+    }
+  },
+  "e": {
+    "lcli": {
+      "unknownErrorOccurred": "不明なエラーが発生しました。",
+      "causePrefix": "原因:",
+      "unknownOption": "不明なオプション: '{{ .Option }}'.",
+      "unexpectedPositional": "予期しない位置引数: '{{ .Argument }}'.",
+      "missingValue": "オプション '{{ .Option }}' の引数が欠けています。",
+      "booleanWithValue": "オプション '{{ .Option }}' には引数を取らないです。",
+      "ambiguousOptionValue": "オプション '{{ .Option }}' の引数が曖昧です。ダッシュで始まる値を指定する場合は '{{ .Option }}=<value>' を使用してください。",
+
+      "invalidOptionValue": "オプション '{{ .Option }}' に不正な値が提供されました。",
+      "commandNotImplemented": "実装されていないコマンド: {{ .CommandAlias }}.",
+      "cfgCouldNotBeLoaded": "設定ファイルが {{ .UserConfigPath }} から読み込めません。",
+      "listFormatWidthWarning": "警告: リストの説明をフォーマットするのにスペースが不足しています。"
+    },
+    "v": {
+      "invalidArgArray": "不正な引数配列が提供されました: {{ .OptionValue }}",
+      "invalidChunkSize": "不正なチャンクサイズです。1 から 200000 の整数でなければなりません。提供された値: {{ .ChunkSize }}",
+      "invalidBatchSize": "不正なバッチサイズです。1 から 64 の整数でなければなりません。提供された値: {{ .BatchSize }}",
+      "invalidIndex": "不正な lastIndex。正の整数でなければなりません。提供された値: {{ .Index }}",
+      "invalidPrompt": "不正なプロンプトです。空の文字列ではいけません。",
+      "invalidModel": "不正なモデル名が提供されました: {{ .Model }}",
+      "invalidText": "不正なテキストが提供されました: {{ .Text }}",
+      "invalidURL": "不正なURLが提供されました: {{ .URL }}",
+      "invalidURLScheme": "不正なURLスキームです。http:// または https:// で始まっている必要があります。提供された値: {{ .URL }}",
+      "invalidAPIKey": "不正なAPIキーが提供されました: {{ .APIKey }}",
+      "invalidTemperatureRange": "温度は 0.0 から 2.0 の間の数値でなければなりません。",
+      "invalidTopPRange": "Top_p は 0.0 から 1.0 の間の数値でなければなりません。",
+      "invalidMinPRange": "Min_p は 0.0 から 1.0 の間の数値でなければなりません。",
+      "invalidTopKRange": "Top_k は 0 から 1000 の整数でなければなりません。",
+      "invalidRepeat": "繰り返しペナルティは 1.0 から 2.0 の間の数値でなければなりません。",
+      "invalidPenaltyRange": "頻度/存在ペナルティは -2.0 から 2.0 の間の数値でなければなりません。",
+      "seedMustBePositiveInteger": "Seed は正の整数でなければなりません。",
+      "invalidTruthiness": "不正な真偽値が提供されました。true, false, 1, または 0 でなければなりません。",
+      "invalidDelayValue": "遅延は [ブール値, 値] のタプル内で非負の数でなければなりません。",
+      "invalidImageArray": "不正な画像入力です。データURIの配列を期待していますが、{{ .Value }} を受け取りました。",
+      "invalidDataURI": "不正な画像フォーマットです。'data:' で始まるデータURI文字列を期待していますが、{{ .Value }} を受け取りました。",
+      "unsupportedImageType": "警告: 画像のグロブパターン {{ .Args }} はサポートされていないファイルと一致しません。",
+      "unsupportedImageType2": "サポートされていない画像タイプ \"{{ .Ext }}\" をスキップしています。ファイル: {{ .Image }}",
+      "missingImageExtension": "'{{ .FilePath }}' の画像タイプを特定できません。ファイルが有効な拡張子を持っていることを確認してください。",
+      "imageNotFound": "警告: 画像ファイルが見つかりません、スキップしています: {{ .Image }}"
+    },
+    "lllm": {
+      "undefinedParam": "定義されていないパラメータセット。",
+      "reasoningNotSupported": "モデルは推論をサポートしていません。",
+      "invalidReasoningType": "不正な推論タイプ、破損したJSON設定。",
+      "promptMissing": "ワンショットコマンドにはプロンプトが必要です。",
+      "fileNotFound": "ファイルが見つかりません: {{ .FilePath }}",
+      "sourceRequired": "ソースパスが必要です。",
+      "sourceTargetRequired": "ソースとターゲットパスが必要です。",
+      "noFilesFound": "拡張子 .{{ .Extension }} のファイルが見つかりません。",
+      "targetFileExists": "ターゲットパスが既に存在しています: {{ .TargetPath }}",
+      "sourceAndTargetMustBeDifferent": "ソースとターゲットパスは異なっている必要があります。",
+      "invalidFileSize": "ファイルサイズが {{ .MAX_SIZE_MB }} MB の最大制限を超えています。",
+      "emptyFile": "ファイルが空または空白のみです。",
+      "idleTimeOut": "アイドルタイムアウトを超えました。サーバーからデータを受け取れません。",
+      "hardTimeOut": "ハードタイムアウトを超えました。リクエストが長時間完了できませんでした。",
+      "tExceeded": "アイドルタイムアウトを超えました",
+      "unknownOpenAIError": "API との間で不明なエラーが発生しました。",
+      "openaiApiError": "API呼び出しに失敗しました (ステータス {{ .Status }}): {{ .Message }}",
+      "networkErrorOpenAI": "{{ .URL }} を呼び出した際にネットワークエラーが発生しました。",
+      "networkErrorReason": " 理由: {{ .Code }}",
+      "responseNull": "応答ボディが null です",
+      "streamEndedPrematurely": "ストリームが [DONE] シグナルなしで早期に終了しました。",
+      "badPromptConfig": "プロンプト設定が不正です。プロンプトが必要です。",
+      "progressFileDoesNotExist": "ハッシュ {{ .Hash }} の進行ファイルが存在しません。",
+      "llmAPICall": "LLM API呼び出し中にエラーが発生しました: ",
+      "initializingBatch": "バッチ処理の初期化に失敗しました。",
+      "failedLock": "ロックファイルを作成できませんでした。",
+      "failedToSaveProgress": "進行状況を保存できませんでした。",
+      "whileCalling_deleteProgressEntry": " deleteProgressEntry を呼び出したとき",
+      "stripNewLinesTypeError": "入力は文字列または文字列の配列でなければなりません。",
+      "invalidFormat": "不正なフォーマット '{{ .Format }}'。サポートされているフォーマットは 'openai' および 'gemini' です。",
+      "jsonlGenError": "JSONLファイル生成中にエラーが発生しました。",
+      "idleTimeoutExceeded": "アイドルタイムアウトを超えました"
+    },
+    "c": {
+      "co": {
+        "coError": "警告: コマンド {{ .Command }} のモジュールを読み込めませんでした。完了生成をスキップします。"
+      },
+      "cfg": {
+        "editorNotFound": "$EDITOR 環境変数が見つかりません。$EDITOR を好みのテキストエディタに設定してください。",
+        "editorLaunchFailed": "エディタの起動に失敗しました: {{ .ErrorMessage }}",
+        "failedToWriteLocale": "ロケールファイルの書き込みに失敗しました: {{ .ErrorMessage }}",
+        "invalidLocale": "不正なロケール: {{ .Lang }}."
+      },
+      "lu": {
+        "undefinedLauncher": "モデル '{{ .ModelPreset }}' はローカル起動が設定されていません (quantFiles または quantizationOrder が欠けている)。",
+        "undefinedModelType": "プリセット '{{ .ModelPreset }}' にモデルタイプ '{{ .ModelType }}' が見つかりません。",
+        "undefinedQuant": "モデルプリセット '{{ .ModelPreset }}' で量子化 '{{ .QuantReq }}' が定義されていません。利用可能な設定: {{ .AvailableQuants }}。",
+        "noModelFiles": "プリセット '{{ .ModelPreset }}' (タイプ: {{ .ModelType }}) のディスク上の GGUF モデルファイルが見つかりません。確認済みの量子化: {{ .QuantList }}。",
+        "failedToStart": "llama-server プロセスの起動に失敗しました: {{ .Error }}。"
+      },
+      "mg": {
+        "extensionRequired": "ファイル拡張子が必要です。-e または --extension フラグを使用してください。"
+      },
+      "rm": {
+        "unknownMode": "不明なモード"
+      },
+      "sp": {
+        "invalidSplitSize": "不正なサイズ: {{ .Size }}。正の数値でなければなりません。"
+      },
+      "st": {
+        "delimiterPairRequired": "開始および終了デリミタが両方必要です。"
+      },
+      "tc": {
+        "tokenizerDoesNotExist": "プリセット '{{ .PresetName }}' のトークナイザーが存在しません。",
+        "modelNotFoundForDownload": "モデル \"{{ .ModelName }}\" が見つかりません。",
+        "failedToDownload": "{{ .ModelUrl }} をダウンロードできませんでした: {{ .Status }} {{ .StatusText }}",
+        "modelDownloadError": "モデルダウンロード中にエラーが発生しました: {{ .ErrorMessage }}",
+        "tokenizerLoadFailed": "\"{{ .TokenizerName }}\" のトークナイザーデータの読み込みに失敗しました。 '{{ .JsonPath }}' および '{{ .ConfigPath }}' が存在し、有効なJSONファイルであることを確認してください。エラー: {{ .Error }}",
+        "tokenizerFilesNotFound": "{{ .TokenizerName }} のトークナイザーファイルの読み込みに失敗しました",
+        "unhandledWorkerError": "トークンワーカー内で処理されなかったエラー: {{ .Message }}",
+        "poolShuttingDown": "ワーカーポールが終了しています。",
+        "poolShutdownJobCancelled": "ワーカーポールが終了しています。ジョブ {{ .JobID }} はキャンセルされました。"
+      },
+      "ch": {
+        "chatNameMissing": "エラー: チャットセッションの名前が必要です。",
+        "sessionLoadError": "エラー: {{ .Path }} にあるセッションファイルを読み込めませんまたはパースできません。",
+        "chatLoopError": "チャットセッション中に予期しないエラーが発生しました: {{ .Error }}",
+        "contextLimitExceeded": "コンテキスト制限 {{ .Limit }} テキトークンに達しました（現在 {{ .Total }}）。/delete <index> または /browse を使ってメッセージを削除してください。",
+        "invalidDeleteIndex": "エラー: 不正なメッセージインデックスです。1 から {{ .Count }} の間の数値を入力してください。",
+        "unknownCommand": "エラー: 認識できないコマンド '/{{ .Command }}'。/help を入力してコマンド一覧を確認してください。",
+        "insertUsage": "使い方: /insert <file-path>"
+      }
+    }
+  },
+  "help": {
+    "generic": {
+      "header": "telocity: LLMを使ってテキストをバッチ処理するツール。",
+      "usage": "使い方: telocity <command> [options]",
+      "commandHeader": "コマンド:",
+      "commandDescriptions": {
+        "lu": "設定されたプリセットを使ってllamaサーバーを起動します。",
+        "tr": "ファイルをチャンクごとに翻訳します。",
+        "tf": "ファイルをチャンクごとに変換プロンプトを適用します。",
+        "os": "オプションのファイルコンテキストを持つ1回のプロンプトを実行します。",
+        "ch": "LLMとのインタラクティブなチャットセッションを開始します。",
+        "bg": "バッチ処理用のJSONLファイルを生成します。",
+        "st": "ファイル内のデリミタ間のコンテンツを削除または抽出します。",
+        "mg": "複数のテキストファイルを1つのファイルにマージします。",
+        "sp": "大きなファイルを小さな部分に分割します。",
+        "avg": "ファイルの平均行長を計算します。",
+        "tc": "特定モデルでファイル内のトークン数をカウントします。",
+        "rm": "完了または停止したジョブの進行ファイルを削除します。",
+        "cfg": "アプリケーション設定を管理します。"
+      },
+      "footer": "どのコマンドについても詳細は `telocity <command> --help` を使ってください。",
+      "globalOptionsHeader": "グローバルオプション:",
+      "flags": {
+        "version": "アプリケーションバージョンを表示します。"
+      }
+    },
+    "commands": {
+      "lu": {
+        "usage": "使い方: telocity launch [model_preset] [options]",
+        "description": "指定されたプリセットに合う最も適したローカルモデルファイルを見つけ、適切なパラメータでllama.cppサーバーを起動します。",
+        "flags": {
+          "help": "このヘルプメッセージを表示します。",
+          "reason": "「thinking」または「reasoning」バージョンのモデルを読み込みます（存在する場合）。",
+          "chat": "チャットモードで1人のユーザー向けに起動します（並列処理引数を省略）。",
+          "quant": "特定の量子化レベル（例: 'q8', 'q6'）を強制的に使用します。"
+        },
+        "footer": "利用可能な起動可能なモデル:\n{{ .LaunchableModelList }}"
+      },
+      "avg": {
+        "usage": "使い方: telocity avg <source_path>",
+        "description": "ファイル内の非空行あたりの平均文字数（グラフェム）およびバイト数を計算します。"
+      },
+      "cfg": {
+        "usage": "使い方: telocity cfg [options]",
+        "description": "アプリケーション設定を管理します。",
+        "flags": {
+          "help": "このヘルプメッセージを表示します。",
+          "edit": "ユーザー設定ファイルを開き、デフォルトのエディタで編集します。",
+          "remove": "ユーザー設定ファイルを削除します（確認を求めます）。",
+          "lang": "アプリケーションの言語を設定します。"
+        },
+        "footer": "サポートされているロケール:\n{{ .LocaleList }}"
+      },
+      "rm": {
+        "usage": "使い方: telocity rm <source_path> [options]",
+        "description": "進行トラッキングファイルを削除します。このコマンドは3つのモードをサポートしています:\n\n- ポジショナル（デフォルト）: <source_path> で識別される1つのソースファイルの進行エントリを削除します。\n- 全て (--all): 現在トラッキングされているすべての進行ファイルを削除します。\n- インタラクティブ (--interactive): すべての進行ファイルをリストアップし、特定のものを選択して削除できるメニューを開きます。\n\n--force (-f) を使用すると確認プロンプトをスキップできます。",
+        "flags": {
+          "help": "このヘルプメッセージを表示します。",
+          "all": "すべての進行ファイルを削除します。",
+          "force": "確認プロンプトをスキップして削除します。",
+          "interactive": "削除する進行ファイルを選択できるインタラクティブメニューを開きます。"
+        }
+      },
+      "mg": {
+        "usage": "使い方: telocity mg <source_directory> [target_directory] -e <extension>",
+        "description": "ソースディレクトリから指定された拡張子のすべてのファイルを再帰的に検索し、ターゲットディレクトリ（または指定されていない場合は現在のディレクトリ）に1つのファイルにマージします。",
+        "flags": {
+          "help": "このヘルプメッセージを表示します。",
+          "extension": "検索するファイル拡張子（必須）。"
+        }
+      },
+      "os": {
+        "usage": "使い方: telocity os \"<prompt>\" [options]",
+        "description": "LLMに対して1回のワンショットプロンプトを実行します。ファイル (--file)、標準入力 (stdin)、および画像 (--image) からコンテキストを取り、LLMの出力をターミナルにストリーム出力します。",
+        "flags": {
+          "help": "このヘルプメッセージを表示します。",
+          "file": "プロンプトに追加するテキストファイルのパス。",
+          "image": "視覚コンテキスト用の画像のパス。グロブパターンやカンマ区切りリスト（例: \"img1.jpg,*.png\"）をサポート。サポート形式: png, jpg/jpeg, gif, webp。",
+          "params": "モデルパラメータプリセットを選択（デフォルト: {{ .DefaultModel }}）。",
+          "model": "プリセットに指定されたモデル名を上書きします。",
+          "url": "APIエンドポイントURLを上書きします。",
+          "apikey": "リクエストにAPIキーを提供します。",
+          "reason": "プリセットがサポートしている場合、推論モードを有効にします。"
+        },
+        "footer": "利用可能なプリセット:\n{{ .ModelParamList }}"
+      },
+      "sp": {
+        "usage": "使い方: telocity sp <source_path> <target_directory> [options]",
+        "description": "指定されたサイズに基づいて大きなファイルを小さな部分に分割し、行が破れないようにします。",
+        "flags": {
+          "help": "このヘルプメッセージを表示します。",
+          "size": "各部分の最大サイズ（メガバイト）（デフォルト: {{ .Size }}）。"
+        }
+      },
+      "st": {
+        "usage": "使い方: telocity st <source_path> <target_path> [options]",
+        "description": "ファイル内の指定されたデリミタ間のコンテンツを削除または抽出します。",
+        "flags": {
+          "help": "このヘルプメッセージを表示します。",
+          "startdelimiter": "開始デリミタ。",
+          "enddelimiter": "終了デリミタ。",
+          "params": "プリセットから開始/終了デリミタを使用します。",
+          "extracttag": "デリミタ間のコンテンツを抽出する代わりに削除します。",
+          "compress": "出力の空行を圧縮します。"
+        },
+        "footer": "デリミタ付きプリセットが利用可能:\n{{ .ReasoningTagParamList }}"
+      },
+      "tc": {
+        "usage": "使い方: telocity tc <source_path> [options]",
+        "description": "モデル特定のトークナイザーを使ってファイル内のトークン数をカウントします。",
+        "flags": {
+          "help": "このヘルプメッセージを表示します。",
+          "params": "使用するモデルプリセット（デフォルト: {{ .DefaultModel }}）。",
+          "downloadmodel": "特定のモデル（例: 'qwen'）のトークナイザーファイルをダウンロードします。"
+        },
+        "footer": "利用可能なトークナイザー:\n{{ .TokenParamList }}"
+      },
+      "tf": {
+        "usage": "使い方: telocity tf <source_path> <target_path> [options]",
+        "description": "ソースファイルに変換プロンプトを適用し、チャンクごとに処理します。--image を使用する場合、ソースファイルには画像のプロンプトが含まれている必要があります。このモードでは、カスタム --chunksize を設定しないでください。プロンプトが1単位として処理されるようにします。",
+        "flags": {
+          "help": "このヘルプメッセージを表示します。",
+          "chunksize": "チャンクあたりの行数（デフォルト: {{ .ChunkSize }}）。",
+          "batchsize": "1バッチあたり処理するチャンク数（デフォルト: {{ .BatchSize }}）。",
+          "parallel": "並列制限（デフォルト: {{ .Parallel }}）。",
+          "prompt": "ソースファイルコンテンツにプレフィックスを追加するオプションの指示。--image フラグを使用する場合、通常は省略されます。",
+          "image": "視覚コンテキスト用の画像のパス。グロブパターンやカンマ区切りリスト（例: \"img1.jpg,*.png\"）をサポート。サポート形式: png, jpg/jpeg, gif, webp。",
+          "sysprompt": "カスタムシステムプロンプトを設定します。",
+          "params": "モデルパラメータプリセットを選択（デフォルト: {{ .DefaultModel }}）。",
+          "model": "プリセットから指定されたモデル名を上書きします。",
+          "url": "APIエンドポイントURLを上書きします。",
+          "apikey": "APIキーを提供します。",
+          "wait": "API呼び出し間の遅延を設定します。",
+          "reason": "プリセットがサポートしている場合、推論モードを有効にします。"
+        },
+        "footer": "利用可能なプリセット:\n{{ .ModelParamList }}"
+      },
+      "tr": {
+        "usage": "使い方: telocity tr <source_path> <target_path> [options]",
+        "description": "ソース言語からターゲット言語にファイルを翻訳し、チャンクごとに処理します。",
+        "flags": {
+          "help": "このヘルプメッセージを表示します。",
+          "chunksize": "チャンクあたりの行数（デフォルト: {{ .ChunkSize }}）。",
+          "batchsize": "1バッチあたり処理するチャンク数（デフォルト: {{ .BatchSize }}）。",
+          "parallel": "並列制限（デフォルト: {{ .Parallel }}）。",
+          "source": "ソース言語（デフォルト: \"{{ .SourceLanguage }}\"）。",
+          "target": "ターゲット言語（デフォルト: \"{{ .TargetLanguage }}\"）。",
+          "context": "翻訳に追加のコンテキストを提供します。",
+          "params": "使用するモデルパラメータプリセット（デフォルト: {{ .DefaultModel }}）。",
+          "model": "プリセットから指定されたモデル名を上書きします。",
+          "url": "APIエンドポイントURLを上書きします。",
+          "apikey": "APIキーを提供します。",
+          "wait": "API呼び出し間の遅延を設定します。",
+          "reason": "プリセットがサポートしている場合、推論モードを有効にします。"
+        },
+        "footer": "利用可能なプリセット:\n{{ .ModelParamList }}"
+      },
+      "bg": {
+        "usage": "使い方: telocity bg [options] <source_file> <target_jsonl_file>",
+        "description": "ソーステキストファイルから翻訳用のJSONLファイルを生成します。",
+        "flags": {
+          "format": "JSONLファイルの出力形式。サポートされている形式: 'openai', 'gemini'。（デフォルト: openai）",
+          "chunksize": "1リクエストあたりの行数（デフォルト: {{ .ChunkSize }}）。",
+          "model": "パラメータセットに指定されたモデルを上書きします。",
+          "params": "プロンプトおよびモデル設定に使用するパラメータセット。（デフォルト: {{ .DefaultModel }}）",
+          "source": "翻訳プロンプトのソース言語。",
+          "target": "翻訳プロンプトのターゲット言語。",
+          "context": "各チャンクのプロンプトに含める追加コンテキスト。",
+          "reason": "選択されたモデルパラメータセットの「reasoning」バージョンを使用します。",
+          "help": "このヘルプメッセージを表示します。"
+        },
+        "footer": "\n利用可能なパラメータセット:\n{{ .ModelParamList }}"
+      },
+      "ch": {
+        "usage": "使い方: llm-cli ch [options] <chat-name>",
+        "description": "LLMとのインタラクティブなチャットセッションを開始します。チャット履歴と設定は、アプリケーションの状態ディレクトリ内の <chat-name>.json に保存されます。",
+        "flags": {
+          "file": "新しいチャットセッションの最初のメッセージにテキストファイルを添付します。",
+          "image": "新しいチャットセッションの最初のメッセージに1つ以上の画像ファイル（カンマ区切りまたはグロブパターン）を添付します。",
+          "model": "パラメータセットで指定されたモデルを上書きします。",
+          "params": "LLMに使用するパラメータプリセット。下記のリストをご覧ください。",
+          "context-limit": "チャットコンテキストの最大トークン制限を設定します。",
+          "apikey": "LLMサービスのAPIキー。",
+          "url": "LLMサービスのURLを上書きします。",
+          "help": "このヘルプメッセージを表示します。"
+        },
+        "footer": "チャット内で /help を入力して、/exit, /stats, /delete, /browse, /insert などのインタラクティブコマンドを確認できます。\n\n利用可能なパラメータセット:\n{{ .ModelParamList }}"
+      }
+    }
+  }
+}
