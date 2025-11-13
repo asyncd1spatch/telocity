@@ -1,0 +1,393 @@
+{
+  "m": {
+    "lcli": {
+      "userConfigNotFound": "{{ .UserConfigPath }}에 사용자 구성 파일을 찾을 수 없습니다. 새 파일이 생성됩니다.",
+      "cfgCreatedSuccessfully": "구성 파일이 성공적으로 생성되었습니다.",
+      "deletionConfirm": "이 작업은 되돌릴 수 없습니다. 삭제하시겠습니까? (y/N): ",
+      "yN": "y",
+      "redacted": "[REDACTED]",
+      "deletionAborted": "삭제가 중단되었습니다.",
+      "a": "a",
+      "q": "q"
+    },
+    "lllm": {
+      "processingComplete": "이 파일에 대한 처리가 이미 완료되었습니다.",
+      "anotherInstanceIsProcessing": "다른 인스턴스가 이미 이 파일을 처리 중입니다. 완료될 때까지 기다리거나 .lock 파일을 제거하십시오.",
+      "ctrlCPressed": "Ctrl+C가 눌렸습니다. 현재 배치를 마치고 진행 상황을 저장합니다. 강제 종료하려면 다시 누르십시오.",
+      "ctrlCPressed2": "종료가 이미 요청되었습니다. 잠시 기다려 주십시오.",
+      "quittingWithoutSaving": "진행 상황을 저장하지 않고 강제 종료합니다.",
+      "processedChunkOf": "{{ .Processed }} / {{ .Total }} 청크 처리 완료",
+      "progressSavedTerminating": "진행 상황이 저장되었습니다. 종료 중입니다.",
+      "progressFileDeleted": "{{ .Hash }} 해시의 진행 파일이 삭제되었습니다.",
+      "content": "\n--- {{ .Filename }} 내용 ---",
+      "filesMerged": "{{ .MergedFileName }}에 파일이 성공적으로 병합되었습니다.",
+      "openingTag": "열기 태그",
+      "closingTag": "닫기 태그",
+      "context": "컨텍스트:",
+      "generatingRequests": "배치 처리를 위해 {{ .Count }}개의 요청을 생성 중...",
+      "sourceEmpty": "소스 파일이 비어 있거나 공백만 포함합니다. 출력이 생성되지 않았습니다.",
+      "wroteEntries": "{{ .Count }}개의 항목을 {{ .TargetPath }}에 성공적으로 기록했습니다."
+    },
+    "c": {
+      "cfg": {
+        "cfgDeletedSuccessfully": "구성 파일이 성공적으로 삭제되었습니다.",
+        "localeSuccessfullyChanged": "로케일이 {{ .Locale }}으로 성공적으로 변경되었습니다."
+      },
+      "models": {
+        "fallback": "OpenAI 호환 API용 일반 프리셋. 모델 이름이 필요합니다.",
+        "genericprep": "프롬프트를 사용자의 텍스트 앞에 붙이는 일반 프리셋.",
+        "genericsys": "시스템 프롬프트를 사용하는 일반 프리셋.",
+        "noHelp": "이 프리셋에 대한 도움말 텍스트가 없습니다."
+      },
+      "avg": {
+        "averageCharsPerLine": "비어 있지 않은 줄당 평균 문자(그래피미) 수: {{ .AvgChars }}",
+        "averageBytesPerLine": "비어 있지 않은 줄당 평균 바이트 수: {{ .AvgBytes }}"
+      },
+      "lu": {
+        "preparingLaunch": "'{{ .ModelPreset }}' 모델(유형: {{ .ModelType }}, 양자화: {{ .QuantReq }})을(를) 시작하도록 준비 중입니다.",
+        "found": "찾음: {{ .String }}",
+        "executingCommand": "\n명령 실행: {{ .String }}\n",
+        "llamaServerExit": "llama-server 프로세스가 코드 {{ .ExitCode }}로 종료되었습니다."
+      },
+      "rm": {
+        "filesToDelete": "다음 진행 파일이 삭제됩니다:",
+        "filesDeletedSuccessfully": "모든 진행 파일이 성공적으로 삭제되었습니다.",
+        "filesToDeletePrompt": "\n삭제할 번호 또는 범위를 입력하십시오(예: `1,3-5`), 전체 삭제는 `a`, 취소는 `q`: ",
+        "filesSelectedForDeletion": "\n삭제할 파일이 선택되었습니다:",
+        "noValidSelectionsMade": "유효한 선택이 없습니다. 중단합니다.",
+        "noFilesToDelete": "삭제할 진행 파일이 없습니다."
+      },
+      "sp": {
+        "fileSplitSuccess": "{{ .SourcePath }} 파일을 성공적으로 분할했습니다.",
+        "partCreated": "  - 파트 {{ .PartNumber }} 생성: {{ .PartPath }}"
+      },
+      "st": {
+        "blockExtracted": "구분자 사이의 내용이 추출되었습니다.",
+        "blockDeleted": "구분자 사이의 내용이 삭제되었습니다.",
+        "compressed": "빈 줄이 압축되었습니다.",
+        "newlinesNormalized": "파일 내용이 정규화되어 저장되었습니다."
+      },
+      "tc": {
+        "availableModelsForDownload": "다운로드 가능한 모델: {{ .AvailableModels }}",
+        "downloadingModelFiles": "\"{{ .ModelName }}\" 모델 파일을 다운로드 중...",
+        "writingFilesTo": "{{ .StateDir }}에 파일을 기록 중...",
+        "downloadSuccess": "\"{{ .ModelName }}\" 모델 파일을 성공적으로 다운로드했습니다:",
+        "removedFailedWorker": "실패한 워커를 제거했습니다. 풀 크기는 이제 {{ .PoolSize }}입니다."
+      },
+      "rd": {
+        "title": "Telocity Reader",
+        "previousBtn": "← 이전",
+        "nextBtn": "다음 →",
+        "goToPage": "페이지로 이동:",
+        "pageInfo": "{{ .currentPage }} / {{ .totalPages }} 페이지",
+        "pageInfoFallback": "1 / 1 페이지",
+        "ebookLoaded": "전자책이 로드되었습니다.",
+        "serverShutdown": "유예 기간이 끝났습니다. 서버를 종료 중입니다...",
+        "serverRunningAt": "전자책 리더가 {{ .url }}에서 실행 중입니다.",
+        "readingFile": "{{ .sourcePath }} 파일을 읽는 중입니다.",
+        "notFound": "404 찾을 수 없음"
+      }
+    }
+  },
+  "e": {
+    "lcli": {
+      "unknownErrorOccurred": "알 수 없는 오류가 발생했습니다.",
+      "causePrefix": "원인:",
+      "unknownOption": "알 수 없는 옵션: '{{ .Option }}'.",
+      "unexpectedPositional": "예상치 못한 위치 인수: '{{ .Argument }}'.",
+      "missingValue": "옵션 '{{ .Option }}'의 인수가 누락되었습니다.",
+      "booleanWithValue": "옵션 '{{ .Option }}'은 인수를 받지 않습니다.",
+      "commandNotImplemented": "명령이 구현되지 않았습니다: {{ .CommandAlias }}.",
+      "cfgCouldNotBeLoaded": "구성 파일을 {{ .UserConfigPath }}에서 로드할 수 없습니다.",
+      "listFormatWidthWarning": "경고: 목록 설명을 포맷할 공간이 충분하지 않습니다."
+    },
+    "v": {
+      "invalidArgArray": "잘못된 인수 배열이 제공되었습니다: {{ .OptionValue }}",
+      "invalidChunkSize": "잘못된 청크 크기입니다. 1에서 200000 사이의 정수여야 합니다. 제공된 값: {{ .ChunkSize }}",
+      "invalidBatchSize": "잘못된 배치 크기입니다. 1에서 64 사이의 정수여야 합니다. 제공된 값: {{ .BatchSize }}",
+      "invalidIndex": "잘못된 lastIndex입니다. 양의 정수여야 합니다. 제공된 값: {{ .Index }}",
+      "invalidPrompt": "잘못된 프롬프트가 제공되었습니다. 비어 있지 않은 문자열이어야 합니다.",
+      "invalidModel": "잘못된 모델 이름이 제공되었습니다: {{ .Model }}",
+      "invalidText": "잘못된 텍스트가 제공되었습니다: {{ .Text }}",
+      "invalidURL": "잘못된 URL이 제공되었습니다: {{ .URL }}",
+      "invalidURLScheme": "잘못된 URL 스킴입니다. http:// 또는 https://로 시작해야 합니다. 제공된 값: {{ .URL }}",
+      "invalidAPIKey": "잘못된 API 키가 제공되었습니다: {{ .APIKey }}",
+      "invalidTemperatureRange": "온도는 0.0에서 2.0 사이의 숫자여야 합니다.",
+      "invalidTopPRange": "Top_p는 0.0에서 1.0 사이의 숫자여야 합니다.",
+      "invalidMinPRange": "Min_p는 0.0에서 1.0 사이의 숫자여야 합니다.",
+      "invalidTopKRange": "Top_k는 0에서 1000 사이의 정수여야 합니다.",
+      "invalidRepeat": "반복 패널티는 1.0에서 2.0 사이의 숫자여야 합니다.",
+      "invalidPenaltyRange": "주파수/존재 패널티는 -2.0에서 2.0 사이의 숫자여야 합니다.",
+      "seedMustBePositiveInteger": "시드는 양의 정수여야 합니다.",
+      "invalidDelayValue": "지연은 [boolean, value] 튜플 내에서 음이 아닌 숫자여야 합니다.",
+      "invalidImageArray": "잘못된 이미지 입력입니다. 데이터 URI 배열이 예상되었으나 다음을 받았습니다: {{ .Value }}",
+      "invalidDataURI": "잘못된 이미지 형식입니다. 'data:'로 시작하는 데이터 URI 문자열이 예상되었으나 다음을 받았습니다: {{ .Value }}",
+      "unsupportedImageType": "경고: 이미지 glob 패턴 {{ .Args }}이(가) 지원되는 파일과 일치하지 않았습니다.",
+      "unsupportedImageType2": "지원되지 않는 이미지 유형 \"{{ .Ext }}\"을(를) 건너뜁니다. 파일: {{ .Image }}",
+      "imageNotFound": "경고: 이미지 파일을 찾을 수 없습니다. 건너뜁니다: {{ .Image }}"
+    },
+    "lllm": {
+      "undefinedParam": "정의되지 않은 매개변수 세트입니다.",
+      "reasoningNotSupported": "모델이 추론을 지원하지 않습니다.",
+      "invalidReasoningType": "잘못된 추론 유형, JSON 구성 오류.",
+      "promptMissing": "원샷 명령에 프롬프트가 필요합니다.",
+      "fileNotFound": "파일을 찾을 수 없습니다: {{ .FilePath }}",
+      "sourceRequired": "소스 경로가 필요합니다.",
+      "sourceTargetRequired": "소스와 대상 경로가 필요합니다.",
+      "noFilesFound": ".{{ .Extension }} 확장자를 가진 파일을 찾을 수 없습니다.",
+      "targetFileExists": "대상 경로가 이미 존재합니다: {{ .TargetPath }}",
+      "sourceAndTargetMustBeDifferent": "소스와 대상 경로는 서로 달라야 합니다.",
+      "invalidFileSize": "파일 크기가 {{ .MAX_SIZE_MB }} MB의 최대 한도를 초과합니다.",
+      "emptyFile": "파일이 비어 있거나 공백만 포함합니다.",
+      "idleTimeOut": "유휴 시간 초과입니다. 서버에서 데이터를 수신하지 못했습니다.",
+      "hardTimeOut": "하드 타임아웃 초과입니다. 요청이 완료되기까지 너무 오래 걸렸습니다.",
+      "tExceeded": "유휴 시간 초과",
+      "unknownOpenAIError": "API에서 알 수 없는 오류가 발생했습니다.",
+      "openaiApiError": "API 호출이 상태 {{ .Status }}로 실패했습니다: {{ .Message }}",
+      "networkErrorOpenAI": "{{ .URL }} 호출 중 네트워크 오류가 발생했습니다.",
+      "networkErrorReason": " 원인: {{ .Code }}",
+      "responseNull": "응답 본문이 null입니다",
+      "streamEndedPrematurely": "스트림이 [DONE] 신호 없이 조기에 종료되었습니다.",
+      "progressFileDoesNotExist": "{{ .Hash }} 해시의 진행 파일이 존재하지 않습니다.",
+      "llmAPICall": "LLM API 호출 중 오류: ",
+      "initializingBatch": "배치 처리를 초기화하는 중 오류가 발생했습니다.",
+      "failedLock": "잠금 파일을 만들 수 없습니다.",
+      "failedToSaveProgress": "진행 상황을 저장하지 못했습니다.",
+      "whileCalling_deleteProgressEntry": " deleteProgressEntry 호출 중에 발생했습니다.",
+      "stripNewLinesTypeError": "입력은 문자열 또는 문자열 배열이어야 합니다.",
+      "invalidFormat": "잘못된 형식 '{{ .Format }}'. 지원되는 형식은 'openai'와 'gemini'입니다.",
+      "jsonlGenError": "JSONL 파일 생성 중 오류가 발생했습니다."
+    },
+    "c": {
+      "co": {
+        "coError": "경고: 명령 {{ .Command }}에 대한 모듈을 로드할 수 없습니다. 완성 생성을 건너뜁니다."
+      },
+      "cfg": {
+        "editorNotFound": "$EDITOR 환경 변수가 없습니다. 원하는 편집기로 $EDITOR를 설정하십시오.",
+        "editorLaunchFailed": "편집기 실행에 실패했습니다: {{ .ErrorMessage }}",
+        "failedToWriteLocale": "로케일 파일을 쓰지 못했습니다: {{ .ErrorMessage }}",
+        "invalidLocale": "잘못된 로케일: {{ .Lang }}."
+      },
+      "lu": {
+        "undefinedLauncher": "모델 '{{ .ModelPreset }}'은(는) 로컬 실행용으로 구성되지 않았습니다(quantFiles 또는 quantizationOrder 누락).",
+        "undefinedModelType": "프리셋 '{{ .ModelPreset }}'에 대한 모델 유형 '{{ .ModelType }}'을(를) 찾을 수 없습니다.",
+        "undefinedQuant": "양자화 '{{ .QuantReq }}'는(은) 모델 프리셋 '{{ .ModelPreset }}'에 정의되지 않았습니다. 사용 가능: {{ .AvailableQuants }}.",
+        "noModelFiles": "프리셋 '{{ .ModelPreset }}'에 대한 GGUF 모델 파일이 디스크에 없습니다(유형: {{ .ModelType }}). 확인된 양자화: {{ .QuantList }}.",
+        "mmprojNotConfigured": "멀티모달 모드(-v, --multimodal)가 요청되었지만 모델 프리셋 '{{ .ModelPreset }}'에 멀티모달 프로젝터 파일이 구성되지 않았습니다.",
+        "failedToStart": "llama-server 프로세스를 시작하지 못했습니다: {{ .Error }}."
+      },
+      "mg": {
+        "extensionRequired": "파일 확장자가 필요합니다. -e 또는 --extension 플래그를 사용하십시오."
+      },
+      "rm": {
+        "unknownMode": "알 수 없는 모드"
+      },
+      "sp": {
+        "invalidSplitSize": "잘못된 크기: {{ .Size }}. 양의 숫자여야 합니다."
+      },
+      "st": {
+        "delimiterPairRequired": "시작 및 종료 구분자 모두 필요합니다."
+      },
+      "tc": {
+        "tokenizerDoesNotExist": "프리셋 '{{ .PresetName }}'에 대한 토크나이저가 존재하지 않습니다.",
+        "modelNotFoundForDownload": "모델 \"{{ .ModelName }}\"을(를) 찾을 수 없습니다.",
+        "failedToDownload": "{{ .ModelUrl }}를(을) 다운로드하지 못했습니다: {{ .Status }} {{ .StatusText }}",
+        "modelDownloadError": "모델 다운로드 중 오류: {{ .ErrorMessage }}",
+        "tokenizerLoadFailed": "\"{{ .TokenizerName }}\"에 대한 토크나이저 데이터를 로드하지 못했습니다. '{{ .JsonPath }}'와 '{{ .ConfigPath }}'가 존재하고 유효한 JSON 파일인지 확인하십시오. 오류: {{ .Error }}",
+        "tokenizerFilesNotFound": "\"{{ .TokenizerName }}\"에 대한 토크나이저 파일을 로드하지 못했습니다",
+        "unhandledWorkerError": "토큰 워커에서 처리되지 않은 오류: {{ .Message }}",
+        "poolShuttingDown": "워커 풀이 종료 중입니다.",
+        "poolShutdownJobCancelled": "워커 풀이 종료 중입니다. 작업 {{ .JobID }}이(가) 취소되었습니다."
+      }
+    }
+  },
+  "help": {
+    "generic": {
+      "header": "telocity: LLM을 사용한 텍스트 배치 처리 도구.",
+      "usage": "사용법: telocity <command> [options]",
+      "commandHeader": "명령:",
+      "commandDescriptions": {
+        "lu": "구성된 프리셋을 사용해 llama 서버를 시작합니다.",
+        "tr": "파일을 청크 단위로 번역합니다.",
+        "tf": "파일을 청크 단위로 변환 프롬프트를 적용합니다.",
+        "os": "옵션 파일 컨텍스트와 함께 단일 프롬프트를 실행합니다.",
+        "bg": "배치 처리를 위한 JSONL 파일을 생성합니다.",
+        "rd": "간단한 HTML 기반 평문 리더",
+        "st": "파일에서 구분자 사이의 내용 제거 또는 추출",
+        "mg": "여러 텍스트 파일을 하나로 병합",
+        "sp": "큰 파일을 작은 부분으로 분할",
+        "avg": "파일의 평균 줄 길이 계산",
+        "tc": "특정 모델에 대한 파일 토큰 수 계산",
+        "rm": "완료되었거나 멈춘 작업의 진행 파일을 제거",
+        "cfg": "애플리케이션 구성 관리"
+      },
+      "footer": "어떤 명령에 대한 자세한 내용은 `telocity <command> --help`를 사용하십시오.",
+      "globalOptionsHeader": "전역 옵션:",
+      "flags": {
+        "version": "애플리케이션 버전을 표시합니다."
+      }
+    },
+    "commands": {
+      "lu": {
+        "usage": "사용법: telocity launch [model_preset] [options]",
+        "description": "주어진 프리셋에 대해 가장 적합한 로컬 모델 파일을 찾아 llama.cpp 서버를 적절한 매개변수와 함께 실행합니다.",
+        "flags": {
+          "help": "이 도움말 메시지를 표시합니다.",
+          "reason": "가능하면 'thinking' 또는 'reasoning' 버전을 로드합니다.",
+          "quant": "특정 양자화 수준을 선택합니다(예: 'q8', 'q6').",
+          "multimodal": "mmproj 파일이 있으면 멀티모달(시각) 모드로 모델을 로드합니다."
+        },
+        "footer": "사용 가능한 실행 모델:\n{{ .LaunchableModelList }}"
+      },
+      "avg": {
+        "usage": "사용법: telocity avg <source_path>",
+        "description": "파일에서 비어 있지 않은 줄당 평균 문자(그래피미) 및 바이트 수를 계산합니다.",
+        "flags": {
+          "help": "이 도움말 메시지를 표시합니다."
+        }
+      },
+      "cfg": {
+        "usage": "사용법: telocity cfg [options]",
+        "description": "애플리케이션 구성을 관리합니다.",
+        "flags": {
+          "help": "이 도움말 메시지를 표시합니다.",
+          "edit": "기본 편집기에서 사용자 구성 파일을 엽니다.",
+          "remove": "사용자 구성 파일을 삭제합니다(확인 요청).",
+          "lang": "애플리케이션 언어를 설정합니다."
+        },
+        "footer": "지원되는 로케일:\n{{ .LocaleList }}"
+      },
+      "rm": {
+        "usage": "사용법: telocity rm <source_path> [options]",
+        "description": "진행 추적 파일을 제거합니다. 명령은 세 가지 모드를 지원합니다:\n\n- 위치(기본): <source_path>로 식별되는 단일 소스 파일의 진행 항목을 제거합니다.\n- 전체(--all): 현재 추적 중인 모든 진행 파일을 제거합니다.\n- 대화형(--interactive): 모든 진행 파일을 나열하는 메뉴를 열어 특정 파일을 선택해 삭제합니다.\n\n--force(-f)를 사용해 확인 프롬프트를 건너뜁니다.",
+        "flags": {
+          "help": "이 도움말 메시지를 표시합니다.",
+          "all": "모든 진행 파일을 제거합니다.",
+          "force": "확인 없이 강제 삭제합니다.",
+          "interactive": "삭제할 진행 파일을 선택하는 대화형 메뉴를 엽니다."
+        }
+      },
+      "mg": {
+        "usage": "사용법: telocity mg <source_directory> [target_directory] -e <extension>",
+        "description": "소스 디렉터리에서 지정된 확장자를 가진 모든 파일을 재귀적으로 찾아 대상 디렉터리(또는 지정되지 않으면 현재 디렉터리)로 하나의 파일로 병합합니다.",
+        "flags": {
+          "help": "이 도움말 메시지를 표시합니다.",
+          "extension": "찾을 파일 확장자(필수)."
+        }
+      },
+      "os": {
+        "usage": "사용법: telocity os \"<prompt>\" [output_file] [options]",
+        "description": "LLM에 단일 일회성 프롬프트를 실행합니다. 파일(--file), 표준 입력(stdin), 이미지(--image)에서 컨텍스트를 가져올 수 있습니다. LLM의 출력은 터미널에 스트리밍되거나 제공된 경우 [output_file]에 저장됩니다.",
+        "flags": {
+          "help": "이 도움말 메시지를 표시합니다.",
+          "file": "프롬프트에 컨텍스트로 추가할 텍스트 파일 경로.",
+          "image": "시각적 컨텍스트용 이미지 경로. glob 패턴 및 쉼표 구분 목록 지원(예: \"img1.jpg,*.png\"). 지원 형식: png, jpg/jpeg, gif, webp.",
+          "params": "모델 매개변수 프리셋 선택(기본: {{ .DefaultModel }}).",
+          "model": "프리셋에 지정된 모델 이름을 재정의합니다.",
+          "url": "API 엔드포인트 URL을 재정의합니다.",
+          "apikey": "요청에 대한 API 키를 제공합니다.",
+          "reason": "지원되는 프리셋에 대해 추론 모드를 활성화합니다.",
+          "budget": "추론 노력을 설정합니다(1=낮음, 2=중간, 3=높음)."
+        },
+        "footer": "사용 가능한 프리셋:\n{{ .ModelParamList }}"
+      },
+      "sp": {
+        "usage": "사용법: telocity sp <source_path> <target_directory> [options]",
+        "description": "지정된 크기를 기준으로 큰 파일을 작은 부분으로 분할합니다. 줄이 끊어지지 않도록 합니다.",
+        "flags": {
+          "help": "이 도움말 메시지를 표시합니다.",
+          "size": "각 파트의 최대 크기(메가바이트, 기본: {{ .Size }})."
+        }
+      },
+      "st": {
+        "usage": "사용법: telocity st <source_path> <target_path> [options]",
+        "description": "지정된 구분자 사이의 내용 제거 또는 추출합니다.",
+        "flags": {
+          "help": "이 도움말 메시지를 표시합니다.",
+          "startdelimiter": "시작 구분자.",
+          "enddelimiter": "종료 구분자.",
+          "params": "프리셋에서 시작/종료 구분자 사용.",
+          "extracttag": "구분자 사이의 내용을 추출합니다(제거 대신).",
+          "compress": "출력에서 빈 줄 압축."
+        },
+        "footer": "태그가 있는 사용 가능한 프리셋:\n{{ .ReasoningTagParamList }}"
+      },
+      "tc": {
+        "usage": "사용법: telocity tc <source_path> [options]",
+        "description": "모델별 토크나이저를 사용해 파일의 토큰 수를 계산합니다.",
+        "flags": {
+          "help": "이 도움말 메시지를 표시합니다.",
+          "params": "토크나이저를 사용할 모델 프리셋(기본: {{ .DefaultModel }}).",
+          "downloadmodel": "특정 모델(예: 'qwen')의 토크나이저 파일을 다운로드합니다."
+        },
+        "footer": "사용 가능한 토크나이저:\n{{ .TokenParamList }}"
+      },
+      "tf": {
+        "usage": "사용법: telocity tf <source_path> <target_path> [options]",
+        "description": "소스 파일에 변환 프롬프트를 적용하고 청크 단위로 처리합니다. `--image`를 사용할 때는 소스 파일에 이미지(들)에 대한 프롬프트가 포함되어야 합니다. 이 모드에서는 `--chunksize`를 커스텀 설정하지 말고 단일 단위로 프롬프트를 처리하도록 합니다.",
+        "flags": {
+          "help": "이 도움말 메시지를 표시합니다.",
+          "chunksize": "청크당 줄 수(기본: {{ .ChunkSize }}).",
+          "batchsize": "배치당 청크 수(기본: {{ .BatchSize }}).",
+          "parallel": "동시성 제한(기본: {{ .Parallel }}).",
+          "prompt": "소스 파일 내용 앞에 붙일 선택적 지시문. 일반적으로 --image 플래그 사용 시 생략합니다.",
+          "image": "시각적 컨텍스트용 이미지 경로. glob 패턴 및 쉼표 구분 목록 지원(예: \"img1.jpg,*.png\"). 지원 형식: png, jpg/jpeg, gif, webp.",
+          "sysprompt": "커스텀 시스템 프롬프트를 설정합니다.",
+          "params": "모델 매개변수 프리셋 선택(기본: {{ .DefaultModel }}).",
+          "model": "프리셋에서 모델 이름을 재정의합니다.",
+          "url": "API 엔드포인트 URL을 재정의합니다.",
+          "apikey": "API 키를 제공합니다.",
+          "wait": "API 호출 간 지연을 설정합니다.",
+          "reason": "지원되는 프리셋에 대해 추론 모드를 활성화합니다.",
+          "budget": "추론 노력을 설정합니다(1=낮음, 2=중간, 3=높음)."
+        },
+        "footer": "사용 가능한 프리셋:\n{{ .ModelParamList }}"
+      },
+      "tr": {
+        "usage": "사용법: telocity tr <source_path> <target_path> [options]",
+        "description": "파일을 소스 언어에서 대상 언어로 번역하고 청크 단위로 처리합니다.",
+        "flags": {
+          "help": "이 도움말 메시지를 표시합니다.",
+          "chunksize": "청크당 줄 수(기본: {{ .ChunkSize }}).",
+          "batchsize": "배치당 청크 수(기본: {{ .BatchSize }}).",
+          "parallel": "동시성 제한(기본: {{ .Parallel }}).",
+          "source": "소스 언어(기본: \"{{ .SourceLanguage }}\").",
+          "target": "대상 언어(기본: \"{{ .TargetLanguage }}\").",
+          "context": "번역에 추가 컨텍스트를 제공합니다.",
+          "params": "모델 매개변수 프리셋 선택(기본: {{ .DefaultModel }}).",
+          "model": "프리셋에서 모델 이름을 재정의합니다.",
+          "url": "API 엔드포인트 URL을 재정의합니다.",
+          "apikey": "API 키를 제공합니다.",
+          "wait": "API 호출 간 지연을 설정합니다.",
+          "reason": "지원되는 프리셋에 대해 추론 모드를 활성화합니다.",
+          "budget": "추론 노력을 설정합니다(1=낮음, 2=중간, 3=높음)."
+        },
+        "footer": "사용 가능한 프리셋:\n{{ .ModelParamList }}"
+      },
+      "bg": {
+        "usage": "사용법: telocity bg [options] <source_file> <target_jsonl_file>",
+        "description": "소스 텍스트 파일에서 번역 배치 처리를 위한 JSONL 파일을 생성합니다.",
+        "flags": {
+          "format": "JSONL 파일의 출력 형식. 지원: 'openai', 'gemini'. (기본: openai)",
+          "chunksize": "청크/요청당 줄 수. (기본: {{ .ChunkSize }})",
+          "model": "매개변수 세트에 지정된 모델을 재정의합니다.",
+          "params": "프롬프트 및 모델 구성을 위해 사용할 매개변수 세트. (기본: {{ .DefaultModel }})",
+          "source": "번역 프롬프트용 소스 언어.",
+          "target": "번역 프롬프트용 대상 언어.",
+          "context": "각 청크에 포함할 추가 컨텍스트.",
+          "reason": "선택한 모델 매개변수 세트의 'reasoning' 변형을 사용합니다.",
+          "budget": "추론 노력을 설정합니다(1=낮음, 2=중간, 3=높음).",
+          "help": "이 도움말 메시지를 표시합니다."
+        },
+        "footer": "\n사용 가능한 매개변수 세트:\n{{ .ModelParamList }}"
+      },
+      "rd": {
+        "usage": "사용법: telocity rd <source_path>",
+        "description": "간단한 리더에서 텍스트 파일을 표시하기 위해 로컬 웹 서버를 실행합니다.",
+        "flags": {
+          "help": "이 도움말 메시지를 표시합니다."
+        }
+      }
+    }
+  }
+}

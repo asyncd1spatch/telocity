@@ -1,0 +1,63 @@
+{
+  "name": "telocity",
+  "version": "1.0.89",
+  "description": "A CLI script for basic local LLM interactions.",
+  "author": "asyncd1spatch",
+  "type": "module",
+  "private": true,
+  "files": [
+    "start.ts",
+    "tokenworker.ts",
+    "src/",
+    "data/",
+    "LICENSE-APACHE-2.0",
+    "NOTICE"
+  ],
+  "bin": {
+    "telocity": "./start.ts"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/index.ts"
+    },
+    "./core": {
+      "import": "./src/libs/core/index.ts"
+    },
+    "./LLM": {
+      "import": "./src/libs/LLM/index.ts"
+    },
+    "./thirdparty": {
+      "import": "./src/libs/thirdparty/index.ts"
+    },
+    "./types": {
+      "import": "./src/libs/types/index.ts"
+    }
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "pretest": "bun typecheck && bun lint && bun i18ns && bun confs",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint",
+    "format": "dprint fmt",
+    "i18ns": "bun ./scripts/i18nvalidator.ts",
+    "confs": "bun ./scripts/configvalidator.ts",
+    "test": "bun test --concurrent",
+    "start": "bun ./start.ts",
+    "build:bin": "bun build.bin.ts",
+    "build:a": "bun build.bin.js --all",
+    "build:d": "bun build.bin.js --compress",
+    "build:da": "bun build.bin.js --all --compress",
+    "translate": "bun ./scripts/make_project_translations.ts",
+    "mockproxy": "bun ./scripts/mockproxy.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "1.3.2",
+    "ajv": "8.17.1",
+    "ajv-formats": "3.0.1",
+    "dprint": "0.50.2",
+    "oxlint": "1.26.0"
+  },
+  "peerDependencies": {
+    "typescript": "5.9.3"
+  }
+}
