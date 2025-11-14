@@ -1,6 +1,6 @@
 {
   "name": "telocity",
-  "version": "1.0.90",
+  "version": "1.0.91",
   "description": "A CLI script for basic local LLM interactions.",
   "author": "asyncd1spatch",
   "type": "module",

@@ -202,12 +202,50 @@ export default class RdCommand implements Command {
       .instructions { font-size: 0.85rem; color: var(--instructions-text-color); margin-top: 5px; }
       
       @media (max-width: 768px) {
-        body { padding: 0; }
-        .reader-container { border-radius: 0; height: 100vh; }
-        .page-content { padding: 20px; }
-        .navigation { flex-direction: column; gap: 15px; padding: 15px 25px; }
-        .page-controls { width: 100%; justify-content: center; }
-        .header h1 { max-width: calc(100% - 200px); }
+        body { 
+          padding: 0; 
+          display: block;
+          height: 100dvh;
+        }
+        .reader-container { 
+          border-radius: 0; 
+          height: 100%; 
+        }
+        .text-container, .page-content { padding: 20px; }
+        .header {
+          padding: 2px 15px;
+        }
+        .navigation {
+          padding: 6px 10px;
+          flex-direction: row;
+          justify-content: center;
+          gap: 0;
+        }
+        .instructions {
+          display: none;
+        }
+        .page-controls {
+          gap: 8px;
+        }
+        button {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        }
+        .page-info {
+          font-size: 0.8rem;
+        }
+        .page-input {
+          gap: 4px;
+        }
+        .page-input span {
+          font-size: 0.75rem;
+        }
+        input[type="number"] {
+          width: 50px;
+          padding: 4px;
+          font-size: 0.85rem;
+        }
+        .header h1 { max-width: calc(100% - 180px); }
       }
     </style>
   </head>
@@ -704,12 +742,50 @@ export default class RdCommand implements Command {
         overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
       }
       @media (max-width: 768px) {
-        body { padding: 10px; }
-        .reader-container { border-radius: 0; }
-        .text-container { padding: 25px; }
-        .navigation { flex-direction: column; gap: 15px; padding: 15px 25px; }
-        .page-controls { width: 100%; justify-content: center; }
-        .header h1 { max-width: calc(100% - 200px); }
+        body { 
+          padding: 0; 
+          display: block;
+          height: 100dvh;
+        }
+        .reader-container { 
+          border-radius: 0; 
+          height: 100%; 
+        }
+        .text-container, .page-content { padding: 20px; }
+        .header {
+          padding: 2px 15px;
+        }
+        .navigation {
+          padding: 6px 10px;
+          flex-direction: row;
+          justify-content: center;
+          gap: 0;
+        }
+        .instructions {
+          display: none;
+        }
+        .page-controls {
+          gap: 8px;
+        }
+        button {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        }
+        .page-info {
+          font-size: 0.8rem;
+        }
+        .page-input {
+          gap: 4px;
+        }
+        .page-input span {
+          font-size: 0.75rem;
+        }
+        input[type="number"] {
+          width: 50px;
+          padding: 4px;
+          font-size: 0.85rem;
+        }
+        .header h1 { max-width: calc(100% - 180px); }
       }
     </style>
   </head>
@@ -909,7 +985,6 @@ export default class RdCommand implements Command {
       log(simpleTemplate(appState.s.m.c.rd.serverRunningAt, { url: server.url.toString() }));
       log(simpleTemplate(appState.s.m.c.rd.readingFile, { sourcePath }));
       log(appState.s.m.c.rd.instructions);
-      log(appState.s.m.c.rd.ebookLoaded);
     }
 
     return 0;

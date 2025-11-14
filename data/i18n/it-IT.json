@@ -40,7 +40,7 @@
         "noHelp": "Nessun testo di aiuto disponibile per questo preset."
       },
       "avg": {
-        "averageCharsPerLine": "Caratteri medi (grapheme) per riga non vuota: {{ .AvgChars }}",
+        "averageCharsPerLine": "Caratteri (grapheme) medi per riga non vuota: {{ .AvgChars }}",
         "averageBytesPerLine": "Byte medi per riga non vuota: {{ .AvgBytes }}"
       },
       "lu": {
@@ -54,7 +54,7 @@
         "filesDeletedSuccessfully": "Tutti i file di progresso eliminati con successo.",
         "filesToDeletePrompt": "\nInserisci numeri o intervalli da eliminare (es. `1,3-5`), `a` per tutti, o `q` per annullare: ",
         "filesSelectedForDeletion": "\nFile selezionati per l'eliminazione:",
-        "noValidSelectionsMade": "Nessuna selezione valida. Annullamento.",
+        "noValidSelectionsMade": "Nessuna selezione valida effettuata. Annullamento.",
         "noFilesToDelete": "Nessun file di progresso trovato da eliminare."
       },
       "sp": {
@@ -69,19 +69,22 @@
       },
       "tc": {
         "availableModelsForDownload": "Modelli disponibili per il download: {{ .AvailableModels }}",
-        "downloadingModelFiles": "Download dei file del modello per \"{{ .ModelName }}\"...",
+        "downloadingModelFiles": "Download dei file modello per \"{{ .ModelName }}\"...",
         "writingFilesTo": "Scrittura dei file in {{ .StateDir }}...",
         "downloadSuccess": "File scaricati con successo per \"{{ .ModelName }}\":",
         "removedFailedWorker": "Rimosso un worker fallito. Dimensione pool ora {{ .PoolSize }}."
       },
       "rd": {
         "title": "Telocity Reader",
-        "previousBtn": "← Precedente",
-        "nextBtn": "Successivo →",
-        "goToPage": "Vai alla pagina:",
+        "previousBtn": "←Prev",
+        "nextBtn": "Next→",
+        "instructions": "⬅️➡️ h/l shift+space/space",
+        "instructions2": "⬅️➡️ h/l — ⬇️⬆️ j/k shift+space/space",
+        "goToPage": "Pagina:",
         "pageInfo": "Pagina {{ .currentPage }} di {{ .totalPages }}",
         "pageInfoFallback": "Pagina 1 di 1",
         "ebookLoaded": "Ebook caricato.",
+        "contentLoadError": "Errore: Impossibile caricare il contenuto.",
         "serverShutdown": "Periodo di grazia terminato. Arresto del server...",
         "serverRunningAt": "Lettore ebook in esecuzione su {{ .url }}",
         "readingFile": "Lettura file: {{ .sourcePath }}",
@@ -99,7 +102,7 @@
       "booleanWithValue": "L'opzione '{{ .Option }}' non accetta un argomento.",
       "commandNotImplemented": "Comando non implementato: {{ .CommandAlias }}.",
       "cfgCouldNotBeLoaded": "Impossibile caricare il file di configurazione da {{ .UserConfigPath }}.",
-      "listFormatWidthWarning": "Avviso: spazio insufficiente per formattare la descrizione della lista."
+      "listFormatWidthWarning": "Avviso: Spazio insufficiente per formattare la descrizione della lista."
     },
     "v": {
       "invalidArgArray": "Array di argomenti non valido fornito: {{ .OptionValue }}",
@@ -123,13 +126,15 @@
       "invalidImageArray": "Input immagine non valido. Atteso un array di URI dati, ma ricevuto: {{ .Value }}",
       "invalidDataURI": "Formato immagine non valido. Atteso una stringa URI dati che inizia con 'data:', ma ricevuto: {{ .Value }}",
       "unsupportedImageType": "Avviso: Il pattern glob immagine {{ .Args }} non ha corrispondenza con alcun file supportato.",
-      "unsupportedImageType2": "Salto tipo immagine non supportato \"{{ .Ext }}\" per file: {{ .Image }}",
-      "imageNotFound": "Avviso: File immagine non trovato, salto: {{ .Image }}"
+      "unsupportedImageType2": "Salto del tipo immagine non supportato \"{{ .Ext }}\" per il file: {{ .Image }}",
+      "imageNotFound": "Avviso: File immagine non trovato, salto: {{ .Image }}",
+      "invalidKwargs": "Configurazione non valida per chat_template_kwargs",
+      "invalidKwargsType": "chat_template_kwargs deve essere un oggetto semplice."
     },
     "lllm": {
       "undefinedParam": "Set di parametri non definito.",
       "reasoningNotSupported": "Il modello non supporta il ragionamento.",
-      "invalidReasoningType": "Tipo di ragionamento non valido, configurazione JSON danneggiata.",
+      "invalidReasoningType": "Tipo di ragionamento non valido, configurazione JSON rotta.",
       "promptMissing": "Il prompt è richiesto per il comando one-shot.",
       "fileNotFound": "File non trovato: {{ .FilePath }}",
       "sourceRequired": "Percorso sorgente richiesto.",
@@ -139,13 +144,13 @@
       "sourceAndTargetMustBeDifferent": "Percorsi sorgente e destinazione devono essere diversi.",
       "invalidFileSize": "Dimensione file supera il limite massimo di {{ .MAX_SIZE_MB }} MB.",
       "emptyFile": "File vuoto o contiene solo spazi bianchi.",
-      "idleTimeOut": "Timeout inattivo superato. Nessun dato ricevuto dal server.",
+      "idleTimeOut": "Timeout di inattività superato. Nessun dato ricevuto dal server.",
       "hardTimeOut": "Timeout fisso superato. La richiesta ha impiegato troppo tempo per completare.",
-      "tExceeded": "Timeout inattivo superato",
+      "tExceeded": "Timeout di inattività superato",
       "unknownOpenAIError": "Si è verificato un errore sconosciuto con l'API.",
       "openaiApiError": "Chiamata API fallita con stato {{ .Status }}: {{ .Message }}",
       "networkErrorOpenAI": "Errore di rete durante la chiamata a {{ .URL }}.",
-      "networkErrorReason": "  Motivo: {{ .Code }}",
+      "networkErrorReason": "  Reason: {{ .Code }}",
       "responseNull": "Corpo della risposta è nullo",
       "streamEndedPrematurely": "Stream terminato prematuramente senza segnale [DONE].",
       "progressFileDoesNotExist": "File di progresso per l'hash {{ .Hash }} non esiste.",
@@ -160,7 +165,7 @@
     },
     "c": {
       "co": {
-        "coError": "Avviso: Impossibile caricare il modulo per il comando {{ .Command }}. Salto generazione completamento."
+        "coError": "Avviso: Impossibile caricare il modulo per il comando {{ .Command }}. Salto della generazione di completamento."
       },
       "cfg": {
         "editorNotFound": "Variabile d'ambiente $EDITOR non trovata. Imposta $EDITOR sul tuo editor di testo preferito.",
@@ -177,7 +182,7 @@
         "failedToStart": "Impossibile avviare il processo llama-server: {{ .Error }}."
       },
       "mg": {
-        "extensionRequired": "Estensione file richiesta. Usa il flag -e o --extension."
+        "extensionRequired": "Estensione file obbligatoria. Usa il flag -e o --extension."
       },
       "rm": {
         "unknownMode": "Modalità sconosciuta"
@@ -259,7 +264,7 @@
       },
       "rm": {
         "usage": "Uso: telocity rm <source_path> [opzioni]",
-        "description": "Rimuove file di tracciamento progresso. Il comando supporta tre modalità:\n\n- Posizionale (predefinita): Rimuove l'entry di progresso per un singolo file sorgente, identificato da <source_path>.\n- Tutti (--all): Rimuove tutti i file di progresso attualmente tracciati.\n- Interattiva (--interactive): Apre un menu che elenca tutti i file di progresso, permettendo di selezionare quelli specifici da eliminare.\n\nUsa --force (-f) per saltare i prompt di conferma.",
+        "description": "Rimuove file di tracciamento progresso. Il comando supporta tre modalità:\n\n- Posizionale (predefinita): Rimuove la voce di progresso per un singolo file sorgente, identificato da <source_path>.\n- Tutti (--all): Rimuove tutti i file di progresso attualmente tracciati.\n- Interattiva (--interactive): Apre un menu che elenca tutti i file di progresso, permettendo di selezionare quelli specifici da eliminare.\n\nUsa --force (-f) per saltare i prompt di conferma.",
         "flags": {
           "help": "Mostra questo messaggio di aiuto.",
           "all": "Rimuovi tutti i file di progresso.",
@@ -272,7 +277,7 @@
         "description": "Trova ricorsivamente e unisce tutti i file con una determinata estensione da una directory sorgente in un unico file nella directory di destinazione (o nella directory corrente se non specificata).",
         "flags": {
           "help": "Mostra questo messaggio di aiuto.",
-          "extension": "L'estensione file da cercare (richiesta)."
+          "extension": "L'estensione file da cercare (obbligatoria)."
         }
       },
       "os": {
@@ -369,7 +374,7 @@
         "description": "Genera un file JSONL per le traduzioni batch da un file di testo sorgente.",
         "flags": {
           "format": "Formato di output per il file JSONL. Supportati: 'openai', 'gemini'. (predefinito: openai)",
-          "chunksize": "Numero di righe per chunk/richiesta. (predefinito: {{ .ChunkSize }})",
+          "chunksize": "Numero di righe per chunk/chiamata. (predefinito: {{ .ChunkSize }})",
           "model": "Sovrascrive il modello specificato nel set di parametri.",
           "params": "Set di parametri da usare per prompt e configurazione modello. (predefinito: {{ .DefaultModel }})",
           "source": "Lingua sorgente per i prompt di traduzione.",
@@ -377,7 +382,7 @@
           "context": "Contesto aggiuntivo da includere nel prompt per ogni chunk.",
           "reason": "Usa la variante 'reasoning' del set di parametri modello selezionato.",
           "budget": "Imposta lo sforzo di ragionamento quando si usa --reason (1=basso, 2=medio, 3=alto).",
-          "help": "Mostra questo messaggio di aiuto."
+          "help": "Visualizza questo messaggio di aiuto."
         },
         "footer": "\nSet di parametri disponibili:\n{{ .ModelParamList }}"
       },
@@ -385,7 +390,8 @@
         "usage": "Uso: telocity rd <source_path>",
         "description": "Avvia un server web locale per visualizzare un file di testo in un lettore semplice.",
         "flags": {
-          "help": "Mostra questo messaggio di aiuto."
+          "help": "Mostra questo messaggio di aiuto.",
+          "accessible": "Usa un frontend più semplice che funzioni meglio con screenreader, estensioni browser che alterano il testo come traduttori ecc."
         }
       }
     }
