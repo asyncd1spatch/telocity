@@ -204,7 +204,7 @@ export default class RdCommand implements Command {
       @media (max-width: 768px) {
         body { padding: 0; }
         .reader-container { border-radius: 0; height: 100vh; }
-        .page-content { padding: 20px; font-size: 1rem; }
+        .page-content { padding: 20px; }
         .navigation { flex-direction: column; gap: 15px; padding: 15px 25px; }
         .page-controls { width: 100%; justify-content: center; }
         .header h1 { max-width: calc(100% - 200px); }
@@ -706,7 +706,7 @@ export default class RdCommand implements Command {
       @media (max-width: 768px) {
         body { padding: 10px; }
         .reader-container { border-radius: 0; }
-        .text-container { padding: 25px; font-size: 1rem; }
+        .text-container { padding: 25px; }
         .navigation { flex-direction: column; gap: 15px; padding: 15px 25px; }
         .page-controls { width: 100%; justify-content: center; }
         .header h1 { max-width: calc(100% - 200px); }
