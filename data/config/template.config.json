@@ -1,0 +1,287 @@
+{
+  "DEFAULT_MODEL": "qwen",
+  "MAX_SIZE_MB": 10,
+  "HUMAN_TIMEOUT": 5,
+  "SOURCE_LANGUAGE": "Simplified Chinese",
+  "TARGET_LANGUAGE": "English",
+  "TERMINAL_PREPEND": "{{TERMINAL}}",
+  "DEFAULT_TF_PROMPT": "{{TERMINAL}} Write a summary of the following file.\n\n",
+  "EMPTY_FIELD": [false, "", "", false],
+  "TEMPLATES": {
+    "MAIN_TL_INSTRUCTIONS": "Translate any text you're given from {{ .LanguageSource }} into {{ .LanguageTarget }}. No commentary.\n\n",
+    "TERMINAL": "No markdown.\n\n"
+  },
+  "FALLBACK_VALUES": {
+    "chunkSize": "20",
+    "batchSize": "4",
+    "parallel": "4",
+    "model": [false, ""],
+    "url": "http://localhost:8081/v1/chat/completions",
+    "apiKey": "",
+    "temperature": [true, 1.0],
+    "top_p": [true, 1.0]
+  },
+  "LLAMACPP_CMD": "C:\\largedrivesonly\\ai\\soft\\llamacpp\\llama-server.exe",
+  "MODELS_LOCATION": "C:\\largedrivesonly\\ai\\Models\\LLM",
+  "LLAMACPP_BASE_ARGS": [
+    "--port",
+    "8081",
+    "--jinja",
+    "--samplers",
+    "penalties;top_k;top_p;temperature",
+    "--repeat-penalty",
+    "1.0",
+    "--temp",
+    "1.0",
+    "--top-k",
+    "100",
+    "--top-p",
+    "1.0"
+  ],
+  "QUANTIZATION_ORDER": ["q8", "q4", "q4alt"],
+  "PARAM_CONFIGS": {
+    "online_api": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.fallback",
+        "localPreset": false
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 60],
+          "llmbackend": "chatcompletions",
+          "model": [false, ""],
+          "temperature": [true, 1.0],
+          "top_p": [true, 1.0]
+        }
+      }
+    },
+    "gprep": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "localPreset": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8081/v1/chat/completions",
+          "temperature": [true, 0.8],
+          "top_p": [true, 1.0],
+          "top_k": [true, 100],
+          "model": [true, "testmodel"]
+        }
+      }
+    },
+    "qwen": {
+      "reasoningType": "reason_and_instruct",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "stripTags": { "start": "<think>", "end": "</think>" },
+        "localPreset": true
+      },
+      "instruct": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8081/v1/chat/completions",
+          "temperature": [true, 0],
+          "top_p": [true, 0.8],
+          "top_k": [true, 20],
+          "model": [true, "qwen-instruct"]
+        }
+      },
+      "reasoning": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8081/v1/chat/completions",
+          "temperature": [true, 0.6],
+          "top_p": [true, 0.95],
+          "top_k": [true, 20],
+          "model": [true, "qwen-reasoning"]
+        }
+      },
+      "quantFiles": {
+        "instruct": {
+          "q4": {
+            "file": "qwen3-4b-instruct-2507-ud-q4_k_xl.gguf",
+            "args": ["--ctx-size", "32768"]
+          }
+        },
+        "reasoning": {
+          "q4": {
+            "file": "qwen3-4b-thinking-2507-ud-q4_k_xl.gguf",
+            "args": ["--ctx-size", "32768", "--reasoning-format", "deepseek"]
+          }
+        }
+      }
+    },
+    "qwencoder": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep"
+      },
+      "quantFiles": {
+        "q8": {
+          "file": "qwen2.5-coder-1.5b-q8_0.gguf",
+          "args": ["--ctx-size", "0"]
+        }
+      }
+    },
+    "qwenvl": {
+      "reasoningType": "reason_and_instruct",
+      "metadata": {
+        "helptext_key": "models.genericprep"
+      },
+      "quantFiles": {
+        "instruct": {
+          "q4": {
+            "file": "qwen3-vl-4b-instruct-ud-q4_k_xl.gguf",
+            "fileMMPROJ": "qwen3-vl-4b-instruct-projf16.gguf",
+            "args": ["--ctx-size", "26000"]
+          }
+        },
+        "reasoning": {
+          "q4": {
+            "file": "qwen3-vl-4b-thinking-ud-q4_k_xl.gguf",
+            "fileMMPROJ": "qwen3-vl-4b-instruct-projf16.gguf",
+            "args": ["--ctx-size", "26000", "--reasoning-format", "deepseek"]
+          }
+        }
+      }
+    },
+    "qwentiny": {
+      "reasoningType": "reason_and_instruct",
+      "metadata": {
+        "helptext_key": "models.genericprep"
+      },
+      "quantFiles": {
+        "instruct": {
+          "q4": {
+            "file": "qwen3-1.7b-ud-q4_k_xl.gguf",
+            "args": ["--ctx-size", "32768", "--reasoning-budget", "0"]
+          }
+        },
+        "reasoning": {
+          "q4": {
+            "file": "qwen3-1.7b-ud-q4_k_xl.gguf",
+            "args": ["--ctx-size", "32768", "--reasoning-format", "deepseek"]
+          }
+        }
+      }
+    },
+    "gptoss": {
+      "reasoningType": "reason_and_instruct",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "stripTags": { "start": "<|channel|>analysis", "end": "<|end|>" },
+        "localPreset": true
+      },
+      "instruct": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8081/v1/chat/completions",
+          "temperature": [true, 0],
+          "top_p": [true, 0.8],
+          "top_k": [true, 20],
+          "model": [true, "gptoss-instruct"],
+          "chat_template_kwargs": [
+            true,
+            {
+              "reasoning_effort": "low"
+            }
+          ]
+        }
+      },
+      "reasoning": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8081/v1/chat/completions",
+          "temperature": [true, 1.0],
+          "top_p": [true, 1.0],
+          "top_k": [true, 100],
+          "model": [true, "gptoss-reasoning"],
+          "chat_template_kwargs": [
+            true,
+            {
+              "reasoning_effort": "medium"
+            }
+          ]
+        }
+      },
+      "quantFiles": {
+        "instruct": {
+          "q4": {
+            "file": "gpt-oss-20b-mxfp4.gguf",
+            "args": [
+              "--ctx-size",
+              "32768",
+              "--n-cpu-moe",
+              "11",
+              "--reasoning-format",
+              "deepseek",
+              "--chat-template-kwargs",
+              "{\"reasoning_effort\":\"low\"}"
+            ]
+          }
+        },
+        "reasoning": {
+          "q4": {
+            "file": "gpt-oss-20b-mxfp4.gguf",
+            "args": [
+              "--ctx-size",
+              "32768",
+              "--n-cpu-moe",
+              "11",
+              "--reasoning-format",
+              "deepseek",
+              "--chat-template-kwargs",
+              "{\"reasoning_effort\":\"medium\"}"
+            ]
+          },
+          "q4alt": {
+            "file": "gpt-oss-20b-mxfp4.gguf",
+            "args": [
+              "--ctx-size",
+              "32768",
+              "--n-cpu-moe",
+              "11",
+              "--reasoning-format",
+              "deepseek",
+              "--chat-template-kwargs",
+              "{\"reasoning_effort\":\"high\"}"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
