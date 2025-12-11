@@ -276,10 +276,6 @@ const appConfigSchema = {
       ],
       additionalProperties: false,
     },
-    LLAMACPP_CMD: { type: "string" },
-    MODELS_LOCATION: { type: "string" },
-    LLAMACPP_BASE_ARGS: { type: "array", items: { type: "string" } },
-    QUANTIZATION_ORDER: { type: "array", items: { type: "string" } },
     PARAM_CONFIGS: {
       type: "object",
       patternProperties: {
@@ -306,10 +302,6 @@ const appConfigSchema = {
     "DEFAULT_TF_PROMPT",
     "EMPTY_FIELD",
     "FALLBACK_VALUES",
-    "LLAMACPP_CMD",
-    "MODELS_LOCATION",
-    "LLAMACPP_BASE_ARGS",
-    "QUANTIZATION_ORDER",
     "PARAM_CONFIGS",
   ],
   additionalProperties: false,

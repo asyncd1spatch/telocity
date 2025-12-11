@@ -40,12 +40,6 @@
         "averageCharsPerLine": "非空行あたりの平均文字数（グラフェム）: {{ .AvgChars }}",
         "averageBytesPerLine": "非空行あたりの平均バイト数: {{ .AvgBytes }}"
       },
-      "lu": {
-        "preparingLaunch": "モデル '{{ .ModelPreset }}' を起動準備中 (タイプ: {{ .ModelType }}, quant: {{ .QuantReq }}).",
-        "found": "見つけました: {{ .String }}",
-        "executingCommand": "\nコマンドを実行中: {{ .String }}\n",
-        "llamaServerExit": "llama-server プロセスがコード {{ .ExitCode }} で終了しました。"
-      },
       "rm": {
         "filesToDelete": "以下の進捗ファイルを削除します:",
         "filesDeletedSuccessfully": "すべての進捗ファイルを正常に削除しました。",
@@ -167,15 +161,6 @@
         "failedToWriteLocale": "ロケールファイルの書き込みに失敗しました: {{ .ErrorMessage }}",
         "invalidLocale": "無効なロケール: {{ .Lang }}."
       },
-      "lu": {
-        "undefinedLauncher": "モデル '{{ .ModelPreset }}' はローカル起動用に設定されていません ( 'quantFiles' または 'quantizationOrder' が欠落)。",
-        "undefinedModelType": "プリセット '{{ .ModelPreset }}' に対してモデルタイプ '{{ .ModelType }}' が見つかりません。",
-        "undefinedQuant": "量子化 '{{ .QuantReq }}' はモデルプリセット '{{ .ModelPreset }}' に対して定義されていません。利用可能: {{ .AvailableQuants }}.",
-        "noModelFiles": "ディスク上にプリセット '{{ .ModelPreset }}' (タイプ: {{ .ModelType }}) の GGUF モデルファイルが見つかりません。確認した量子化: {{ .QuantList }}.",
-        "mmprojNotConfigured": "マルチモーダルモードが要求されました (-v, --multimodal) が、モデルプリセット '{{ .ModelPreset }}' にマルチモーダルプロジェクタファイルが設定されていません。",
-        "failedToStart": "llama-server プロセスの起動に失敗しました: {{ .Error }}.",
-        "emptyCMD": "config.json の LLAMACPP_CMD は空にできません。"
-      },
       "mg": {
         "extensionRequired": "ファイル拡張子が必要です。-e または --extension フラグを使用してください。"
       },
@@ -206,7 +191,6 @@
       "usage": "使用方法: telocity <command> [options]",
       "commandHeader": "コマンド:",
       "commandDescriptions": {
-        "lu": "設定済みプリセットで llama サーバーを起動します。",
         "tr": "ファイルをチャンク単位で翻訳します。",
         "tf": "ファイルをチャンク単位で変換プロンプトを適用します。",
         "os": "オプションでファイルコンテキストを付与して単一プロンプトを実行します。",
@@ -227,17 +211,6 @@
       }
     },
     "commands": {
-      "lu": {
-        "usage": "使用方法: telocity launch [model_preset] [options]",
-        "description": "指定されたプリセットに対して利用可能な最適なローカルモデルファイルを検索し、適切なパラメータで llama.cpp サーバーを起動します。",
-        "flags": {
-          "help": "このヘルプメッセージを表示します。",
-          "reason": "利用可能なら 'thinking' または 'reasoning' バージョンをロードします。",
-          "quant": "特定の量子化レベルを選択します (例: 'q8', 'q6').",
-          "multimodal": "mmproj ファイルが利用可能ならマルチモーダル (vision) モードでロードします。"
-        },
-        "footer": "起動可能なモデル:\n{{ .LaunchableModelList }}"
-      },
       "avg": {
         "usage": "使用方法: telocity avg <source_path>",
         "description": "ファイルの非空行あたりの平均文字数（グラフェム）とバイト数を計算します。",

@@ -40,12 +40,6 @@
         "averageCharsPerLine": "非空行平均字符数（字形）: {{ .AvgChars }}",
         "averageBytesPerLine": "非空行平均字节数: {{ .AvgBytes }}"
       },
-      "lu": {
-        "preparingLaunch": "正在准备启动模型 '{{ .ModelPreset }}'（类型: {{ .ModelType }}, 量化: {{ .QuantReq }}）。",
-        "found": "已找到: {{ .String }}",
-        "executingCommand": "\n执行命令: {{ .String }}\n",
-        "llamaServerExit": "llama-server 进程以代码 {{ .ExitCode }} 退出。"
-      },
       "rm": {
         "filesToDelete": "以下进度文件将被删除：",
         "filesDeletedSuccessfully": "所有进度文件已成功删除。",
@@ -167,15 +161,6 @@
         "failedToWriteLocale": "写入语言文件失败: {{ .ErrorMessage }}",
         "invalidLocale": "无效语言: {{ .Lang }}."
       },
-      "lu": {
-        "undefinedLauncher": "模型 '{{ .ModelPreset }}' 未配置本地启动（缺少 'quantFiles' 或 'quantizationOrder'）。",
-        "undefinedModelType": "预设 '{{ .ModelPreset }}' 未找到模型类型 '{{ .ModelType }}'。",
-        "undefinedQuant": "量化 '{{ .QuantReq }}' 未为模型预设 '{{ .ModelPreset }}' 定义。可用: {{ .AvailableQuants }}。",
-        "noModelFiles": "磁盘上未找到预设 '{{ .ModelPreset }}' 的 GGUF 模型文件（类型: {{ .ModelType }}）。已检查量化: {{ .QuantList }}。",
-        "mmprojNotConfigured": "请求多模态模式 (-v, --multimodal)，但预设 '{{ .ModelPreset }}' 未配置多模态投影文件。",
-        "failedToStart": "启动 llama-server 进程失败: {{ .Error }}。",
-        "emptyCMD": "config.json 中的 LLAMACPP_CMD 不能为空。"
-      },
       "mg": {
         "extensionRequired": "需要文件扩展名。使用 -e 或 --extension 标志。"
       },
@@ -206,7 +191,6 @@
       "usage": "用法: telocity <command> [options]",
       "commandHeader": "命令:",
       "commandDescriptions": {
-        "lu": "使用已配置的预设启动 llama 服务器。",
         "tr": "按块翻译文件。",
         "tf": "按块对文件应用转换提示。",
         "os": "执行单个提示，支持可选文件上下文。",
@@ -227,17 +211,6 @@
       }
     },
     "commands": {
-      "lu": {
-        "usage": "用法: telocity launch [model_preset] [options]",
-        "description": "为给定预设寻找最佳可用本地模型文件并使用相应参数启动 llama.cpp 服务器。",
-        "flags": {
-          "help": "显示此帮助信息。",
-          "reason": "如果可用，加载 'thinking' 或 'reasoning' 版本的模型。",
-          "quant": "选择特定量化级别（如 'q8', 'q6'）。",
-          "multimodal": "如果有 mmproj 文件，加载多模态（视觉）模式。"
-        },
-        "footer": "可启动模型:\n{{ .LaunchableModelList }}"
-      },
       "avg": {
         "usage": "用法: telocity avg <source_path>",
         "description": "计算文件中非空行的平均字符数（字形）和字节数。",

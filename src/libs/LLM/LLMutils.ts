@@ -1,8 +1,4 @@
-import {
-  config as appConfig,
-  AppStateSingleton,
-  formatAlignedList,
-} from "../core/index.ts";
+import { AppStateSingleton, formatAlignedList } from "../core/index.ts";
 import type {
   LanguageStrings,
   LLMConfigurableProps,
@@ -213,26 +209,6 @@ export function getThinkTags(configs: ParamConfigs): string {
     const stripTags = modelConfig.metadata?.stripTags;
     if (stripTags?.start && stripTags?.end) {
       return `${appState.s.m.lllm.openingTag}: '${stripTags.start}' ${appState.s.m.lllm.closingTag}: '${stripTags.end}'`;
-    }
-    return null;
-  });
-}
-
-export function getLaunchableModels(configs: ParamConfigs): string {
-  const appState = AppStateSingleton.getInstance();
-  return processPresets(configs, (modelConfig) => {
-    if (modelConfig.quantFiles && appConfig.QUANTIZATION_ORDER) {
-      const helptextKey = modelConfig.metadata.helptext_key;
-      if (helptextKey) {
-        const fullPath = `m.c.${helptextKey}`;
-        return (
-          resolveStringKey(
-            appState.s,
-            fullPath as PathString<LanguageStrings>,
-          ) ?? appState.s.m.c.models.noHelp
-        );
-      }
-      return appState.s.m.c.models.noHelp;
     }
     return null;
   });

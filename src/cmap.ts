@@ -94,7 +94,6 @@ export async function getCommand(
     cfg: () => import("./commands/configcommand.ts").then((m) => m.default),
     os: () => import("./commands/oneshotcommand.ts").then((m) => m.default),
     help: () => import("./commands/helpcommand.ts").then((m) => m.default),
-    lu: () => import("./commands/launchcommand.ts").then((m) => m.default),
     rd: () => import("./commands/rdcommand.ts").then((m) => m.default),
     co: () => import("./commands/completions.ts").then((m) => m.default),
   } as const;

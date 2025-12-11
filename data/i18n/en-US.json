@@ -40,12 +40,6 @@
         "averageCharsPerLine": "Average characters (graphemes) per non-empty line: {{ .AvgChars }}",
         "averageBytesPerLine": "Average bytes per non-empty line: {{ .AvgBytes }}"
       },
-      "lu": {
-        "preparingLaunch": "Preparing to launch model '{{ .ModelPreset }}' (type: {{ .ModelType }}, quant: {{ .QuantReq }}).",
-        "found": "Found: {{ .String }}",
-        "executingCommand": "\nExecuting Command: {{ .String }}\n",
-        "llamaServerExit": "llama-server process exited with code {{ .ExitCode }}."
-      },
       "rm": {
         "filesToDelete": "The following progress files will be deleted:",
         "filesDeletedSuccessfully": "All progress files deleted successfully.",
@@ -167,15 +161,6 @@
         "failedToWriteLocale": "Failed to write locale file: {{ .ErrorMessage }}",
         "invalidLocale": "Invalid locale: {{ .Lang }}."
       },
-      "lu": {
-        "undefinedLauncher": "Model '{{ .ModelPreset }}' is not configured for local launch (missing 'quantFiles' or 'quantizationOrder').",
-        "undefinedModelType": "Model type '{{ .ModelType }}' not found for preset '{{ .ModelPreset }}'.",
-        "undefinedQuant": "Quantization '{{ .QuantReq }}' is not defined for model preset '{{ .ModelPreset }}'. Available: {{ .AvailableQuants }}.",
-        "noModelFiles": "No GGUF model files found on disk for preset '{{ .ModelPreset }}' (type: {{ .ModelType }}). Checked quants: {{ .QuantList }}.",
-        "mmprojNotConfigured": "Multimodal mode requested (-v, --multimodal), but the model preset '{{ .ModelPreset }}' does not have a multimodal projector file configured.",
-        "failedToStart": "Failed to start llama-server process: {{ .Error }}.",
-        "emptyCMD": "LLAMACPP_CMD in config.json cannot be empty."
-      },
       "mg": {
         "extensionRequired": "File extension is required. Use the -e or --extension flag."
       },
@@ -206,7 +191,6 @@
       "usage": "Usage: telocity <command> [options]",
       "commandHeader": "Commands:",
       "commandDescriptions": {
-        "lu": "Launch llama server using a configured preset.",
         "tr": "Translate a file chunk by chunk.",
         "tf": "Apply a transformation prompt to a file chunk by chunk.",
         "os": "Execute a single prompt with optional file context.",
@@ -227,17 +211,6 @@
       }
     },
     "commands": {
-      "lu": {
-        "usage": "Usage: telocity launch [model_preset] [options]",
-        "description": "Finds the best available local model file for a given preset and launches the llama.cpp server with the appropriate parameters.",
-        "flags": {
-          "help": "Show this help message.",
-          "reason": "Load the 'thinking' or 'reasoning' version of the model, if available.",
-          "quant": "Pick a specific quantization level (e.g., 'q8', 'q6').",
-          "multimodal": "Load the model in multimodal (vision) mode, if an mmproj file is available."
-        },
-        "footer": "Available Launchable Models:\n{{ .LaunchableModelList }}"
-      },
       "avg": {
         "usage": "Usage: telocity avg <source_path>",
         "description": "Calculates the average number of characters (graphemes) and bytes per non-empty line in a file.",

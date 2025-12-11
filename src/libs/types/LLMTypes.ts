@@ -89,24 +89,11 @@ export interface ProgressState extends LLMConfigurableProps {
   lastIndex: number;
 }
 
-export interface ConfigQuantFile {
-  file: string;
-  fileMMPROJ?: string;
-  args: readonly string[];
-}
-
-export type ConfigQuantizationLevels = Record<string, ConfigQuantFile>;
-
-export type ConfigQuantFiles = {
-  instruct?: ConfigQuantizationLevels;
-  reasoning?: ConfigQuantizationLevels;
-};
-
 interface ConfigMetadata {
   helptext_key: string;
   stripTags?: { start: string; end: string };
   /* double use: could be used to alter behavior if model is remote (set to false),
-   * do not show model in helptext and only use metadata and launcher information
+   * do not show model in helptext and only use metadata information
    * if undefined */
   localPreset: boolean;
 }
@@ -143,20 +130,17 @@ interface ModelConfigBase {
 export interface InstructOnlyModelConfig extends ModelConfigBase {
   reasoningType: "instruct_only";
   default: ConfigModelVariant;
-  quantFiles?: ConfigQuantizationLevels;
 }
 
 export interface ReasonOnlyModelConfig extends ModelConfigBase {
   reasoningType: "reason_only";
   default: ConfigModelVariant;
-  quantFiles?: ConfigQuantizationLevels;
 }
 
 export interface ReasonAndInstructModelConfig extends ModelConfigBase {
   reasoningType: "reason_and_instruct";
   instruct: ConfigModelVariant;
   reasoning: ConfigModelVariant;
-  quantFiles?: ConfigQuantFiles;
 }
 
 export type ModelConfig =
@@ -188,10 +172,6 @@ export interface AppConfig {
   EMPTY_FIELD: readonly [false, "", "", false];
   TEMPLATES?: Record<string, string>;
   FALLBACK_VALUES: AppConfigFallbackValues;
-  LLAMACPP_CMD: string;
-  MODELS_LOCATION: string;
-  LLAMACPP_BASE_ARGS: readonly string[];
-  QUANTIZATION_ORDER: readonly string[];
   PARAM_CONFIGS: ParamConfigs;
 }
 

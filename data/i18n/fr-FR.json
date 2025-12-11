@@ -40,12 +40,6 @@
         "averageCharsPerLine": "Caractères moyens (graphemes) par ligne non vide : {{ .AvgChars }}",
         "averageBytesPerLine": "Octets moyens par ligne non vide : {{ .AvgBytes }}"
       },
-      "lu": {
-        "preparingLaunch": "Préparation du lancement du modèle '{{ .ModelPreset }}' (type : {{ .ModelType }}, quant : {{ .QuantReq }}).",
-        "found": "Trouvé : {{ .String }}",
-        "executingCommand": "\nExécution de la commande : {{ .String }}\n",
-        "llamaServerExit": "Processus llama-server terminé avec le code {{ .ExitCode }}."
-      },
       "rm": {
         "filesToDelete": "Les fichiers de progrès suivants seront supprimés :",
         "filesDeletedSuccessfully": "Tous les fichiers de progrès supprimés avec succès.",
@@ -167,15 +161,6 @@
         "failedToWriteLocale": "Échec de l'écriture du fichier de locale : {{ .ErrorMessage }}",
         "invalidLocale": "Locale invalide : {{ .Lang }}."
       },
-      "lu": {
-        "undefinedLauncher": "Le modèle '{{ .ModelPreset }}' n'est pas configuré pour un lancement local (quantFiles ou quantizationOrder manquants).",
-        "undefinedModelType": "Type de modèle '{{ .ModelType }}' non trouvé pour le préréglage '{{ .ModelPreset }}'.",
-        "undefinedQuant": "Quantification '{{ .QuantReq }}' non définie pour le préréglage de modèle '{{ .ModelPreset }}'. Disponible : {{ .AvailableQuants }}.",
-        "noModelFiles": "Aucun fichier de modèle GGUF trouvé sur le disque pour le préréglage '{{ .ModelPreset }}' (type : {{ .ModelType }}). Quants vérifiés : {{ .QuantList }}.",
-        "mmprojNotConfigured": "Mode multimodal demandé (-v, --multimodal), mais le préréglage de modèle '{{ .ModelPreset }}' ne possède pas de fichier de projecteur multimodal configuré.",
-        "failedToStart": "Échec du démarrage du processus llama-server : {{ .Error }}.",
-        "emptyCMD": "LLAMACPP_CMD dans config.json ne peut pas être vide."
-      },
       "mg": {
         "extensionRequired": "L'extension de fichier est requise. Utilisez l'indicateur -e ou --extension."
       },
@@ -206,7 +191,6 @@
       "usage": "Utilisation : telocity <commande> [options]",
       "commandHeader": "Commandes :",
       "commandDescriptions": {
-        "lu": "Lancer le serveur llama en utilisant un préréglage configuré.",
         "tr": "Traduire un fichier morceau par morceau.",
         "tf": "Appliquer un prompt de transformation à un fichier morceau par morceau.",
         "os": "Exécuter un prompt unique avec un contexte de fichier optionnel.",
@@ -227,17 +211,6 @@
       }
     },
     "commands": {
-      "lu": {
-        "usage": "Utilisation : telocity launch [model_preset] [options]",
-        "description": "Trouve le meilleur fichier de modèle local disponible pour un préréglage donné et lance le serveur llama.cpp avec les paramètres appropriés.",
-        "flags": {
-          "help": "Afficher ce message d'aide.",
-          "reason": "Charger la version 'thinking' ou 'reasoning' du modèle, si disponible.",
-          "quant": "Choisir un niveau de quantification spécifique (ex. 'q8', 'q6').",
-          "multimodal": "Charger le modèle en mode multimodal (vision), si un fichier mmproj est disponible."
-        },
-        "footer": "Modèles disponibles à lancer :\n{{ .LaunchableModelList }}"
-      },
       "avg": {
         "usage": "Utilisation : telocity avg <source_path>",
         "description": "Calcule le nombre moyen de caractères (graphemes) et d'octets par ligne non vide dans un fichier.",
