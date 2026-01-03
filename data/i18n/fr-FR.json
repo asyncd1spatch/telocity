@@ -1,0 +1,349 @@
+{
+  "m": {
+    "lcli": {
+      "deletionConfirm": "Cette action est irréversible. Êtes-vous sûr de vouloir supprimer ? (y/N) : ",
+      "yN": "y",
+      "redacted": "[REDACTED]",
+      "deletionAborted": "Suppression annulée.",
+      "a": "a",
+      "q": "q"
+    },
+    "lllm": {
+      "processingComplete": "Le traitement de ce fichier est déjà terminé.",
+      "anotherInstanceIsProcessing": "Un autre instance est déjà en train de traiter ce fichier. Veuillez attendre qu’il se termine ou supprimer le fichier .lock.",
+      "ctrlCPressed": "Ctrl+C appuyé. Finir le lot actuel et sauvegarder la progression. Appuyez à nouveau pour forcer la fermeture.",
+      "ctrlCPressed2": "La demande de terminaison a déjà été effectuée. Veuillez attendre.",
+      "quittingWithoutSaving": "Fermeture forcée sans sauvegarde de la progression.",
+      "processedChunkOf": "Chunk {{ .Processed }} traité sur {{ .Total }}",
+      "progressSavedTerminating": "Progression sauvegardée. Terminaison.",
+      "progressFileDeleted": "Fichier de progression pour le hash {{ .Hash }} supprimé.",
+      "content": "\n--- Contenu provenant de : {{ .Filename }} ---",
+      "filesMerged": "Fichiers fusionnés avec succès dans : {{ .MergedFileName }}",
+      "openingTag": "Tag d'ouverture",
+      "closingTag": "Tag de fermeture",
+      "generatingRequests": "Génération de {{ .Count }} requêtes pour le traitement par lots...",
+      "sourceEmpty": "Le fichier source est vide ou contient uniquement des espaces blancs. Aucune sortie générée.",
+      "wroteEntries": "Écriture réussie de {{ .Count }} entrées dans {{ .TargetPath }}"
+    },
+    "c": {
+      "cfg": {
+        "cfgDeletedSuccessfully": "Fichiers de configuration supprimés avec succès.",
+        "localeSuccessfullyChanged": "La langue a été changée avec succès en {{ .Locale }}."
+      },
+      "models": {
+        "fallback": "Préconfiguration générique pour toute API compatible OpenAI. Nécessite un nom de modèle.",
+        "genericprep": "Préconfiguration générique qui préfixe la promesse au texte de l'utilisateur.",
+        "genericsys": "Préconfiguration générique qui utilise une promesse système.",
+        "noHelp": "Aucun texte d'aide disponible pour cette préconfiguration."
+      },
+      "avg": {
+        "averageCharsPerLine": "Moyenne de caractères (graphèmes) par ligne non vide : {{ .AvgChars }}",
+        "averageBytesPerLine": "Moyenne des octets par ligne non vide : {{ .AvgBytes }}"
+      },
+      "rm": {
+        "filesToDelete": "Les fichiers de progression suivants seront supprimés :",
+        "filesDeletedSuccessfully": "Tous les fichiers de progression supprimés avec succès.",
+        "filesToDeletePrompt": "\nEntrez des nombres ou des plages pour supprimer (ex. `1,3-5`), `a` pour tout, ou `q` pour annuler : ",
+        "filesSelectedForDeletion": "\nFichiers sélectionnés pour suppression :",
+        "noValidSelectionsMade": "Aucune sélection valide effectuée. Annulation.",
+        "noFilesToDelete": "Aucun fichier de progression trouvé à supprimer."
+      },
+      "sp": {
+        "fileSplitSuccess": "Fichier divisé avec succès : {{ .SourcePath }}",
+        "partCreated": "  - Partie {{ .PartNumber }} créée : {{ .PartPath }}"
+      },
+      "st": {
+        "blockExtracted": "Contenu entre les délimitateurs extrait.",
+        "blockDeleted": "Contenu entre les délimitateurs supprimé.",
+        "compressed": "Lignes vides compressées.",
+        "newlinesNormalized": "Contenu du fichier normalisé et sauvegardé."
+      },
+      "tc": {
+        "tc": "Comptage total de tokens :",
+        "avgTc": "Moyenne de tokens par ligne :",
+        "availableModelsForDownload": "Modèles disponibles pour le téléchargement : {{ .AvailableModels }}",
+        "downloadingModelFiles": "Téléchargement des fichiers du modèle \"{{ .ModelName }}\"...",
+        "writingFilesTo": "Écriture des fichiers dans {{ .StateDir }}...",
+        "downloadSuccess": "Téléchargement réussi des fichiers pour \"{{ .ModelName }}\":",
+        "removedFailedWorker": "Un travaileur échoué supprimé. Taille du pool est maintenant {{ .PoolSize }}."
+      },
+      "rd": {
+        "title": "Telocity Reader",
+        "previousBtn": "←Précédent",
+        "nextBtn": "Suivant→",
+        "instructions": "⬅️➡️ h/l shift+space/space",
+        "instructions2": "⬅️➡️ h/l — ⬇️⬆️ j/k shift+space/space",
+        "goToPage": "Page :",
+        "pageInfo": "Page {{ .currentPage }} sur {{ .totalPages }}",
+        "pageInfoFallback": "Page 1 sur 1",
+        "ebookLoaded": "Livre numérique chargé.",
+        "contentLoadError": "Erreur : Impossible de charger le contenu.",
+        "serverShutdown": "Période de déconnexion terminée. Arrêt du serveur...",
+        "serverRunningAt": "Lecteur de livre numérique en cours d'exécution à {{ .url }}",
+        "readingFile": "Lecture du fichier : {{ .sourcePath }}",
+        "notFound": "404 Non trouvé"
+      }
+    }
+  },
+  "e": {
+    "lcli": {
+      "unknownErrorOccurred": "Une erreur inconnue s'est produite.",
+      "causePrefix": "Cause :",
+      "unknownOption": "Option inconnue : '{{ .Option }}'.",
+      "unexpectedPositional": "Argument positionnel inattendu : '{{ .Argument }}'.",
+      "missingValue": "L'argument de l'option '{{ .Option }}' est manquant.",
+      "booleanWithValue": "L'option '{{ .Option }}' ne prend pas d'argument.",
+      "commandNotImplemented": "Commande non implémentée : {{ .CommandAlias }}.",
+      "cfgCouldNotBeLoaded": "Impossible de charger le fichier de configuration depuis {{ .UserConfigPath }}.",
+      "listFormatWidthWarning": "Avertissement : Pas assez d'espace pour formater la description de la liste."
+    },
+    "v": {
+      "invalidArgArray": "Argument array invalide fourni : {{ .OptionValue }}",
+      "invalidChunkSize": "Taille du chunk invalide. Doit être un entier entre 1 et 200000. Fourni : {{ .ChunkSize }}",
+      "invalidBatchSize": "Taille du lot invalide. Doit être un entier entre 1 et 64. Fourni : {{ .BatchSize }}",
+      "invalidIndex": "Index invalide. Doit être un entier positif. Fourni : {{ .Index }}",
+      "invalidPrompt": "Prompt invalide fourni. Doit être une chaîne non vide.",
+      "invalidModel": "Nom de modèle invalide fourni : {{ .Model }}",
+      "invalidText": "Texte invalide fourni : {{ .Text }}",
+      "invalidURL": "URL invalide fourni : {{ .URL }}",
+      "invalidURLScheme": "Schéma URL invalide. Doit commencer par http:// ou https://. Fourni : {{ .URL }}",
+      "invalidAPIKey": "Clé API invalide fournie : {{ .APIKey }}",
+      "invalidTemperatureRange": "La température doit être un nombre entre 0.0 et 2.0.",
+      "invalidTopPRange": "Top_p doit être un nombre entre 0.0 et 1.0.",
+      "invalidTopKRange": "Top_k doit être un entier entre 0 et 1000.",
+      "invalidPenaltyRange": "Pénalité de fréquence/présence doit être un nombre entre -2.0 et 2.0.",
+      "seedMustBePositiveInteger": "La graine doit être un entier positif.",
+      "invalidDelayValue": "Le délai doit être un nombre non négatif dans un tuple [boolean, valeur].",
+      "invalidImageArray": "Entrée d'image invalide. Attendu un tableau de données URI, mais reçu : {{ .Value }}",
+      "invalidDataURI": "Format d'image invalide. Attendu une chaîne de données URI commençant par 'data:', mais reçu : {{ .Value }}",
+      "unsupportedImageType": "Avertissement : Le motif d'image {{ .Args }} ne correspond à aucun fichier pris en charge.",
+      "unsupportedImageType2": "Sauté type d'image non pris en charge \"{{ .Ext }}\" pour le fichier : {{ .Image }}",
+      "imageNotFound": "Avertissement : Fichier d'image non trouvé, sauté : {{ .Image }}"
+    },
+    "lllm": {
+      "undefinedParam": "Paramètre non défini.",
+      "reasoningNotSupported": "Le modèle ne supporte pas la réflexion.",
+      "invalidReasoningType": "Type de réflexion invalide, configuration JSON brisée.",
+      "promptMissing": "La promesse est requise pour la commande oneshot.",
+      "fileNotFound": "Fichier non trouvé : {{ .FilePath }}",
+      "sourceRequired": "Chemin source requis.",
+      "sourceTargetRequired": "Chemin source et chemin cible requis.",
+      "noFilesFound": "Aucun fichier trouvé avec l'extension : .{{ .Extension }}",
+      "targetFileExists": "Le chemin cible existe déjà : {{ .TargetPath }}",
+      "sourceAndTargetMustBeDifferent": "Les chemins source et cible doivent être différents.",
+      "invalidFileSize": "Taille du fichier dépasse la limite maximale de {{ .MAX_SIZE_MB }} MB.",
+      "emptyFile": "Le fichier est vide ou contient uniquement des espaces blancs.",
+      "idleTimeOut": "Dépassement du délai d'inactivité. Aucune donnée reçue du serveur.",
+      "hardTimeOut": "Dépassement du délai dur. La requête a pris trop de temps pour être terminée.",
+      "tExceeded": "Dépassement du délai d'inactivité",
+      "unknownOpenAIError": "Une erreur inconnue s'est produite avec l'API.",
+      "openaiApiError": "Échec de l'appel API avec le statut {{ .Status }} : {{ .Message }}",
+      "networkErrorOpenAI": "Erreur réseau lors de l'appel à {{ .URL }}.",
+      "networkErrorReason": " Raison : {{ .Code }}",
+      "responseNull": "Corps de réponse null",
+      "streamEndedPrematurely": "Flux terminé prématurément sans signal [DONE].",
+      "progressFileDoesNotExist": "Fichier de progression pour le hash {{ .Hash }} n'existe pas.",
+      "llmAPICall": "Erreur lors des appels à l'API LLM : ",
+      "initializingBatch": "Erreur lors de l'initialisation du traitement par lots.",
+      "failedLock": "Échec de la création du fichier de verrou.",
+      "failedToSaveProgress": "Échec de la sauvegarde de la progression.",
+      "whileCalling_deleteProgressEntry": " pendant l'appel à deleteProgressEntry.",
+      "stripNewLinesTypeError": "L'entrée doit être une chaîne ou un tableau de chaînes.",
+      "invalidFormat": "Format invalide '{{ .Format }}'. Formats pris en charge : 'openai' et 'gemini'.",
+      "jsonlGenError": "Une erreur s'est produite lors de la génération du fichier JSONL."
+    },
+    "c": {
+      "co": {
+        "coError": "Avertissement : Impossible de charger le module pour la commande {{ .Command }}. Ignorer la génération de complétion."
+      },
+      "cfg": {
+        "editorNotFound": "Variable d'environnement $EDITOR non trouvée. Veuillez définir $EDITOR sur votre éditeur préféré.",
+        "failedToWriteLocale": "Échec de l'écriture du fichier de langue : {{ .ErrorMessage }}",
+        "invalidLocale": "Langue invalide : {{ .Lang }}."
+      },
+      "mg": {
+        "extensionRequired": "Extension du fichier requise. Utilisez le drapeau -e ou --extension."
+      },
+      "rm": {
+        "unknownMode": "Mode inconnu"
+      },
+      "sp": {
+        "invalidSplitSize": "Taille invalide : {{ .Size }}. Doit être un nombre positif."
+      },
+      "st": {
+        "delimiterPairRequired": "Les délimitateurs de début et de fin sont requis."
+      },
+      "tc": {
+        "tokenizerDoesNotExist": "Le tokeniser pour la préconfiguration '{{ .PresetName }}' n'existe pas.",
+        "modelNotFoundForDownload": "Modèle \"{{ .ModelName }}\" non trouvé.",
+        "failedToDownload": "Échec du téléchargement de {{ .ModelUrl }} : {{ .Status }} {{ .StatusText }}",
+        "modelDownloadError": "Erreur lors du téléchargement du modèle : {{ .ErrorMessage }}",
+        "tokenizerFilesNotFound": "Échec du chargement des fichiers du tokeniser pour {{ .TokenizerName }}",
+        "unhandledWorkerError": "Erreur non gérée dans le travailleur de tokens : {{ .Message }}",
+        "poolShuttingDown": "Le pool de travailleurs est en train de se fermer.",
+        "poolShutdownJobCancelled": "Le pool de travailleurs est en train de se fermer. La tâche {{ .JobID }} a été annulée."
+      }
+    }
+  },
+  "help": {
+    "generic": {
+      "header": "telocity : Un outil pour traiter en lots de texte avec des LLMs.",
+      "usage": "Utilisation : telocity <commande> [options]",
+      "commandHeader": "Commandes :",
+      "commandDescriptions": {
+        "tr": "Traduire un fichier par morceaux.",
+        "tf": "Appliquer une promesse de transformation à un fichier par morceaux.",
+        "os": "Exécuter une seule promesse avec contexte de fichier facultatif.",
+        "bg": "Générer un fichier JSONL pour le traitement par lots.",
+        "rd": "Lecteur simple basé sur HTML pour texte brut",
+        "st": "Supprimer ou extraire le contenu entre délimitateurs dans un fichier.",
+        "mg": "Fusionner plusieurs fichiers textuels en un seul fichier.",
+        "sp": "Diviser un grand fichier en parties plus petites.",
+        "avg": "Calculer la moyenne de la longueur des lignes d'un fichier.",
+        "tc": "Compter les tokens dans un fichier pour un modèle spécifique.",
+        "rm": "Supprimer les fichiers de progression pour les tâches terminées ou bloquées.",
+        "cfg": "Gérer la configuration de l'application."
+      },
+      "footer": "Pour plus d'informations sur toute commande, utilisez `telocity <commande> --help`.",
+      "globalOptionsHeader": "Options globales :",
+      "flags": {
+        "version": "Afficher la version de l'application."
+      }
+    },
+    "commands": {
+      "avg": {
+        "usage": "Utilisation : telocity avg <chemin_source>",
+        "description": "Calcule le nombre moyen de caractères (graphèmes) et d'octets par ligne non vide dans un fichier.",
+        "flags": {}
+      },
+      "cfg": {
+        "usage": "Utilisation : telocity cfg [options]",
+        "description": "Gère la configuration de l'application.",
+        "flags": {
+          "edit": "Ouvrir le fichier de configuration utilisateur dans l'éditeur par défaut.",
+          "remove": "Supprimer les fichiers de configuration utilisateur (confirmation requise).",
+          "lang": "Définir la langue de l'application."
+        },
+        "footer": "Langues prises en charge :\n{{ .LocaleList }}"
+      },
+      "rm": {
+        "usage": "Utilisation : telocity rm <chemin_source> [options]",
+        "description": "Supprime les fichiers de suivi de progression. La commande supporte trois modes :\n\n- Positionnel (par défaut) : Supprime l'entrée de progression pour un seul fichier source, identifié par <chemin_source>.\n- Tous (--all) : Supprime tous les fichiers de progression actuellement suivis.\n- Interactif (--interactive) : Ouvre un menu qui liste tous les fichiers de progression, vous permettant de sélectionner spécifiquement ceux à supprimer.\n\nUtilisez --force (-f) pour ignorer les prompts de confirmation.",
+        "flags": {
+          "all": "Supprimer tous les fichiers de progression.",
+          "force": "Suppression forcée sans confirmation.",
+          "interactive": "Ouvrir un menu interactif pour sélectionner les fichiers de progression à supprimer."
+        }
+      },
+      "mg": {
+        "usage": "Utilisation : telocity mg <répertoire_source> [répertoire_cible] -e <extension>",
+        "description": "Recherche récursivement et fusionne tous les fichiers avec une extension donnée depuis un répertoire source dans un seul fichier dans le répertoire cible (ou dans le répertoire actuel si non spécifié).",
+        "flags": {
+          "extension": "Extension du fichier à rechercher (obligatoire)."
+        }
+      },
+      "os": {
+        "usage": "Utilisation : telocity os \"<prompt>\" [fichier_sortie] [options]",
+        "description": "Exécute une seule promesse unique contre un LLM. Peut prendre du contexte à partir d'un fichier (--file), de l'entrée standard (stdin) et d'images (--image). La sortie du LLM est diffusée dans le terminal ou sauvegardée dans [fichier_sortie] si fournie.",
+        "flags": {
+          "file": "Chemin vers un fichier texte à ajouter à la promesse comme contexte.",
+          "image": "Chemin vers les images pour le contexte visuel. Supporte les motifs globaux et les listes séparées par des deux-points (ex. \"img1.jpg:*.png\"). Formats pris en charge : png, jpg/jpeg, gif, webp.",
+          "params": "Sélectionner une préconfiguration de paramètres du modèle (par défaut : {{ .DefaultModel }}).",
+          "model": "Surcharger le nom du modèle spécifié dans la préconfiguration.",
+          "url": "Surcharger l'URL de l'API.",
+          "apikey": "Fournir une clé API pour la requête.",
+          "reason": "Activer le mode de réflexion pour les préconfigurations qui le supportent."
+        },
+        "footer": "Préconfigurations disponibles :\n{{ .ModelParamList }}"
+      },
+      "sp": {
+        "usage": "Utilisation : telocity sp <chemin_source> <répertoire_cible> [options]",
+        "description": "Divise un grand fichier en parties plus petites selon une taille spécifiée, en veillant à ce que les lignes ne soient pas coupées.",
+        "flags": {
+          "size": "Taille maximale de chaque partie en mégaoctets (par défaut : {{ .Size }})."
+        }
+      },
+      "st": {
+        "usage": "Utilisation : telocity st <chemin_source> <chemin_cible> [options]",
+        "description": "Supprime ou extrait le contenu entre délimitateurs spécifiés d'un fichier.",
+        "flags": {
+          "startdelimiter": "Délimiteur de début.",
+          "enddelimiter": "Délimiteur de fin.",
+          "params": "Utiliser les délimitateurs de début et de fin d'une préconfiguration.",
+          "extracttag": "Extraire le contenu entre les délimitateurs au lieu de le supprimer.",
+          "compress": "Comprimer les lignes vides dans la sortie."
+        },
+        "footer": "Préconfigurations disponibles avec Tags :\n{{ .ReasoningTagParamList }}"
+      },
+      "tc": {
+        "usage": "Utilisation : telocity tc <chemin_source> [options]",
+        "description": "Compte le nombre de tokens dans un fichier en utilisant un tokeniseur spécifique au modèle.",
+        "flags": {
+          "params": "Préconfiguration du modèle dont le tokeniseur doit être utilisé (par défaut : {{ .DefaultModel }}).",
+          "downloadmodel": "Télécharger les fichiers du tokeniseur pour un modèle spécifique (ex. 'qwen')."
+        },
+        "footer": "Tokeniseurs disponibles :\n{{ .TokenParamList }}"
+      },
+      "tf": {
+        "usage": "Utilisation : telocity tf <chemin_source> <chemin_cible> [options]",
+        "description": "Applique une promesse de transformation à un fichier source, le traitant en lots. En utilisant `--image`, le fichier source doit contenir la promesse pour les images. Dans ce mode, évitez de définir un `--chunksize` personnalisé pour garantir que la promesse est traitée comme une unité unique.",
+        "flags": {
+          "chunksize": "Nombre de lignes par lot (par défaut : {{ .ChunkSize }}).",
+          "batchsize": "Nombre de lots à traiter par lot (par défaut : {{ .BatchSize }}).",
+          "parallel": "Limite de concurrence (par défaut : {{ .Parallel }}).",
+          "prompt": "Instruction facultative à préfixer au contenu du fichier source. Généralement omise lors de l'utilisation du drapeau --image.",
+          "image": "Chemin vers les images pour le contexte visuel. Supporte les motifs globaux et les listes séparées par des deux-points (ex. \"img1.jpg:*.png\"). Formats pris en charge : png, jpg/jpeg, gif, webp.",
+          "sysprompt": "Définir une promesse système personnalisée.",
+          "params": "Sélectionner une préconfiguration de paramètres du modèle (par défaut : {{ .DefaultModel }}).",
+          "model": "Surcharger le nom du modèle de la préconfiguration.",
+          "url": "Surcharger l'URL de l'API.",
+          "apikey": "Fournir une clé API.",
+          "wait": "Définir un délai entre les appels API.",
+          "reason": "Activer le mode de réflexion pour les préconfigurations qui le supportent."
+        },
+        "footer": "Préconfigurations disponibles :\n{{ .ModelParamList }}"
+      },
+      "tr": {
+        "usage": "Utilisation : telocity tr <chemin_source> <chemin_cible> [options]",
+        "description": "Traduit un fichier d'une langue source vers une langue cible, le traitant en lots.",
+        "flags": {
+          "chunksize": "Nombre de lignes par lot (par défaut : {{ .ChunkSize }}).",
+          "batchsize": "Nombre de lots à traiter par lot (par défaut : {{ .BatchSize }}).",
+          "parallel": "Limite de concurrence (par défaut : {{ .Parallel }}).",
+          "source": "Langue source (par défaut : \"{{ .SourceLanguage }}\").",
+          "target": "Langue cible (par défaut : \"{{ .TargetLanguage }}\").",
+          "context": "Fournir un contexte supplémentaire pour la traduction.",
+          "params": "Sélectionner une préconfiguration de paramètres du modèle (par défaut : {{ .DefaultModel }}).",
+          "model": "Surcharger le nom du modèle de la préconfiguration.",
+          "url": "Surcharger l'URL de l'API.",
+          "apikey": "Fournir une clé API.",
+          "wait": "Définir un délai entre les appels API.",
+          "reason": "Activer le mode de réflexion pour les préconfigurations qui le supportent."
+        },
+        "footer": "Préconfigurations disponibles :\n{{ .ModelParamList }}"
+      },
+      "bg": {
+        "usage": "Utilisation : telocity bg [options] <fichier_source> <fichier_jsonl_cible>",
+        "description": "Génère un fichier JSONL pour le traitement par lots de traductions à partir d'un fichier texte source.",
+        "flags": {
+          "format": "Format de sortie pour le fichier JSONL. Supporté : 'openai', 'gemini'. (par défaut : openai)",
+          "chunksize": "Nombre de lignes par lot/requête. (par défaut : {{ .ChunkSize }})",
+          "model": "Surcharge le modèle spécifié dans le jeu de paramètres.",
+          "params": "Jeu de paramètres à utiliser pour la promesse et la configuration du modèle. (par défaut : {{ .DefaultModel }})",
+          "source": "Langue source pour les promesses de traduction.",
+          "target": "Langue cible pour les promesses de traduction.",
+          "context": "Contexte supplémentaire à inclure dans la promesse pour chaque lot.",
+          "reason": "Utiliser la variante 'reasoning' du jeu de paramètres sélectionné."
+        },
+        "footer": "\nJeu de paramètres disponibles :\n{{ .ModelParamList }}"
+      },
+      "rd": {
+        "usage": "Utilisation : telocity rd <chemin_source>",
+        "description": "Lance un serveur web local pour afficher un fichier texte dans un lecteur simple.",
+        "flags": {
+          "accessible": "Utiliser un frontend plus simple qui fonctionne mieux avec les lecteurs d'écran, les extensions de navigateur qui modifient le texte comme les traducteurs, etc."
+        }
+      }
+    }
+  }
+}

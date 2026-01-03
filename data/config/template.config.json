@@ -1,0 +1,171 @@
+{
+  "DEFAULT_MODEL": "qwen",
+  "MAX_SIZE_MB": 100,
+  "HUMAN_TIMEOUT": 2,
+  "SOURCE_LANGUAGE": "the detected language",
+  "TARGET_LANGUAGE": "English",
+  "TERMINAL_PREPEND": "{{TERMINAL}}",
+  "DEFAULT_TF_PROMPT": "{{TERMINAL}} Write a summary of the following file.\n\n",
+  "EMPTY_FIELD": [false, "", "", false],
+  "TEMPLATES": {
+    "MAIN_TL_INSTRUCTIONS": "Translate any text you're given from {{ .LanguageSource }} into {{ .LanguageTarget }}. No commentary.\n\n",
+    "TERMINAL": "No markdown.\n\n"
+  },
+  "FALLBACK_VALUES": {
+    "chunkSize": "10",
+    "batchSize": "4",
+    "parallel": "4",
+    "model": [false, ""],
+    "url": "http://localhost:8080/v1/chat/completions",
+    "apiKey": "",
+    "temperature": [false, 1.0],
+    "top_p": [false, 1.0]
+  },
+  "PARAM_CONFIGS": {
+    "online_api": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.fallback",
+        "localPreset": false
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 60],
+          "llmbackend": "chatcompletions",
+          "model": [false, ""]
+        }
+      }
+    },
+    "qwen": {
+      "reasoningType": "reason_and_instruct",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "stripTags": { "start": "<think>", "end": "</think>" },
+        "localPreset": true
+      },
+      "instruct": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 0],
+          "model": [true, "qwen-instruct"]
+        }
+      },
+      "reasoning": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "model": [true, "qwen-reasoning"]
+        }
+      }
+    },
+    "qwenfast": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "stripTags": { "start": "<think>", "end": "</think>" },
+        "localPreset": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 0],
+          "model": [true, "qwen-instruct-fast"]
+        }
+      }
+    },
+    "qwenaccu": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "stripTags": { "start": "<think>", "end": "</think>" },
+        "localPreset": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 0],
+          "model": [true, "qwen-instruct-accu"]
+        }
+      }
+    },
+    "qwenvl": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "stripTags": { "start": "<think>", "end": "</think>" },
+        "localPreset": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 0],
+          "model": [true, "qwen-vl-instruct"]
+        }
+      }
+    },
+    "qwentiny": {
+      "reasoningType": "reason_and_instruct",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "stripTags": { "start": "<think>", "end": "</think>" },
+        "localPreset": true
+      },
+      "instruct": {
+        "prompt": {
+          "defSys": [true, "/no_think", "system", true],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 0],
+          "model": [true, "qwen-tiny"]
+        }
+      },
+      "reasoning": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "model": [true, "qwen-tiny"]
+        }
+      }
+    }
+  }
+}
