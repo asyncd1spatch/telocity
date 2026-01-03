@@ -13,5 +13,5 @@ llama-server --models-preset $LLAMA_MODELS_DIR/presets.ini --models-max 1 --no-w
 with grammar:
 
 ```sh
-llama-server --grammar-file $LLAMA_MODELS_DIR/ascii.gbnf --models-preset $LLAMA_MODELS_DIR/presets.ini --models-max 1 --no-webui --cache-ram 0
+llama-server --grammar-file $LLAMA_MODELS_DIR/latin9.gbnf --models-preset $LLAMA_MODELS_DIR/presets.ini --models-max 1 --no-webui --cache-ram 0
 ```

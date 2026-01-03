@@ -1,5 +1,5 @@
 {
-  "DEFAULT_MODEL": "qwen",
+  "DEFAULT_MODEL": "ernie",
   "MAX_SIZE_MB": 100,
   "HUMAN_TIMEOUT": 2,
   "SOURCE_LANGUAGE": "the detected language",
@@ -37,6 +37,27 @@
           "delay": [false, 60],
           "llmbackend": "chatcompletions",
           "model": [false, ""]
+        }
+      }
+    },
+    "ernie": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "stripTags": { "start": "<think>", "end": "</think>" },
+        "localPreset": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 0],
+          "model": [true, "default"]
         }
       }
     },

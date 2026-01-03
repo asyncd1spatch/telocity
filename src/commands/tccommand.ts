@@ -56,6 +56,10 @@ export default class TcCommand implements Command {
     readonly [key: string]: readonly string[];
   }> {
     return {
+      ernie: [
+        "https://huggingface.co/baidu/ERNIE-4.5-21B-A3B-Base-PT/resolve/main/tokenizer.json",
+        "https://huggingface.co/baidu/ERNIE-4.5-21B-A3B-Base-PT/raw/main/tokenizer_config.json",
+      ],
       qwen: [
         "https://huggingface.co/unsloth/Qwen3-VL-4B-Instruct/resolve/main/tokenizer.json",
         "https://huggingface.co/unsloth/Qwen3-VL-4B-Instruct/resolve/main/tokenizer_config.json",
