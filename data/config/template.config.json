@@ -1,0 +1,119 @@
+{
+  "DEFAULT_MODEL": "hy",
+  "MAX_SIZE_MB": 100,
+  "HUMAN_TIMEOUT": 2,
+  "SOURCE_LANGUAGE": "the detected language",
+  "TARGET_LANGUAGE": "English",
+  "TERMINAL_PREPEND": "{{TERMINAL}}",
+  "DEFAULT_TF_PROMPT": "{{TERMINAL}} Write a summary of the following file.\n\n",
+  "EMPTY_FIELD": [false, "", "", false],
+  "TEMPLATES": {
+    "COMMENT_FOR_USER": "Some Chinese LLMs might work better in certain circumstances with instructions given in Chinese. For that purpose, you may replace MAIN_TL_INSTRUCTIONS with ZH_TL_INSTRUCTIONS in the prompt presets below. There is also a differently worded version of the English instructions that allows indicating the source language, it is the prompt I use for the script that does one shot translations of this program's strings. Some models, like Qwen, can also benefit from using a grammar file (the GitHub repository has examples) to suppress Hanzi.",
+    "MAIN_TL_INSTRUCTIONS": "{{ .ContextualInformation }}Translate the following segment into {{ .LanguageTarget }} without additional explanation.\n\n{{ .TextToInject }}\n\n{{ .ContextualInformation }}Translate the following segment into {{ .LanguageTarget }} without additional explanation.\n\n{{ .TextToInject }}",
+    "ZH_TL_INSTRUCTIONS": "{{ .ContextualInformation }}将以下文本翻译为{{ .LanguageTarget }}，注意只需要输出翻译后的结果，不要额外解释：\n\n{{ .TextToInject }}\n\n{{ .ContextualInformation }}将以下文本翻译为{{ .LanguageTarget }}，注意只需要输出翻译后的结果，不要额外解释：\n\n{{ .TextToInject }}",
+    "ALT_TL_INSTRUCTIONS": "{{ .ContextualInformation }}Translate any text you're given from {{ .LanguageSource }} into {{ .LanguageTarget }}. No commentary.\n\n{{ .TextToInject }}\n\n{{ .ContextualInformation }}Translate any text you're given from {{ .LanguageSource }} into {{ .LanguageTarget }}. No commentary.\n\n{{ .TextToInject }}",
+    "TERMINAL": "No markdown.\n\n"
+  },
+  "FALLBACK_VALUES": {
+    "chunkSize": "10",
+    "batchSize": "4",
+    "parallel": "4",
+    "model": [false, ""],
+    "url": "http://localhost:8080/v1/chat/completions",
+    "apiKey": "",
+    "temperature": [false, 1.0],
+    "top_p": [false, 1.0]
+  },
+  "PARAM_CONFIGS": {
+    "online_api": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.fallback",
+        "localPreset": false
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 60],
+          "llmbackend": "chatcompletions",
+          "model": [false, ""]
+        }
+      }
+    },
+    "hy": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "localPreset": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{ZH_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 0],
+          "model": [true, "default"]
+        }
+      }
+    },
+    "gemma": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "localPreset": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{ALT_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 0],
+          "model": [true, "gem2b"]
+        }
+      }
+    },
+    "qwen": {
+      "reasoningType": "reason_and_instruct",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "stripTags": { "start": "<think>", "end": "</think>" },
+        "localPreset": true
+      },
+      "instruct": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{MAIN_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "temperature": [true, 0],
+          "model": [true, "qwen"]
+        }
+      },
+      "reasoning": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{ALT_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "llmbackend": "chatcompletions",
+          "model": [true, "qwen-reasoning"]
+        }
+      }
+    }
+  }
+}
