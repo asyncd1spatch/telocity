@@ -1,0 +1,565 @@
+[1mdiff --git a/src/libs/LLM/LLM.ts b/src/libs/LLM/LLM.ts[m
+[1mindex 1240ba3..51b0c81 100644[m
+[1m--- a/src/libs/LLM/LLM.ts[m
+[1m+++ b/src/libs/LLM/LLM.ts[m
+[36m@@ -21,6 +21,7 @@[m [mimport type {[m
+   NumberParam,[m
+   OpenAIPayload,[m
+   OpenAIResponse,[m
+[32m+[m[32m  OutputItem,[m
+   PromptParam,[m
+   ResponsesInputContentPart,[m
+   ResponsesMessage,[m
+[36m@@ -100,6 +101,15 @@[m [mfunction getArgConfig() {[m
+         " {{ .Text }}",[m
+       ),[m
+     },[m
+[32m+[m[32m    chatMode: {[m
+[32m+[m[32m      prop: "chatMode" as keyof (LLM & LLMConfigurableProps),[m
+[32m+[m[32m      getValue: V.getValueFromArray([m
+[32m+[m[32m        appState.s.e.v.invalidArgArray,[m
+[32m+[m[32m        "INVALID_ARRAY",[m
+[32m+[m[32m      ),[m
+[32m+[m[32m      validate: V.bool({}, appState.s.e.v.invalidArgArray, "INVALID_OPTION"),[m
+[32m+[m[32m      storeTransformedValue: true,[m
+[32m+[m[32m    },[m
+     url: {[m
+       prop: "url" as keyof (LLM & LLMConfigurableProps),[m
+       validate: V.str([m
+[36m@@ -258,12 +268,13 @@[m [mexport class LLM {[m
+   } as const);[m
+ [m
+   protected readonly llmbackend: backend = "responses";[m
+[31m-  protected readonly url: string = "https://api.openai.com/v1/responses";[m
+[32m+[m[32m  protected readonly url: string = "http://localhost:8080/v1/responses";[m
+   protected readonly apiKey: string = "";[m
+   protected readonly delay: DelayTuple = [true, 60000];[m
+   protected readonly batchSize: number = 1;[m
+   protected readonly parallel: number = 1;[m
+   protected readonly chunkSize: number = 1;[m
+[32m+[m[32m  protected readonly chatMode: boolean = false;[m
+   protected readonly model?: StringParam;[m
+   protected readonly temperature?: NumberParam;[m
+   protected readonly top_p?: NumberParam;[m
+[36m@@ -273,8 +284,11 @@[m [mexport class LLM {[m
+   protected readonly systemPrompt?: PromptParam;[m
+   protected readonly prependPrompt?: PromptParam;[m
+   protected readonly images?: string[];[m
+[31m-  protected readonly abrtTimeout; // In milliseconds[m
+[32m+[m[32m  protected readonly abrtTimeout: number; // In milliseconds[m
+   protected readonly appState: AppState;[m
+[32m+[m[32m  protected lastReasoningEncrypted: string | null = null;[m
+[32m+[m[32m  protected lastReasoningUnencrypted: string | null = null;[m
+[32m+[m[32m  protected lastReasoningSummary: string | null = null;[m
+ [m
+   public completion: ([m
+     messages: Message[],[m
+[36m@@ -309,6 +323,37 @@[m [mexport class LLM {[m
+     this.completion = llmcall || tmpcall;[m
+   }[m
+ [m
+[32m+[m[32m  private processOutputItem(item: OutputItem): string {[m
+[32m+[m[32m    let text = "";[m
+[32m+[m
+[32m+[m[32m    if (item.type === "message") {[m
+[32m+[m[32m      text = item.content.map((c) => c.text).join("");[m
+[32m+[m[32m    } else if (item.type === "reasoning") {[m
+[32m+[m[32m      if (item.encrypted_content) {[m
+[32m+[m[32m        this.lastReasoningEncrypted = item.encrypted_content;[m
+[32m+[m[32m      }[m
+[32m+[m
+[32m+[m[32m      if (Array.isArray(item.content)) {[m
+[32m+[m[32m        const collected = item.content.map((part) => part.text).join("");[m
+[32m+[m[32m        if (collected) {[m
+[32m+[m[32m          this.lastReasoningUnencrypted =[m
+[32m+[m[32m            (this.lastReasoningUnencrypted ?? "") + collected;[m
+[32m+[m[32m        }[m
+[32m+[m[32m      }[m
+[32m+[m
+[32m+[m[32m      if (Array.isArray(item.summary)) {[m
+[32m+[m[32m        const summaryText = item.summary.map((s) => s.text).join("");[m
+[32m+[m[32m        if (summaryText) {[m
+[32m+[m[32m          this.lastReasoningSummary = summaryText;[m
+[32m+[m[32m          if (this.appState.DEBUG_MODE) {[m
+[32m+[m[32m            console.log("[Reasoning Summary]:", summaryText);[m
+[32m+[m[32m          }[m
+[32m+[m[32m        }[m
+[32m+[m[32m      }[m
+[32m+[m[32m    }[m
+[32m+[m[32m    return text;[m
+[32m+[m[32m  }[m
+[32m+[m
+   private async makeRequest([m
+     payload: OpenAIPayload | ResponsesPayload,[m
+     controller: AbortController,[m
+[36m@@ -428,25 +473,30 @@[m [mexport class LLM {[m
+         return acc;[m
+       }, [] as ResponsesMessage[]);[m
+ [m
+[31m-      return {[m
+[32m+[m[32m      const payload: ResponsesPayload = {[m
+         input: inputMessages,[m
+         instructions,[m
+         stream,[m
+         store: false,[m
+         ...commonParams,[m
+[31m-      } as ResponsesPayload;[m
+[31m-    }[m
+[31m-  }[m
+[32m+[m[32m      };[m
+ [m
+[31m-  private isObject(v: unknown): v is Record<string, unknown> {[m
+[31m-    return typeof v === "object" && v !== null;[m
+[32m+[m[32m      if (this.chatMode) {[m
+[32m+[m[32m        payload.include = ["reasoning.encrypted_content", "reasoning"];[m
+[32m+[m[32m        payload.reasoning = {[m
+[32m+[m[32m          summary: "auto",[m
+[32m+[m[32m        };[m
+[32m+[m[32m      }[m
+[32m+[m
+[32m+[m[32m      return payload;[m
+[32m+[m[32m    }[m
+   }[m
+ [m
+   private async *readSSEAndParse([m
+     payload: OpenAIPayload | ResponsesPayload,[m
+     controller: AbortController,[m
+     parseFn: ([m
+[31m-      parsed: unknown,[m
+[32m+[m[32m      parsed: SSEChunk,[m
+     ) => Array<{ text: string; kind: "delta" | "output" | "conditional" }>,[m
+     { idleTimeout = false } = {},[m
+   ): AsyncGenerator<string, void, unknown> {[m
+[36m@@ -540,20 +590,17 @@[m [mexport class LLM {[m
+             }[m
+ [m
+             try {[m
+[31m-              const parsed: unknown = JSON.parse(eventData);[m
+[31m-[m
+[31m-              if (this.isObject(parsed)) {[m
+[31m-                const items = parseFn(parsed);[m
+[31m-[m
+[31m-                for (const it of items) {[m
+[31m-                  if (it.kind === "conditional") {[m
+[31m-                    if (!emittedAnyDelta) {[m
+[31m-                      yield it.text;[m
+[31m-                    }[m
+[31m-                  } else {[m
+[31m-                    emittedAnyDelta = true;[m
+[32m+[m[32m              const parsed = JSON.parse(eventData) as SSEChunk;[m
+[32m+[m[32m              const items = parseFn(parsed);[m
+[32m+[m
+[32m+[m[32m              for (const it of items) {[m
+[32m+[m[32m                if (it.kind === "conditional") {[m
+[32m+[m[32m                  if (!emittedAnyDelta) {[m
+                     yield it.text;[m
+                   }[m
+[32m+[m[32m                } else {[m
+[32m+[m[32m                  emittedAnyDelta = true;[m
+[32m+[m[32m                  yield it.text;[m
+                 }[m
+               }[m
+             } catch {[m
+[36m@@ -563,43 +610,6 @@[m [mexport class LLM {[m
+ [m
+           if (doneSignalReceived) break;[m
+         }[m
+[31m-[m
+[31m-        if (!doneSignalReceived && buffer.trim()) {[m
+[31m-          const lines = buffer.split("\n");[m
+[31m-          let eventData = "";[m
+[31m-          for (const line of lines) {[m
+[31m-            const trimmed = line.trim();[m
+[31m-            if (trimmed.startsWith("data:")) {[m
+[31m-              eventData +=[m
+[31m-                (eventData ? "\n" : "") + trimmed.substring(5).trim();[m
+[31m-            }[m
+[31m-          }[m
+[31m-[m
+[31m-          if (eventData === "[DONE]") {[m
+[31m-            doneSignalReceived = true;[m
+[31m-          } else if (eventData) {[m
+[31m-            try {[m
+[31m-              const parsed: unknown = JSON.parse(eventData);[m
+[31m-[m
+[31m-              if (this.isObject(parsed)) {[m
+[31m-                const items = parseFn(parsed);[m
+[31m-[m
+[31m-                for (const it of items) {[m
+[31m-                  if (it.kind === "conditional") {[m
+[31m-                    if (!emittedAnyDelta) {[m
+[31m-                      yield it.text;[m
+[31m-                    }[m
+[31m-                  } else {[m
+[31m-                    emittedAnyDelta = true;[m
+[31m-                    yield it.text;[m
+[31m-                  }[m
+[31m-                }[m
+[31m-              }[m
+[31m-            } catch {[m
+[31m-              /* ignore */[m
+[31m-            }[m
+[31m-          }[m
+[31m-        }[m
+       } finally {[m
+         try {[m
+           if (reader?.cancel) await reader.cancel();[m
+[36m@@ -631,90 +641,53 @@[m [mexport class LLM {[m
+   }[m
+ [m
+   private parseResponsesChunk([m
+[31m-    parsed: unknown,[m
+[32m+[m[32m    chunk: SSEChunk,[m
+   ): Array<{ text: string; kind: "delta" | "output" | "conditional" }> {[m
+     const out: Array<{[m
+       text: string;[m
+       kind: "delta" | "output" | "conditional";[m
+     }> = [];[m
+ [m
+[31m-    if (!this.isObject(parsed)) return out;[m
+[31m-    const chunk = parsed as SSEChunk;[m
+[31m-[m
+     if ([m
+[31m-      chunk.type === "response.output_text.delta" ||[m
+[31m-      chunk.type === "response.refusal.delta"[m
+[32m+[m[32m      (chunk.type === "response.output_text.delta" ||[m
+[32m+[m[32m        chunk.type === "response.refusal.delta") &&[m
+[32m+[m[32m      chunk.delta[m
+     ) {[m
+[31m-      if (typeof chunk.delta === "string" && chunk.delta.length) {[m
+[31m-        out.push({ text: chunk.delta, kind: "delta" });[m
+[31m-      }[m
+[32m+[m[32m      out.push({ text: chunk.delta, kind: "delta" });[m
+[32m+[m[32m    } else if (chunk.type === "response.reasoning_text.delta" && chunk.delta) {[m
+[32m+[m[32m      this.lastReasoningUnencrypted =[m
+[32m+[m[32m        (this.lastReasoningUnencrypted ?? "") + chunk.delta;[m
+[32m+[m[32m      out.push({ text: chunk.delta, kind: "delta" });[m
+     } else if ([m
+[31m-      chunk.type === "response.output_text.done" ||[m
+[31m-      chunk.type === "response.refusal.done"[m
+[32m+[m[32m      (chunk.type === "response.output_text.done" ||[m
+[32m+[m[32m        chunk.type === "response.refusal.done") &&[m
+[32m+[m[32m      chunk.text[m
+     ) {[m
+[31m-      if (typeof chunk.text === "string" && chunk.text.length) {[m
+[31m-        out.push({ text: chunk.text, kind: "conditional" });[m
+[31m-      }[m
+[32m+[m[32m      out.push({ text: chunk.text, kind: "conditional" });[m
+     } else if ([m
+[31m-      chunk.type === "response.output_item.added" &&[m
+[31m-      this.isObject(chunk.response)[m
+[32m+[m[32m      (chunk.type === "response.output_item.added" ||[m
+[32m+[m[32m        chunk.type === "response.output_item.done") &&[m
+[32m+[m[32m      chunk.item[m
+     ) {[m
+[31m-      const responseOut = chunk.response?.output;[m
+[31m-      if (Array.isArray(responseOut)) {[m
+[31m-        for (const outItem of responseOut) {[m
+[31m-          if (outItem?.content && Array.isArray(outItem.content)) {[m
+[31m-            for (const c of outItem.content) {[m
+[31m-              if (typeof c?.text === "string" && c.text.length) {[m
+[31m-                out.push({ text: c.text, kind: "conditional" });[m
+[31m-              }[m
+[31m-            }[m
+[31m-          }[m
+[31m-        }[m
+[31m-      }[m
+[31m-    }[m
+[31m-[m
+[31m-    if (Array.isArray(chunk.output)) {[m
+[32m+[m[32m      const text = this.processOutputItem(chunk.item);[m
+[32m+[m[32m      if (text) out.push({ text, kind: "output" });[m
+[32m+[m[32m    } else if (Array.isArray(chunk.output)) {[m
+       for (const item of chunk.output) {[m
+[31m-        if (item?.content && Array.isArray(item.content)) {[m
+[31m-          for (const contentItem of item.content) {[m
+[31m-            if ([m
+[31m-              typeof contentItem?.text === "string" &&[m
+[31m-              contentItem.text.length[m
+[31m-            ) {[m
+[31m-              out.push({ text: contentItem.text, kind: "output" });[m
+[31m-            }[m
+[31m-          }[m
+[31m-        }[m
+[31m-      }[m
+[31m-    }[m
+[31m-[m
+[31m-    // Backwards compatibility: legacy chat completions SSE shape[m
+[31m-    if (!chunk.type) {[m
+[31m-      const legacyDelta = chunk.choices?.[0]?.delta?.content;[m
+[31m-      if (typeof legacyDelta === "string" && legacyDelta.length) {[m
+[31m-        out.push({ text: legacyDelta, kind: "delta" });[m
+[32m+[m[32m        const text = this.processOutputItem(item);[m
+[32m+[m[32m        if (text) out.push({ text, kind: "output" });[m
+       }[m
+[32m+[m[32m    } else if (chunk.choices?.[0]?.delta?.content) {[m
+[32m+[m[32m      out.push({ text: chunk.choices[0].delta.content, kind: "delta" });[m
+     }[m
+ [m
+     return out;[m
+   }[m
+ [m
+   private parseLegacyChatChunk([m
+[31m-    parsed: unknown,[m
+[32m+[m[32m    chunk: SSEChunk,[m
+   ): Array<{ text: string; kind: "delta" | "output" | "conditional" }> {[m
+[31m-    const out: Array<{[m
+[31m-      text: string;[m
+[31m-      kind: "delta" | "output" | "conditional";[m
+[31m-    }> = [];[m
+[31m-    if (!this.isObject(parsed)) return out;[m
+[31m-    const chunk = parsed as SSEChunk;[m
+[31m-[m
+[31m-    const legacyDelta = chunk.choices?.[0]?.delta?.content;[m
+[31m-    if (typeof legacyDelta === "string" && legacyDelta.length) {[m
+[31m-      out.push({ text: legacyDelta, kind: "delta" });[m
+[31m-    }[m
+[31m-[m
+[31m-    return out;[m
+[32m+[m[32m    const content = chunk.choices?.[0]?.delta?.content;[m
+[32m+[m[32m    return content ? [{ text: content, kind: "delta" }] : [];[m
+   }[m
+ [m
+   protected async *chatCompletionsStreamResponses([m
+[36m@@ -774,98 +747,48 @@[m [mexport class LLM {[m
+     const controller = new AbortController();[m
+     let timeoutId: ReturnType<typeof setTimeout> | null = null;[m
+ [m
+[31m-    // NOTE: idle vs hard timeouts share the same duration (abrtTimeout);[m
+[31m-    // the difference is whether activity resets the timer.[m
+[31m-    const startAbortTimer = (reason: string | Error) => {[m
+[32m+[m[32m    const startAbortTimer = () => {[m
+       if (timeoutId) clearTimeout(timeoutId);[m
+[31m-      const abortReason =[m
+[31m-        reason instanceof Error ? reason : new Error(String(reason));[m
+       timeoutId = setTimeout(() => {[m
+[31m-        controller.abort(abortReason);[m
+[32m+[m[32m        controller.abort(new Error(this.appState.s.e.lllm.hardTimeOut));[m
+       }, this.abrtTimeout);[m
+     };[m
+ [m
+[31m-    startAbortTimer(this.appState.s.e.lllm.hardTimeOut);[m
+[31m-[m
+[31m-    const payload = this.buildPayload(messages, false);[m
+[31m-[m
+[31m-    const isObject = (v: unknown): v is Record<string, unknown> =>[m
+[31m-      typeof v === "object" && v !== null;[m
+[31m-[m
+[31m-    const extractTextPartsFromOutput = (out: unknown): string[] | null => {[m
+[31m-      if (!Array.isArray(out)) return null;[m
+[31m-      const parts: string[] = [];[m
+[31m-      for (const outItem of out) {[m
+[31m-        if (!isObject(outItem)) continue;[m
+[31m-        const content = outItem["content"];[m
+[31m-        if (!Array.isArray(content)) continue;[m
+[31m-        for (const c of content) {[m
+[31m-          if (!isObject(c)) continue;[m
+[31m-          const t = c["text"];[m
+[31m-          if (typeof t === "string" && t.length) parts.push(t);[m
+[31m-        }[m
+[31m-      }[m
+[31m-      return parts.length ? parts : null;[m
+[31m-    };[m
+[31m-[m
+[31m-    const extractTopLevelText = (obj: unknown): string | null => {[m
+[31m-      if (!isObject(obj)) return null;[m
+[31m-      const maybeText = obj["text"];[m
+[31m-      if (typeof maybeText === "string" && maybeText.length) return maybeText;[m
+[31m-      if (isObject(maybeText)) {[m
+[31m-        const maybeContent = maybeText["content"];[m
+[31m-        if (typeof maybeContent === "string" && maybeContent.length) {[m
+[31m-          return maybeContent;[m
+[31m-        }[m
+[31m-      }[m
+[31m-      return null;[m
+[31m-    };[m
+[32m+[m[32m    startAbortTimer();[m
+ [m
+     try {[m
+[32m+[m[32m      const payload = this.buildPayload(messages, false);[m
+       const resp = await this.makeRequest(payload, controller);[m
+       const data = (await resp.json()) as OpenAIResponse;[m
+[32m+[m[32m      const results: string[] = [];[m
+ [m
+       if (this.llmbackend === "responses") {[m
+[31m-        if (isObject(data)) {[m
+[31m-          const out = data["output"];[m
+[31m-          const parts = extractTextPartsFromOutput(out);[m
+[31m-          if (parts) return parts.join("");[m
+[31m-        }[m
+[31m-[m
+[31m-        if (isObject(data)) {[m
+[31m-          const nested = data["response"];[m
+[31m-          if (isObject(nested)) {[m
+[31m-            const nestedOut = nested["output"];[m
+[31m-            const parts2 = extractTextPartsFromOutput(nestedOut);[m
+[31m-            if (parts2) return parts2.join("");[m
+[32m+[m[32m        const output = data.output || data.response?.output;[m
+[32m+[m[32m        if (Array.isArray(output)) {[m
+[32m+[m[32m          for (const item of output) {[m
+[32m+[m[32m            results.push(this.processOutputItem(item));[m
+           }[m
+         }[m
+ [m
+[31m-        const top = extractTopLevelText(data);[m
+[31m-        if (top) return top;[m
+[32m+[m[32m        if (typeof data.text === "string") {[m
+[32m+[m[32m          results.push(data.text);[m
+[32m+[m[32m        } else if (data.text?.content) {[m
+[32m+[m[32m          results.push(data.text.content);[m
+[32m+[m[32m        }[m
+ [m
+[31m-        return "";[m
+[32m+[m[32m        return results.filter(Boolean).join("");[m
+       }[m
+ [m
+[31m-      if (isObject(data)) {[m
+[31m-        const choices = data["choices"];[m
+[31m-        if (Array.isArray(choices) && choices.length > 0) {[m
+[31m-          const first = choices[0];[m
+[31m-          if (isObject(first)) {[m
+[31m-            const message = first["message"];[m
+[31m-            if (isObject(message)) {[m
+[31m-              const content = message["content"];[m
+[31m-              if (typeof content === "string") return content;[m
+[31m-            }[m
+[31m-          }[m
+[31m-        }[m
+[32m+[m[32m      // Legacy[m
+[32m+[m[32m      const firstChoice = data.choices?.[0];[m
+[32m+[m[32m      if (firstChoice?.message?.content) {[m
+[32m+[m[32m        return firstChoice.message.content;[m
+       }[m
+ [m
+       return "";[m
+     } finally {[m
+       if (timeoutId) {[m
+         clearTimeout(timeoutId);[m
+[31m-        timeoutId = null;[m
+       }[m
+     }[m
+   }[m
+[36m@@ -874,11 +797,13 @@[m [mexport class LLM {[m
+     messages: Message[],[m
+     { verbose = false }: { verbose?: boolean | ((chunk: string) => void) } = {},[m
+   ): Promise<string> {[m
+[31m-    const isBun = typeof globalThis.Bun !== "undefined";[m
+[31m-[m
+     // Node's fetch enforces a hard timeout (~5min), avoid it by always[m
+     // streaming on Node, even when not verbose, to keep the connection alive.[m
+     // Bun has no enforced fetch timeout, so non-streaming is safe there.[m
+[32m+[m[32m    const isBun =[m
+[32m+[m[32m      typeof globalThis === "object" &&[m
+[32m+[m[32m      "Bun" in globalThis &&[m
+[32m+[m[32m      globalThis.Bun !== undefined;[m
+     if (!verbose && isBun) {[m
+       return await this.chatCompletionsNoStream(messages);[m
+     }[m
+[36m@@ -980,6 +905,17 @@[m [mexport class LLM {[m
+     return modifiedMessage;[m
+   }[m
+ [m
+[32m+[m[32m  public getLastReasoning(preferUnencrypted = true): {[m
+[32m+[m[32m    encrypted: string | null;[m
+[32m+[m[32m    unencrypted: string | null;[m
+[32m+[m[32m    preferred: string | null;[m
+[32m+[m[32m  } {[m
+[32m+[m[32m    const enc = this.lastReasoningEncrypted;[m
+[32m+[m[32m    const unenc = this.lastReasoningUnencrypted;[m
+[32m+[m[32m    const preferred = preferUnencrypted ? (unenc ?? enc) : (enc ?? unenc);[m
+[32m+[m[32m    return { encrypted: enc, unencrypted: unenc, preferred: preferred ?? null };[m
+[32m+[m[32m  }[m
+[32m+[m
+   public toString(): string {[m
+     return JSON.stringify(this, (key: string, value: unknown) => {[m
+       if (key === "chunks" || key === "text" || key === "processedBatch") {[m
+[1mdiff --git a/src/libs/types/LLMTypes.ts b/src/libs/types/LLMTypes.ts[m
+[1mindex 12b7c88..282a856 100644[m
+[1m--- a/src/libs/types/LLMTypes.ts[m
+[1m+++ b/src/libs/types/LLMTypes.ts[m
+[36m@@ -1,14 +1,52 @@[m
+ import { type DelayTuple } from "./types.ts";[m
+ [m
+[31m-export type OutputContentItem = {[m
+[31m-  type?: string;[m
+[31m-  text?: string;[m
+[32m+[m[32mexport type OutputTextPart = {[m
+[32m+[m[32m  type: "output_text";[m
+[32m+[m[32m  text: string;[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mexport type ReasoningTextPart = {[m
+[32m+[m[32m  type: "reasoning_text";[m
+[32m+[m[32m  text: string;[m
+ };[m
+ [m
+[31m-export type OutputItem = {[m
+[31m-  content?: OutputContentItem[];[m
+[32m+[m[32mexport type OutputContentItem = OutputTextPart | ReasoningTextPart;[m
+[32m+[m
+[32m+[m[32mexport type MessageOutputItem = {[m
+[32m+[m[32m  type: "message";[m
+[32m+[m[32m  id?: string;[m
+[32m+[m[32m  role?: "assistant";[m
+[32m+[m[32m  content: OutputTextPart[];[m
+ };[m
+ [m
+[32m+[m[32mexport type ReasoningOutputItem = {[m
+[32m+[m[32m  type: "reasoning";[m
+[32m+[m[32m  id?: string;[m
+[32m+[m[32m  summary?: { type: "summary_text"; text: string }[];[m
+[32m+[m[32m  encrypted_content?: string | null;[m
+[32m+[m[32m  content?: ReasoningTextPart[];[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mexport type FunctionCallOutputItem = {[m
+[32m+[m[32m  type: "function_call";[m
+[32m+[m[32m  id?: string;[m
+[32m+[m[32m  call_id: string;[m
+[32m+[m[32m  name: string;[m
+[32m+[m[32m  arguments: string;[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mexport type FunctionCallOutputResultItem = {[m
+[32m+[m[32m  type: "function_call_output";[m
+[32m+[m[32m  call_id: string;[m
+[32m+[m[32m  output: string;[m
+[32m+[m[32m};[m
+[32m+[m
+[32m+[m[32mexport type OutputItem =[m
+[32m+[m[32m  | MessageOutputItem[m
+[32m+[m[32m  | ReasoningOutputItem[m
+[32m+[m[32m  | FunctionCallOutputItem[m
+[32m+[m[32m  | FunctionCallOutputResultItem;[m
+[32m+[m
+ export type SSEChunk = {[m
+   type?: string;[m
+   delta?: string;[m
+[36m@@ -18,6 +56,7 @@[m [mexport type SSEChunk = {[m
+   };[m
+   output?: OutputItem[];[m
+   choices?: Array<{ delta?: { content?: string } }>;[m
+[32m+[m[32m  item?: OutputItem;[m
+ };[m
+ [m
+ export type OpenAIResponse = {[m
+[36m@@ -89,6 +128,11 @@[m [mexport type ResponsesPayload = {[m
+   seed?: number;[m
+   tools?: unknown[];[m
+   store?: boolean;[m
+[32m+[m[32m  include?: string[];[m
+[32m+[m[32m  reasoning?: {[m
+[32m+[m[32m    effort?: "low" | "medium" | "high";[m
+[32m+[m[32m    summary?: "auto" | boolean;[m
+[32m+[m[32m  };[m
+ };[m
+ [m
+ export type OpenAIPayload = {[m
+[36m@@ -134,6 +178,7 @@[m [mexport interface LLMConfigurableProps {[m
+   chunkSize: number;[m
+   batchSize: number;[m
+   parallel: number;[m
+[32m+[m[32m  chatMode?: boolean;[m
+ }[m
+ [m
+ export type MappableParamKey = Extract<[m
