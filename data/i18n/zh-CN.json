@@ -1,0 +1,351 @@
+{
+  "m": {
+    "lcli": {
+      "deletionConfirm": "此操作不可逆。确定要删除吗？(y/N): ",
+      "yN": "y",
+      "redacted": "[REDACTED]",
+      "deletionAborted": "删除已中止。",
+      "a": "a",
+      "q": "q"
+    },
+    "lllm": {
+      "retryWithTemp": "[第 {{ .Attempt }} 次尝试] 分块处理失败。正在尝试使用温度 {{ .Temp }} 重新处理...",
+      "processingComplete": "该文件的处理已完成。",
+      "anotherInstanceIsProcessing": "另一个实例正在处理此文件。请等待其完成，或删除 .lock 文件。",
+      "ctrlCPressed": "按下了 Ctrl+C。正在完成当前批次并保存进度。再次按下以强制退出。",
+      "ctrlCPressed2": "终止请求已发出，请稍等。",
+      "quittingWithoutSaving": "未保存进度即强制退出。",
+      "processedChunkOf": "已处理 {{ .Processed }} 个分块中的 {{ .Total }} 个",
+      "progressSavedTerminating": "进度已保存，正在终止。",
+      "progressFileDeleted": "已删除哈希值为 {{ .Hash }} 的进度文件。",
+      "content": "\n--- 来自文件: {{ .Filename }} 的内容 ---",
+      "filesMerged": "文件已成功合并至: {{ .MergedFileName }}",
+      "openingTag": "开始标签",
+      "closingTag": "结束标签",
+      "generatingRequests": "正在为批量处理生成 {{ .Count }} 个请求...",
+      "sourceEmpty": "源文件为空或仅包含空白字符。未生成输出。",
+      "wroteEntries": "已成功向 {{ .TargetPath }} 写入 {{ .Count }} 条条目"
+    },
+    "c": {
+      "cfg": {
+        "cfgDeletedSuccessfully": "配置文件已成功删除。",
+        "localeSuccessfullyChanged": "已成功将语言设置为 {{ .Locale }}。"
+      },
+      "models": {
+        "fallback": "适用于任何 OpenAI 兼容 API 的通用预设。需要指定模型名称。",
+        "genericprep": "在用户文本前添加提示的通用预设。",
+        "genericsys": "使用系统提示的通用预设。",
+        "noHelp": "此预设无帮助文本。"
+      },
+      "avg": {
+        "averageCharsPerLine": "每行非空行的平均字符（图形字符）数: {{ .AvgChars }}",
+        "averageBytesPerLine": "每行非空行的平均字节数: {{ .AvgBytes }}"
+      },
+      "rm": {
+        "filesToDelete": "以下进度文件将被删除：",
+        "filesDeletedSuccessfully": "所有进度文件已成功删除。",
+        "filesToDeletePrompt": "\n请输入要删除的数字或范围（例如 `1,3-5`），`a` 表示全部，`q` 表示取消：",
+        "filesSelectedForDeletion": "\n已选择删除的文件：",
+        "noValidSelectionsMade": "未做出有效选择。中止操作。",
+        "noFilesToDelete": "未找到需要删除的进度文件。"
+      },
+      "sp": {
+        "fileSplitSuccess": "已成功分割文件: {{ .SourcePath }}",
+        "partCreated": "  - 已创建第 {{ .PartNumber }} 部分: {{ .PartPath }}"
+      },
+      "st": {
+        "blockExtracted": "已提取分隔符之间的内容。",
+        "blockDeleted": "已删除分隔符之间的内容。",
+        "compressed": "已压缩空行。",
+        "newlinesNormalized": "已规范化文件内容并保存。"
+      },
+      "tc": {
+        "tc": "总 token 数：",
+        "avgTc": "每行平均 token 数：",
+        "availableModelsForDownload": "可下载的模型：{{ .AvailableModels }}",
+        "downloadingModelFiles": "正在下载模型文件 \"{{ .ModelName }}\"...",
+        "writingFilesTo": "正在将文件写入 {{ .StateDir }}...",
+        "downloadSuccess": "已成功下载 \"{{ .ModelName }}\" 的文件：",
+        "removedFailedWorker": "已移除一个失败的工作者。工作池大小现在为 {{ .PoolSize }}。"
+      },
+      "rd": {
+        "title": "Telocity 阅读器",
+        "previousBtn": "←上一页",
+        "nextBtn": "下一页→",
+        "instructions": "⬅️➡️ h/l shift+space/space",
+        "instructions2": "⬅️➡️ h/l — ⬇️⬆️ j/k shift+space/space",
+        "goToPage": "页码：",
+        "pageInfo": "第 {{ .currentPage }} 页，共 {{ .totalPages }} 页",
+        "pageInfoFallback": "第 1 页，共 1 页",
+        "ebookLoaded": "已加载电子书。",
+        "contentLoadError": "错误：无法加载内容。",
+        "serverShutdown": "优雅关闭期已结束，正在关闭服务器...",
+        "serverRunningAt": "电子书阅读器正在运行于 {{ .url }}",
+        "readingFile": "正在读取文件: {{ .sourcePath }}",
+        "notFound": "404 未找到"
+      }
+    }
+  },
+  "e": {
+    "lcli": {
+      "unknownErrorOccurred": "发生未知错误。",
+      "causePrefix": "原因：",
+      "unknownOption": "未知选项: '{{ .Option }}'。",
+      "unexpectedPositional": "意外的参数: '{{ .Argument }}'。",
+      "missingValue": "选项 '{{ .Option }}' 缺少参数。",
+      "booleanWithValue": "选项 '{{ .Option }}' 不接受参数。",
+      "commandNotImplemented": "未实现命令: {{ .CommandAlias }}。",
+      "cfgCouldNotBeLoaded": "无法从 {{ .UserConfigPath }} 加载配置文件。",
+      "listFormatWidthWarning": "警告：空间不足，无法格式化列表描述。"
+    },
+    "v": {
+      "invalidArgArray": "提供的参数数组无效: {{ .OptionValue }}",
+      "invalidChunkSize": "分块大小无效。必须是 1 到 200000 之间的整数。提供值: {{ .ChunkSize }}",
+      "invalidBatchSize": "批次大小无效。必须是 1 到 64 之间的整数。提供值: {{ .BatchSize }}",
+      "invalidIndex": "无效的 lastIndex。必须是正整数。提供值: {{ .Index }}",
+      "invalidPrompt": "提供的提示无效。必须是非空字符串。",
+      "invalidModel": "提供的模型名称无效: {{ .Model }}",
+      "invalidText": "提供的文本无效: {{ .Text }}",
+      "invalidURL": "提供的 URL 无效: {{ .URL }}",
+      "invalidURLScheme": "URL 协议无效。必须以 http:// 或 https:// 开头。提供值: {{ .URL }}",
+      "invalidAPIKey": "提供的 API 密钥无效: {{ .APIKey }}",
+      "invalidTemperatureRange": "温度必须在 0.0 到 2.0 之间。",
+      "invalidTopPRange": "Top_p 必须在 0.0 到 1.0 之间。",
+      "invalidTopKRange": "Top_k 必须在 0 到 1000 之间的整数。",
+      "invalidPenaltyRange": "频率/存在惩罚必须在 -2.0 到 2.0 之间。",
+      "seedMustBePositiveInteger": "种子必须是正整数。",
+      "invalidDelayValue": "延迟必须是非负数，且在 [布尔值, 值] 元组内。",
+      "invalidImageArray": "图像输入无效。期望是数据 URI 数组，但收到: {{ .Value }}",
+      "invalidDataURI": "图像格式无效。期望以 'data:' 开头的数据 URI 字符串，但收到: {{ .Value }}",
+      "unsupportedImageType": "警告：图像通配符模式 {{ .Args }} 未匹配任何支持的文件。",
+      "unsupportedImageType2": "跳过不支持的图像类型 \"{{ .Ext }}\"，文件: {{ .Image }}",
+      "imageNotFound": "警告：图像文件未找到，跳过: {{ .Image }}",
+      "invalidChatMode": "提供的聊天模式无效。期望布尔值（true/false），但收到: {{ .Value }}"
+    },
+    "lllm": {
+      "unreachable": "内部逻辑错误：批处理中执行到达了不可达状态。",
+      "undefinedParam": "未定义参数集。",
+      "reasoningNotSupported": "模型不支持推理。",
+      "invalidReasoningType": "无效的推理类型，JSON 配置损坏。",
+      "promptMissing": "一次性命令需要提示。",
+      "fileNotFound": "文件未找到: {{ .FilePath }}",
+      "sourceRequired": "需要源路径。",
+      "sourceTargetRequired": "需要源路径和目标路径。",
+      "noFilesFound": "未找到扩展名为 .{{ .Extension }} 的文件。",
+      "targetFileExists": "目标路径已存在: {{ .TargetPath }}",
+      "sourceAndTargetMustBeDifferent": "源路径和目标路径必须不同。",
+      "invalidFileSize": "文件大小超过最大限制 {{ .MAX_SIZE_MB }} MB。",
+      "emptyFile": "文件为空或仅包含空白字符。",
+      "idleTimeOut": "空闲超时已超过。未从服务器接收到数据。",
+      "hardTimeOut": "硬超时已超过。请求处理时间过长。",
+      "tExceeded": "空闲超时已超过",
+      "unknownOpenAIError": "API 发生未知错误。",
+      "openaiApiError": "API 调用失败，状态 {{ .Status }}: {{ .Message }}",
+      "networkErrorOpenAI": "调用 {{ .URL }} 时发生网络错误。",
+      "networkErrorReason": " 原因: {{ .Code }}",
+      "responseNull": "响应体为空",
+      "progressFileDoesNotExist": "哈希值为 {{ .Hash }} 的进度文件不存在。",
+      "llmAPICall": "LLM API 调用出错: ",
+      "initializingBatch": "初始化批量处理时出错。",
+      "failedLock": "创建锁文件失败。",
+      "failedToSaveProgress": "保存进度失败。",
+      "whileCalling_deleteProgressEntry": " 在调用 deleteProgressEntry 时出错。",
+      "stripNewLinesTypeError": "输入必须是字符串或字符串数组。",
+      "invalidFormat": "无效格式 '{{ .Format }}'。支持的格式为 'openai-chatcompletions', 'openai-responses' 和 'gemini'。",
+      "jsonlGenError": "在生成 JSONL 文件时发生错误。"
+    },
+    "c": {
+      "co": {
+        "coError": "警告：无法加载命令 {{ .Command }} 的模块。跳过完成生成。"
+      },
+      "cfg": {
+        "editorNotFound": "未找到 $EDITOR 环境变量。请将 $EDITOR 设置为您的首选文本编辑器。",
+        "failedToWriteLocale": "写入语言文件失败: {{ .ErrorMessage }}",
+        "invalidLocale": "无效的语言: {{ .Lang }}。"
+      },
+      "mg": {
+        "extensionRequired": "需要文件扩展名。请使用 -e 或 --extension 标志。"
+      },
+      "rm": {
+        "unknownMode": "未知模式"
+      },
+      "sp": {
+        "invalidSplitSize": "大小无效: {{ .Size }}。必须是正数。"
+      },
+      "st": {
+        "delimiterPairRequired": "需要开始和结束分隔符。"
+      },
+      "tc": {
+        "tokenizerDoesNotExist": "预设 '{{ .PresetName }}' 的分词器不存在。",
+        "modelNotFoundForDownload": "未找到模型 \"{{ .ModelName }}\"。",
+        "failedToDownload": "下载 {{ .ModelUrl }} 失败: {{ .Status }} {{ .StatusText }}",
+        "modelDownloadError": "模型下载过程中出错: {{ .ErrorMessage }}",
+        "tokenizerFilesNotFound": "无法加载 {{ .TokenizerName }} 的分词器文件",
+        "unhandledWorkerError": "分词工作进程中的未处理错误: {{ .Message }}",
+        "poolShuttingDown": "工作池正在关闭。",
+        "poolShutdownJobCancelled": "工作池正在关闭。任务 {{ .JobID }} 已取消。"
+      }
+    }
+  },
+  "help": {
+    "generic": {
+      "header": "telocity: 一个用于使用 LLM 批量处理文本的工具。",
+      "usage": "用法: telocity <命令> [选项]",
+      "commandHeader": "命令：",
+      "commandDescriptions": {
+        "tr": "逐块翻译文件。",
+        "tf": "对文件逐块应用转换提示。",
+        "os": "执行单次提示，可选文件上下文。",
+        "bg": "生成用于批量处理的 JSONL 文件。",
+        "rd": "基于 HTML 的简单纯文本阅读器",
+        "st": "从文件中提取或删除分隔符之间的内容。",
+        "mg": "将多个文本文件合并为单个文件。",
+        "sp": "将大文件分割为更小的部分。",
+        "avg": "计算文件中每行的平均字符（图形字符）和字节数。",
+        "tc": "为特定模型计算文件中的 token 数量。",
+        "rm": "删除已完成或卡住任务的进度文件。",
+        "cfg": "管理应用程序配置。"
+      },
+      "footer": "有关任何命令的更多信息，请使用 `telocity <命令> --help`。",
+      "globalOptionsHeader": "全局选项：",
+      "flags": {
+        "version": "显示应用程序版本。"
+      }
+    },
+    "commands": {
+      "avg": {
+        "usage": "用法: telocity avg <源路径>",
+        "description": "计算文件中每行非空行的平均字符（图形字符）和字节数。",
+        "flags": {}
+      },
+      "cfg": {
+        "usage": "用法: telocity cfg [选项]",
+        "description": "管理应用程序配置。",
+        "flags": {
+          "edit": "在默认编辑器中打开用户配置文件。",
+          "remove": "删除用户配置文件（需确认）。",
+          "lang": "设置应用程序语言。"
+        },
+        "footer": "支持的语言：\n{{ .LocaleList }}"
+      },
+      "rm": {
+        "usage": "用法: telocity rm <源路径> [选项]",
+        "description": "删除进度跟踪文件。该命令支持三种模式：\n\n- 位置模式（默认）：根据 <源路径> 删除单个源文件的进度条目。\n- 全部（--all）：删除当前跟踪的所有进度文件。\n- 交互模式（--interactive）：打开一个菜单列出所有进度文件，允许您选择要删除的特定文件。\n\n使用 --force (-f) 可跳过确认提示。",
+        "flags": {
+          "all": "删除所有进度文件。",
+          "force": "强制删除，无需确认。",
+          "interactive": "打开交互式菜单，选择要删除的进度文件。"
+        }
+      },
+      "mg": {
+        "usage": "用法: telocity mg <源目录> [目标目录] -e <扩展名>",
+        "description": "递归查找并合并源目录中所有具有指定扩展名的文件，合并到目标目录中的单个文件（若未指定则合并到当前目录）。",
+        "flags": {
+          "extension": "要查找的文件扩展名（必需）。"
+        }
+      },
+      "os": {
+        "usage": "用法: telocity os \"<提示>\" [输出文件] [选项]",
+        "description": "对 LLM 执行单次提示。可从文件（--file）、标准输入（stdin）和图像（--image）中获取上下文。LLM 的输出将流式传输到终端，或若提供了输出文件则保存到该文件。",
+        "flags": {
+          "file": "要附加到提示作为上下文的文本文件路径。",
+          "image": "用于视觉上下文的图像路径。支持通配符模式和冒号分隔列表（例如 \"img1.jpg:*.png\"）。支持格式：png, jpg/jpeg, gif, webp。",
+          "params": "选择模型参数预设（默认: {{ .DefaultModel }}）。",
+          "model": "覆盖预设中指定的模型名称。",
+          "url": "覆盖 API 端点 URL。",
+          "apikey": "提供请求的 API 密钥。",
+          "reason": "为支持推理的预设启用推理模式。"
+        },
+        "footer": "可用预设：\n{{ .ModelParamList }}"
+      },
+      "sp": {
+        "usage": "用法: telocity sp <源路径> <目标目录> [选项]",
+        "description": "根据指定大小将大文件分割为更小的部分，确保行不会被分割。",
+        "flags": {
+          "size": "每个部分的最大大小（单位：MB，默认: {{ .Size }}）"
+        }
+      },
+      "st": {
+        "usage": "用法: telocity st <源路径> <目标路径> [选项]",
+        "description": "从文件中移除或提取指定分隔符之间的内容。",
+        "flags": {
+          "startdelimiter": "起始分隔符。",
+          "enddelimiter": "结束分隔符。",
+          "params": "使用预设中的起始/结束分隔符。",
+          "extracttag": "提取分隔符之间的内容，而不是删除它。",
+          "compress": "压缩输出中的空行。"
+        },
+        "footer": "带有标签的可用预设：\n{{ .ReasoningTagParamList }}"
+      },
+      "tc": {
+        "usage": "用法: telocity tc <源路径> [选项]",
+        "description": "使用特定模型的分词器计算文件中的 token 数量。",
+        "flags": {
+          "params": "要使用的模型预设的分词器（默认: {{ .DefaultModel }}）。",
+          "downloadmodel": "下载特定模型的分词器文件（例如 'qwen'）。"
+        },
+        "footer": "可用分词器：\n{{ .TokenParamList }}"
+      },
+      "tf": {
+        "usage": "用法: telocity tf <源路径> <目标路径> [选项]",
+        "description": "对源文件应用转换提示，并分块处理。使用 `--image` 时，源文件应包含图像的提示。在此模式下，避免设置自定义 `--chunksize`，以确保提示作为单个单元处理。",
+        "flags": {
+          "chunksize": "每块的行数（默认: {{ .ChunkSize }}）。",
+          "batchsize": "每批次处理的块数（默认: {{ .BatchSize }}）。",
+          "parallel": "并发限制（默认: {{ .Parallel }}）。",
+          "prompt": "可选的附加到源文件内容的指令。在使用 --image 标志时通常省略。",
+          "image": "用于视觉上下文的图像路径。支持通配符模式和冒号分隔列表（例如 \"img1.jpg:*.png\"）。支持格式：png, jpg/jpeg, gif, webp。",
+          "sysprompt": "设置自定义系统提示。",
+          "params": "选择模型参数预设（默认: {{ .DefaultModel }}）。",
+          "model": "覆盖预设中的模型名称。",
+          "url": "覆盖 API 端点 URL。",
+          "apikey": "提供 API 密钥。",
+          "wait": "设置 API 调用之间的延迟。",
+          "reason": "为支持推理的预设启用推理模式。"
+        },
+        "footer": "可用预设：\n{{ .ModelParamList }}"
+      },
+      "tr": {
+        "usage": "用法: telocity tr <源路径> <目标路径> [选项]",
+        "description": "将文件从源语言翻译为目标语言，分块处理。",
+        "flags": {
+          "chunksize": "每块的行数（默认: {{ .ChunkSize }}）。",
+          "batchsize": "每批次处理的块数（默认: {{ .BatchSize }}）。",
+          "parallel": "并发限制（默认: {{ .Parallel }}）。",
+          "source": "源语言（默认: \"{{ .SourceLanguage }}\"）。",
+          "target": "目标语言（默认: \"{{ .TargetLanguage }}\"）。",
+          "context": "提供翻译的额外上下文。",
+          "params": "选择模型参数预设（默认: {{ .DefaultModel }}）。",
+          "model": "覆盖预设中的模型名称。",
+          "url": "覆盖 API 端点 URL。",
+          "apikey": "提供 API 密钥。",
+          "wait": "设置 API 调用之间的延迟。",
+          "reason": "为支持推理的预设启用推理模式。"
+        },
+        "footer": "可用预设：\n{{ .ModelParamList }}"
+      },
+      "bg": {
+        "usage": "用法: telocity bg [选项] <源文件> <目标 JSONL 文件>",
+        "description": "从源文本文件生成用于批量处理翻译的 JSONL 文件。",
+        "flags": {
+          "format": "JSONL 文件的输出格式。支持: 'openai-chatcompletions', 'openai-responses', 'gemini'。（默认: openai-chatcompletions）",
+          "chunksize": "每块/每请求的行数。（默认: {{ .ChunkSize }}）",
+          "model": "覆盖参数集中指定的模型。",
+          "params": "用于提示和模型配置的参数集。（默认: {{ .DefaultModel }}）",
+          "source": "翻译提示的源语言。",
+          "target": "翻译提示的目标语言。",
+          "context": "每个块提示中包含的额外上下文。",
+          "reason": "使用所选模型参数集的 'reasoning' 变体。"
+        },
+        "footer": "\n可用参数集：\n{{ .ModelParamList }}"
+      },
+      "rd": {
+        "usage": "用法: telocity rd <源路径>",
+        "description": "启动本地 Web 服务器，以简单阅读器显示文本文件。",
+        "flags": {
+          "accessible": "使用更简单的前端，与屏幕阅读器、修改文本的浏览器扩展（如翻译器）等兼容性更好。"
+        }
+      }
+    }
+  }
+}

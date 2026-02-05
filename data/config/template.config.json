@@ -1,0 +1,166 @@
+{
+  "DEFAULT_MODEL": "qwen",
+  "MAX_SIZE_MB": 10,
+  "HUMAN_TIMEOUT": 1,
+  "SOURCE_LANGUAGE": "the detected language",
+  "TARGET_LANGUAGE": "English",
+  "TERMINAL_PREPEND": "{{TERMINAL}}",
+  "DEFAULT_TF_PROMPT": "{{TERMINAL}} Write a summary of the following file.\n\n",
+  "EMPTY_FIELD": [false, "", "", false],
+  "TEMPLATES": {
+    "COMMENT_FOR_USER": "Use ALT_EN_TL_INSTRUCTIONS if you want a fire and forget prompt and dynamically switch language quickly from the CLI, otherwise I now highly recommend using a prompt written in the source language as it seems to guide small models towards higher quality translations.",
+    "EN_TL_INSTRUCTIONS": "{{ .ContextualInformation }}Translate the following text into {{ .LanguageTarget }}. Output only the translated result and do not add any extra explanation:\n\n{{ .TextToInject }}\n\n{{ .ContextualInformation }}Translate the following text into {{ .LanguageTarget }}. Output only the translated result and do not add any extra explanation:\n\n{{ .TextToInject }}",
+    "ZH_TL_INSTRUCTIONS": "{{ .ContextualInformation }}将以下文本翻译为{{ .LanguageTarget }}，注意只需要输出翻译后的结果，不要额外解释：\n\n{{ .TextToInject }}\n\n{{ .ContextualInformation }}将以下文本翻译为{{ .LanguageTarget }}，注意只需要输出翻译后的结果，不要额外解释：\n\n{{ .TextToInject }}",
+    "JA_TL_INSTRUCTIONS": "{{ .ContextualInformation }}以下のテキストを{{ .LanguageTarget }}に翻訳してください。翻訳結果のみを出力し、余計な説明は加えないでください：\n\n{{ .TextToInject }}\n\n{{ .ContextualInformation }}以下のテキストを{{ .LanguageTarget }}に翻訳してください。翻訳結果のみを出力し、余計な説明は加えないでください：\n\n{{ .TextToInject }}",
+    "KO_TL_INSTRUCTIONS": "{{ .ContextualInformation }}다음 텍스트를 {{ .LanguageTarget }}로 번역하십시오. 번역된 결과만 출력하고, 추가적인 설명은 하지 마십시오:\n\n{{ .TextToInject }}\n\n{{ .ContextualInformation }}다음 텍스트를 {{ .LanguageTarget }}로 번역하십시오. 번역된 결과만 출력하고, 추가적인 설명은 하지 마십시오:\n\n{{ .TextToInject }}",
+    "ALT_EN_TL_INSTRUCTIONS": "{{ .ContextualInformation }}Translate any text you're given from {{ .LanguageSource }} into {{ .LanguageTarget }}. No commentary.\n\n{{ .TextToInject }}\n\nLet me repeat that:\n\n{{ .ContextualInformation }}Translate any text you're given from {{ .LanguageSource }} into {{ .LanguageTarget }}. No commentary.\n\n{{ .TextToInject }}",
+    "TERMINAL": "No markdown.\n\n"
+  },
+  "FALLBACK_VALUES": {
+    "chunkSize": "10",
+    "batchSize": "4",
+    "parallel": "4",
+    "model": [false, ""],
+    "url": "http://localhost:8080/v1/chat/completions",
+    "apiKey": "",
+    "temperature": [false, 1.0],
+    "top_p": [false, 1.0]
+  },
+  "PARAM_CONFIGS": {
+    "qwen": {
+      "reasoningType": "reason_and_instruct",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "stripTags": { "start": "<think>", "end": "</think>" },
+        "localPreset": true
+      },
+      "instruct": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{ZH_TL_INSTRUCTIONS}}", "user", false],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 10,
+          "batchSize": 128,
+          "parallel": 8,
+          "delay": [false, 0.1],
+          "temperature": [true, 0.7],
+          "top_k": [true, 20],
+          "top_p": [true, 0.8],
+          "model": [true, "default"]
+        }
+      },
+      "reasoning": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{ALT_EN_TL_INSTRUCTIONS}}", "user", false],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "delay": [false, 0.1],
+          "temperature": [true, 0.6],
+          "top_k": [true, 20],
+          "top_p": [true, 0.95],
+          "model": [true, "qwen-reasoning"]
+        }
+      }
+    },
+    "qwenq5": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "localPreset": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{ZH_TL_INSTRUCTIONS}}", "user", false],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 10,
+          "batchSize": 128,
+          "parallel": 14,
+          "delay": [false, 0.1],
+          "temperature": [true, 0.7],
+          "top_k": [true, 20],
+          "top_p": [true, 0.8],
+          "model": [true, "qwenq5"]
+        }
+      }
+    },
+    "onlineapi": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.fallback",
+        "localPreset": false
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{ALT_EN_TL_INSTRUCTIONS}}", "user", false],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 50,
+          "batchSize": 4,
+          "parallel": 4,
+          "delay": [false, 60],
+          "temperature": [true, 1],
+          "llmbackend": "chatcompletions",
+          "url": "http://localhost:8080/v1/chat/completions",
+          "model": [false, ""]
+        }
+      }
+    },
+    "gemma": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "localPreset": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{ZH_TL_INSTRUCTIONS}}", "user", false],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 10,
+          "batchSize": 256,
+          "parallel": 16,
+          "delay": [false, 0.1],
+          "temperature": [true, 1.0],
+          "top_k": [true, 64],
+          "top_p": [true, 0.95],
+          "model": [true, "gemma"]
+        }
+      }
+    },
+    "gemmaqat": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.genericprep",
+        "localPreset": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{ZH_TL_INSTRUCTIONS}}", "user", false],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 10,
+          "batchSize": 256,
+          "parallel": 16,
+          "delay": [false, 0.1],
+          "temperature": [true, 0.0],
+          "top_k": [true, 64],
+          "top_p": [true, 0.95],
+          "model": [true, "gemma-qat"]
+        }
+      }
+    }
+  }
+}
