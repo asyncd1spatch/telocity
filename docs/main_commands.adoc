@@ -1,0 +1,350 @@
+= Main Commands: translate, transform and oneshot
+
+This section dives into the three main commands for interacting with language models: *`translate`*, *`transform`*, and *`oneshot`*. They share a common infrastructure—chunking, batching, concurrency, retries, and resume—but are designed for different use cases.
+
+== The `translate` Command: `tr`
+
+*Purpose:* Translate a plain text UTF-8 file from one language to another. It is optimized for translation tasks, with built‑in handling of source/target languages and contextual information.
+
+=== Basic Usage
+
+[source,bash]
+----
+telocity tr input.txt output.txt -s Chinese -t English
+----
+
+If `-s`/`-t` are omitted, the defaults from your config (`SOURCE_LANGUAGE`, `TARGET_LANGUAGE`) are used. The default prompt currently doesn't make use of source language, an alternative one that does is provided in the config file templates. Contextual data insertion is all based on which templates are used in your prompt.
+
+=== How It Works
+
+1. The input file is read and normalized (line endings -> LF only).
+2. The text is split into chunks of lines (`--chunksize`, default from the selected preset).
+3. Each chunk is turned into a prompt using a template that includes:
+* A system message (optional, defined by the preset).
+* A user message containing the translation instruction and the chunk.
+4. Chunks are processed in parallel (`--parallel`) in batches (`--batchsize`). A larger batch than parallel means any time a chunk is done processing another will take its place until the batch is complete.
+5. The results are written to the output file in order.
+
+=== Chunking and Concurrency – Why?
+
+* *Context poisoning avoidance:* Experiment with your model to find the most appropriate amount of lines to feed per chunk. Generally speaking, more text processed at once allows the model to absorb the writing style and contextual information better, but too many can cause the model to skip sentences in the output or hallucinate more. Find the right balance between too much or too little.
+* *Performance:* Parallel requests can saturate the model server (local or remote) and drastically reduce total time. The degree of parallelism is configurable via `--parallel` and the preset’s `parallel` value.
+
+=== Retries and Error Handling
+
+When a chunk fails (network error, model overload, etc.), the command automatically retries up to 4 times. On each retry, the temperature is increased slightly (by 0.3, capped to 1.0 but if you set your own temp setting higher then it will just stay there without growing) to coax a different answer. Between retries, an exponential backoff delay is applied (respecting the `delay` setting). This often resolves temporary issues without manual intervention.
+
+=== Resume Capability
+
+Each job is identified by a hash of the input file content. While running, a lock file (`%APPDATA%\telocity\<hash>.lock` on windows, `~/.config/telocity/<hash>.lock` on linux) prevents multiple instances from processing the same file. Progress is saved in a `<hash>.json` file in the same directory, containing the last processed index and all model parameters. If you interrupt the command (e.g., with `Ctrl+C`), you can simply run the same command again later—it will pick up exactly where it left off.
+
+=== Prompt Injection and Context
+
+The translation instruction can include placeholders that are filled at runtime:
+
+* `{{ .LanguageSource }}` and `{{ .LanguageTarget }}` – the source/target language names.
+* `{{ .ContextualInformation }}` – extra context passed via `--context`.
+* `{{ .TextToInject }}` – the actual text chunk to translate.
+
+These placeholders are defined in the config’s `TEMPLATES` section. For example, the default Chinese instruction looks like:
+
+----
+{{ .ContextualInformation }}将以下文本翻译为{{ .LanguageTarget }}，注意只需要输出翻译后的结果，不要额外解释：
+
+{{ .TextToInject }}
+----
+
+This design lets you craft precise, language‑specific instructions without hard‑coding them in the command line.
+
+=== Prompt Doubling
+
+In the default config, you’ll notice that the `instruct` variant of many presets repeats the instruction twice:
+
+[source,json]
+----
+"defPrep": [
+  true,
+  "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+  "user",
+  false
+]
+----
+
+This is inspired by the paper link:https://arxiv.org/html/2512.14982v1["Prompt Repetition Improves Non‑Reasoning LLMs"] (Leviathan et al., 2025). Repeating the prompt allows each token to attend to every other token in the prompt, mitigating the order sensitivity of causal language models. The result is a consistent accuracy boost—especially for non‑reasoning (instruct) models—without increasing output length or latency.
+
+=== Language of Instructions
+
+Another trick that can dramatically improve the quality of translations, mainly when using smaller, "weaker" models: writing instructions in the source language. e.g:
+
+In practice, if you are translating Chinese → English, write the instruction in Chinese. The templates `ZH_TL_INSTRUCTIONS`, `JA_TL_INSTRUCTIONS`, etc., follow this principle. The `ALT_*` variants are provided as a fallback if you'd like the ability to specify another source language explicitely from `--source` argument for quick CLI flexibility. +
+Example prompts are provided for English, Japanese, Simplified Chinese and Korean.
+
+=== Configuration via Presets
+
+The `--params` (or `-p`) option selects a preset from `PARAM_CONFIGS` in your config file. Each preset defines:
+
+* `reasoningType`: whether the model has separate instruct/reasoning modes.
+* `prompt`: the system prompt, user prompt template, and optional prefill.
+* `model`: chunk size, batch size, parallelism, temperature, top‑k, etc.
+
+For example, the `mistral` preset has two variants: `instruct` (with prompt doubling) and `reasoning` (without doubling). Use `--reason` to select the reasoning variant.
+
+=== CLI Options for `tr`
+
+[cols="1,1,3,2", options="header"]
+|===
+| Option | Short | Description | Default
+
+| `--chunksize` 
+| `-c`  
+| Number of lines per chunk                     
+| preset‑dependent
+
+| `--batchsize` 
+| `-b`  
+| Number of chunks to process in a batch        
+| preset‑dependent
+
+| `--parallel`  
+|       
+| Max concurrent requests                       
+| preset‑dependent
+
+| `--model`     
+| `-m`  
+| Override the model name                       
+| preset‑dependent
+
+| `--params`    
+| `-p`  
+| Preset name (e.g., `mistral`, `qwen`)         
+| `DEFAULT_MODEL`
+
+| `--source`    
+| `-s`  
+| Source language                               
+| config value
+
+| `--target`    
+| `-t`  
+| Target language                               
+| config value
+
+| `--context`   
+| `-i`  
+| Extra contextual information                  
+| `""`
+
+| `--url`       
+| `-u`  
+| API endpoint                                  
+| preset‑dependent
+
+| `--apikey`    
+| `-k`  
+| API key                                       
+| config or `""`
+
+| `--wait`      
+|       
+| Delay between requests (seconds)              
+| preset‑dependent
+
+| `--reason`    
+| `-r`  
+| Use reasoning variant (if preset supports it) 
+| `false`
+
+| `--help`      
+| `-h`  
+| Show help                                     
+|
+|===
+
+'''
+
+== The `transform` Command: `tf`
+
+*Purpose:* A generic batch processor for any LLM task—summarization, rewriting, code generation, etc. It gives you full control over the prompt.
+
+=== Basic Usage
+
+[source,bash]
+----
+telocity tf input.txt output.txt --prompt "Summarize the following text in one sentence:"
+----
+
+You can also use a system prompt:
+
+[source,bash]
+----
+telocity tf file.txt out.txt --sysprompt "You are a helpful assistant." --prompt "Rewrite this in a formal tone:"
+----
+
+=== How It Differs from `translate`
+
+* No built‑in language substitution; you write the prompt yourself.
+* The `--prompt` and `--sysprompt` options accept arbitrary text (placeholders are not automatically expanded, but you can still use `{{ .TextToInject }}` if you include it manually).
+* Images can be included with `--image` (for multimodal models). The image is converted to a data URI and inserted into the prompt.
+* It shares the same chunking, batching, concurrency, retry, and resume mechanics.
+
+=== When to Use `transform`
+
+* You need a custom instruction not covered by translation.
+* You want to apply the same transformation to many documents (e.g., add a copyright header, translate to a different style, extract keywords).
+* You’re working with multimodal data (images + text).
+
+=== Image Support
+
+The `--image` (or `-I`) option accepts a colon‑separated list of file globs. For each matching image, the file is read, validated for size, and embedded as a base64 data URI with the correct MIME type (PNG, JPEG, GIF, WebP). The URIs are then injected into the user message alongside the text prompt. This works with models that accept `image_url` content parts (e.g., Ministral, Qwen3-VL, Gemma 3n).
+
+=== CLI Options for `transform`
+
+In addition to most `translate` options, `transform` adds:
+
+[cols="1,1,3,2", options="header"]
+|===
+| Option | Short | Description | Default
+
+| `--prompt`    
+| `-i`  
+| User message template (supports `{{ .TextToInject }}`) 
+| _required_ (or preset)
+
+| `--sysprompt` 
+| `-s`  
+| System message (optional)                              
+| `""`
+
+| `--image`     
+| `-I`  
+| Image file(s) to include (glob patterns)               
+| `""`
+|===
+
+If you omit `--prompt`, the preset’s default prepend prompt is used (if defined and turned on by the last boolean of the tuple `[bool, string, string, bool]`). The config’s `DEFAULT_TF_PROMPT` provides a fallback in the absence of that last element.
+
+'''
+
+== The `oneshot` Command: `os`
+
+*Purpose:* Single, non‑chunked completions with streaming output. Ideal for interactive use, quick tests, or piping.
+
+=== Basic Usage
+
+[source,bash]
+----
+telocity os "What is the capital of France?"
+----
+
+Or with a file:
+
+[source,bash]
+----
+telocity os --file question.txt
+----
+
+Or pipe:
+
+[source,bash]
+----
+echo "Summarize: ..." | telocity os
+----
+
+=== How It Works
+
+* The entire input (positional argument, file content, or stdin) is combined into one prompt.
+* No chunking, batching, or parallelism—everything is sent as a single request.
+* The response is streamed to the terminal, 80col line wrapping—I am opinionated, deal with it.
+* Supports images via `--image`.
+* Output can be saved to a file with `--outfile`.
+
+=== Why Use `oneshot`?
+
+* *Interactivity:* See the model’s output as it’s generated, just like a chat.
+* *Piping:* Combine with other command‑line tools.
+* *Debugging:* Quickly test prompts without creating files.
+* *Lightweight:* No state is saved; it’s a one‑off call.
+
+=== CLI Options for `oneshot`
+
+[cols="1,1,3,2", options="header"]
+|===
+| Option | Short | Description | Default
+
+| `--file`    
+| `-i`  
+| Read input from a file                     
+| `""`
+
+| `--outfile` 
+| `-o`  
+| Write output to a file (instead of stdout) 
+| `""`
+
+| `--image`   
+| `-I`  
+| Image file(s) to include                   
+| `""`
+
+| `--model`   
+| `-m`  
+| Override model name                        
+| preset‑dependent
+
+| `--params`  
+| `-p`  
+| Preset name                                
+| `DEFAULT_MODEL`
+
+| `--url`     
+| `-u`  
+| API endpoint                               
+| preset‑dependent
+
+| `--apikey`  
+| `-k`  
+| API key                                    
+| config or `""`
+
+| `--reason`  
+| `-r`  
+| Use reasoning variant                      
+| `false`
+|===
+
+Note that chunk‑related options are unavailable; `oneshot` always uses a single chunk.
+The `TERMINAL_PREPEND` string in the configuration file allows you to set a prepend that is always injected during the use of the oneshot command. By default, it's an instruction to tell the model to avoid using Markdown.
+
+'''
+
+== Common Settings:
+
+All three commands share a backend:
+
+* *Configuration:* The JSON config file (automatically created on first run) holds presets, templates, and global defaults. You can edit it to add your own presets or tweak prompts. Be sure to think about the `delay` value that controls the time between retries and the time between each individual batch (if your batch is set to 4 and delay to 60 seconds, an API that rates limit you to 4 req/min won't complain for e.g).
+* *API modes*: Currently supporting `v1/chat/completions`, `v1/completions` and `/v1/responses`, detecting the correct backend based on URL. `v1/responses` hasn't been tested much and may have issues. `v1/completions` will process your system prompt and prefill fields in a basic concatenation with your user prompt.
+
+=== The Preset System Explained
+
+The `PARAM_CONFIGS` object maps preset names to model configurations. Each preset can have `instruct` and `reasoning` variants (if `reasoningType` is `"reason_and_instruct"`). The `model` section defines parameters like `chunkSize`, `batchSize`, `parallel`, `temperature`, and `url`. The `prompt` section contains the system prompt (`defSys`), user prompt template (`defPrep`), and an optional assistant prefill (`defPrefill`), whose main purpose is to bypass guard rails.
+
+The `TEMPLATES` object holds reusable strings that are substituted wherever `{{KEY}}` appears. This includes language‑specific instructions, localized nouns (e.g., “English” in various languages), and the special `{{TERMINAL}}` marker that disables Markdown.
+
+=== Prompt Doubling in Practice
+
+Look at the `instruct` variant of the `mistral` preset:
+
+[source,json]
+----
+"defPrep": [
+  true,
+  "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+  "user",
+  false
+]
+----
+
+Here `{{ZH_TL_INSTRUCTIONS}}` expands to a Chinese translation instruction. By repeating it twice (separated by a blank line), we apply the prompt repetition technique.
+
+_Happy prompting!_

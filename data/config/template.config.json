@@ -1,0 +1,336 @@
+{
+  "DEFAULT_MODEL": "mistral",
+  "MAX_SIZE_MB": 100,
+  "TIMEOUT": 1,
+  "SOURCE_LANGUAGE": "the detected language",
+  "TARGET_LANGUAGE": "{{EN_IN_ZH}}",
+  "TERMINAL_PREPEND": "{{TERMINAL}}",
+  "DEFAULT_TF_PROMPT": "{{TERMINAL}} Write a summary of the following file.",
+  "EMPTY_FIELD": [false, "", "", false],
+  "TEMPLATES": {
+    "EN_TL_INSTRUCTIONS": "{{ .ContextualInformation }}Translate the following text into {{ .LanguageTarget }}. Output only the translated result and do not add any extra explanation:\n\n{{ .TextToInject }}",
+    "ZH_TL_INSTRUCTIONS": "{{ .ContextualInformation }}将以下文本翻译为{{ .LanguageTarget }}，注意只需要输出翻译后的结果，不要额外解释：\n\n{{ .TextToInject }}",
+    "JA_TL_INSTRUCTIONS": "{{ .ContextualInformation }}以下のテキストを{{ .LanguageTarget }}に翻訳してください。翻訳結果のみを出力し、余計な説明は加えないでください：\n\n{{ .TextToInject }}",
+    "KO_TL_INSTRUCTIONS": "{{ .ContextualInformation }}다음 텍스트를 {{ .LanguageTarget }}로 번역하십시오. 번역된 결과만 출력하고, 추가적인 설명은 하지 마십시오:\n\n{{ .TextToInject }}",
+    "ALT_EN_TL_INSTRUCTIONS": "{{ .ContextualInformation }}Translate the following text from {{ .LanguageSource }} into {{ .LanguageTarget }}. Output only the translated result and do not add any extra explanation:\n\n{{ .TextToInject }}",
+    "EN_IN_EN": "English",
+    "EN_IN_ZH": "英语",
+    "EN_IN_JA": "英語",
+    "EN_IN_KO": "영어",
+    "TERMINAL": "No markdown.\n\n"
+  },
+  "FALLBACK_VALUES": {
+    "chunkSize": "10",
+    "batchSize": "4",
+    "parallel": "4",
+    "model": [false, ""],
+    "url": "http://localhost:8080/v1/chat/completions",
+    "apiKey": "",
+    "temperature": [false, 1.0],
+    "top_p": [false, 1.0]
+  },
+  "PARAM_CONFIGS": {
+    "onlineapi": {
+      "reasoningType": "reason_and_instruct",
+      "metadata": {
+        "helptext_key": "models.fallback",
+        "display": true
+      },
+      "instruct": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [
+            true,
+            "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+            "user",
+            false
+          ],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 200,
+          "batchSize": 4,
+          "parallel": 4,
+          "delay": [true, 60],
+          "temperature": [true, 1],
+          "top_p": [false, 1],
+          "top_k": [false, 0],
+          "url": "http://localhost:8080/v1/chat/completions",
+          "timeout": [true, 1],
+          "model": [false, ""]
+        }
+      },
+      "reasoning": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{ZH_TL_INSTRUCTIONS}}", "user", false],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 200,
+          "batchSize": 4,
+          "parallel": 4,
+          "delay": [true, 60],
+          "temperature": [true, 1],
+          "top_p": [false, 1],
+          "top_k": [false, 0],
+          "url": "http://localhost:8080/v1/chat/completions",
+          "timeout": [true, 2],
+          "model": [false, ""]
+        }
+      }
+    },
+    "mistral": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.instruct",
+        "stripTags": {
+          "start": "[THINK]",
+          "end": "[/THINK]"
+        },
+        "display": true
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [
+            true,
+            "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+            "user",
+            false
+          ],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 10,
+          "batchSize": 128,
+          "parallel": 16,
+          "delay": [true, 0.1],
+          "temperature": [true, 0.1],
+          "top_k": [true, 500],
+          "top_p": [true, 0.95],
+          "model": [true, "mistral"]
+        }
+      }
+    },
+    "mistralvl": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.instruct",
+        "stripTags": {
+          "start": "[THINK]",
+          "end": "[/THINK]"
+        }
+      },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [
+            true,
+            "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+            "user",
+            false
+          ],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 10,
+          "batchSize": 128,
+          "parallel": 8,
+          "delay": [true, 0.1],
+          "temperature": [true, 0.1],
+          "top_k": [true, 500],
+          "top_p": [true, 0.95],
+          "model": [true, "mistralvl"]
+        }
+      }
+    },
+    "qwen": {
+      "reasoningType": "reason_and_instruct",
+      "metadata": {
+        "helptext_key": "models.dual",
+        "stripTags": { "start": "<think>", "end": "</think>" },
+        "display": true
+      },
+      "instruct": {
+        "prompt": {
+          "defSys": [false, "/no_think", "system", false],
+          "defPrep": [
+            true,
+            "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+            "user",
+            false
+          ],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 10,
+          "batchSize": 128,
+          "parallel": 16,
+          "delay": [true, 0.1],
+          "temperature": [true, 0.7],
+          "top_k": [true, 20],
+          "top_p": [true, 0.8],
+          "model": [true, "qwen"]
+        }
+      },
+      "reasoning": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{ZH_TL_INSTRUCTIONS}}", "user", false],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 10,
+          "batchSize": 128,
+          "parallel": 2,
+          "delay": [true, 0.1],
+          "temperature": [true, 0.6],
+          "top_k": [true, 20],
+          "top_p": [true, 0.95],
+          "timeout": [true, 3],
+          "model": [true, "qwenmini"]
+        }
+      }
+    },
+    "gptoss": {
+      "reasoningType": "reason_and_instruct",
+      "metadata": {
+        "helptext_key": "models.effort",
+        "stripTags": {
+          "start": "<|channel|>analysis",
+          "end": "<|channel|>final<|message|>"
+        },
+        "display": true
+      },
+      "instruct": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [
+            true,
+            "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+            "user",
+            false
+          ],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 10,
+          "batchSize": 128,
+          "parallel": 8,
+          "delay": [true, 0.1],
+          "temperature": [true, 0.1],
+          "top_k": [true, 500],
+          "top_p": [true, 1.0],
+          "model": [true, "gptoss"],
+          "chat_template_kwargs": [true, { "reasoning_effort": "low" }]
+        }
+      },
+      "reasoning": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [true, "{{ZH_TL_INSTRUCTIONS}}", "user", false],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 30,
+          "batchSize": 128,
+          "parallel": 2,
+          "delay": [true, 0.1],
+          "temperature": [true, 1.0],
+          "top_k": [true, 500],
+          "top_p": [true, 1.0],
+          "timeout": [true, 3],
+          "model": [true, "gptoss"],
+          "chat_template_kwargs": [true, { "reasoning_effort": "medium" }]
+        }
+      }
+    },
+    "hymt": {
+      "reasoningType": "instruct_only",
+      "metadata": { "helptext_key": "models.instruct", "display": true },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [
+            true,
+            "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+            "user",
+            false
+          ],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 10,
+          "batchSize": 128,
+          "parallel": 4,
+          "delay": [true, 0.1],
+          "temperature": [true, 0.7],
+          "top_k": [true, 20],
+          "top_p": [true, 0.6],
+          "presence_penalty": [true, 1.5],
+          "model": [true, "hymt"]
+        }
+      }
+    },
+    "hymtmini": {
+      "reasoningType": "instruct_only",
+      "metadata": { "helptext_key": "models.instruct", "display": true },
+      "default": {
+        "prompt": {
+          "defSys": [false, "", "", false],
+          "defPrep": [
+            true,
+            "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+            "user",
+            false
+          ],
+          "defPrefill": [false, ""]
+        },
+        "model": {
+          "chunkSize": 10,
+          "batchSize": 128,
+          "parallel": 16,
+          "delay": [true, 0.1],
+          "temperature": [true, 0.7],
+          "top_k": [true, 20],
+          "top_p": [true, 0.6],
+          "presence_penalty": [true, 1.5],
+          "model": [true, "hymtmini"]
+        }
+      }
+    },
+    "rwkv": {
+      "reasoningType": "instruct_only",
+      "metadata": { "helptext_key": "models.completion", "display": true },
+      "default": {
+        "prompt": {
+          "defSys": [
+            true,
+            "Instruction: 将以下文本翻译为{{ .LanguageTarget }}，注意只需要输出翻译后的结果，不要额外解释：:\n\n",
+            "system",
+            false
+          ],
+          "defPrep": [
+            true,
+            "Input: {{ .TextToInject }}\n\n{{ .TextToInject }}\n\n",
+            "user",
+            false
+          ],
+          "defPrefill": [true, "Response:<think></think>"]
+        },
+        "model": {
+          "chunkSize": 10,
+          "batchSize": 128,
+          "parallel": 4,
+          "delay": [true, 0.1],
+          "temperature": [true, 0.1],
+          "top_k": [true, 500],
+          "top_p": [true, 1.0],
+          "model": [true, "rwkv"],
+          "url": "http://localhost:8080/v1/completions"
+        }
+      }
+    }
+  }
+}

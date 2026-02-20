@@ -1,0 +1,278 @@
+= Misc Commands
+
+The misc commands help you inspect, manipulate, and prepare text files for processing. Like the rest of the program it's all KISS and doesn't do much but can be convenient to have on tap. Highly recommend having link:https://github.com/kovidgoyal/calibre[calibre] installed on your system for the `ebook-convert` command that is the basis from which you can do basic plain text manipulation of any content.
+
+== The `strip` Command: `st`
+
+*Purpose:* Clean up text files by removing or extracting content between delimiters, normalizing line endings, and optionally stripping markdown formatting.
+
+=== Basic Usage
+
+[source,bash]
+----
+telocity st input.txt output.txt --startdelimiter "<think>" --enddelimiter "</think>"  # delete content between tags
+telocity st input.txt output.txt --params mistral --extracttag                         # extract reasoning tags using preset
+telocity st input.txt output.txt --compress --unformat                                 # compress blank lines and strip markdown
+----
+
+=== Key Options
+
+[cols="1,1,3", options="header"]
+|===
+| Option | Short | Description
+
+| `--startdelimiter` 
+| `-s`  
+| Opening delimiter (e.g., `<think>`)
+
+| `--enddelimiter`   
+| `-e`  
+| Closing delimiter
+
+| `--params`         
+| `-p`  
+| Use a preset's `stripTags` metadata to set delimiters
+
+| `--extracttag`     
+| `-x`  
+| Extract content between delimiters instead of deleting it
+
+| `--compress`       
+| `-c`  
+| Remove empty lines (both leading/trailing and internal)
+
+| `--unformat`       
+| `-u`  
+| Strip markdown formatting (bold, italics)
+
+| `--help`           
+| `-h`  
+| Show help
+|===
+
+* If you provide only one delimiter, the command will error.
+* The `--params` option reads the preset’s `metadata.stripTags` (e.g., `{ "start": "<think>", "end": "</think>" }`) – convenient for model‑specific tags.
+
+'''
+
+== The `tokencount` Command: `tc`
+
+*Purpose:* Count tokens in a text file (or stdin) using HuggingFace tokenizers. It can also download tokenizer files for supported models—the token counter was heavily vibe refactored from the official implementation and stripped down for this singular purpose and vendored in—drift may occur in compatibility so only arbitrary, tested models are allowed.
+
+=== Basic Usage
+
+[source,bash]
+----
+telocity tc input.txt                           # count tokens with the default model (mistral)
+telocity tc input.txt --params qwen             # use the Qwen tokenizer
+telocity tc --downloadmodel mistral             # download tokenizer files for "mistral"
+echo "Some text" | telocity tc                  # count from stdin
+----
+
+=== Key Options
+
+[cols="1,1,3", options="header"]
+|===
+| Option | Short | Description
+
+| `--params`        
+| `-p`  
+| Tokenizer preset name (e.g., `mistral`, `qwen`, `gptoss`)
+
+| `--downloadmodel` 
+| `-d`  
+| Download tokenizer files for a given model (no counting)
+
+| `--help`          
+| `-h`  
+| Show help
+|===
+
+* Tokenizer files are stored in `telocity/models/`.
+* Counting uses worker threads for parallelism.
+* If the tokenizer is not found, you'll be prompted to download it first with `--downloadmodel`.
+* Outputs the average token count per lines.
+
+'''
+
+== The `average` Command: `avg`
+
+*Purpose:* Calculate the average line length (in graphemes and bytes) of a text file. Useful for tuning chunk sizes.
+
+=== Basic Usage
+
+[source,bash]
+----
+telocity avg input.txt
+cat input.txt | telocity avg     # pipe content instead of a file
+----
+
+=== Output
+
+----
+Average characters per line: 45
+Average bytes per line: 47
+----
+
+* Lines are counted after stripping trailing newlines.
+* Grapheme segmentation respects Unicode (e.g., emoji count as one character).
+
+'''
+
+== The `merge` Command: `mg`
+
+*Purpose:* Merge all files with a given extension inside a directory, recursively, into one large file, adding a header with the original filename before each file's content.
+
+=== Basic Usage
+
+[source,bash]
+----
+telocity mg ./chapters/ ./merged/ --extension txt
+----
+
+If no target directory is given, the merged file is written to the current working directory as `<extension>_merged.txt`.
+
+=== Key Options
+
+[cols="1,1,3", options="header"]
+|===
+| Option | Short | Description
+
+| `--extension` 
+| `-e`  
+| File extension to match (e.g., `txt`, `md`)
+
+| `--help`      
+| `-h`  
+| Show help
+|===
+
+* Files are sorted alphabetically (with numeric awareness) before merging.
+
+'''
+
+== The `split` Command: `sp`
+
+*Purpose:* Split a large text file into smaller files of approximately a given size (in MB), preserving line boundaries.
+
+=== Basic Usage
+
+[source,bash]
+----
+telocity sp bigfile.txt ./parts/ --size 1    # split into ~1 MB parts
+----
+
+=== Key Options
+
+[cols="1,1,3", options="header"]
+|===
+| Option | Short | Description
+
+| `--size` 
+| `-s`  
+| Target size per part in MB (default: `0.08`)
+
+| `--help` 
+| `-h`  
+| Show help
+|===
+
+* The output directory must not exist (it will be created).
+* Parts are named `originalname_part1.ext`, `originalname_part2.ext`, etc.
+* The split is line‑aware – no line is ever cut in the middle.
+
+'''
+
+== The `batchgen` Command: `bg`
+
+*Purpose:* Generate a batch inference file (JSONL) from a source text, formatted for various providers (Mistral, Gemini, OpenAI Chat/Responses). This prepares requests that can be submitted to batch APIs.
+
+=== Basic Usage
+
+[source,bash]
+----
+telocity bg source.txt requests.jsonl --format mistral --params mistral --source Chinese --target English
+----
+
+=== Key Options
+
+Most options mirror those of `translate`, but `batchgen` only creates the request file – it does *not* send it.
+
+[cols="1,1,3", options="header"]
+|===
+| Option | Short | Description
+
+| `--format`    
+| `-f`  
+| Output format: `mistral`, `gemini`, `openai-chatcompletions`, `openai-responses`
+
+| `--chunksize` 
+| `-c`  
+| Lines per chunk
+
+| `--model`     
+| `-m`  
+| Override model name
+
+| `--params`    
+| `-p`  
+| Preset name (determines prompt templates, temperature, etc.)
+
+| `--source`    
+| `-s`  
+| Source language
+
+| `--target`    
+| `-t`  
+| Target language
+
+| `--context`   
+| `-i`  
+| Extra contextual information
+
+| `--reason`    
+| `-r`  
+| Use reasoning variant (if preset supports it)
+
+| `--help`      
+| `-h`  
+| Show help
+|===
+
+* The generated JSONL file contains one request per chunk, with the appropriate payload structure for the chosen provider.
+* Placeholders (`{{ .TextToInject }}`, `{{ .ContextualInformation }}`) are resolved just like in `translate`.
+
+'''
+
+== The `read` Command: `rd`
+
+*Purpose:* Launch a local web server to read a text file as a paginated e‑book in your browser.
+
+=== Basic Usage
+
+[source,bash]
+----
+telocity rd novel.txt
+----
+
+Then open `http://localhost:33636` in your browser.
+
+=== How It Works
+
+* A simple HTML reader with pagination, theme toggle, font size control, and keyboard navigation (arrow keys, space, h/l) is provided.
+* The server automatically closes 20 seconds after opening the root page.
+
+=== Key Options
+
+None! lmao.
+
+* The port is fixed at `33636`.
+* The reader is opinionated – minimal distractions, focused on the text.
+
+'''
+
+== Common Notes
+
+* All commands that read files respect the `MAX_SIZE_MB` limit from the config.
+* Progress files are *not* created for auxiliary commands – they are stateless.
+* Use `--help` on any command for a quick reminder of options.

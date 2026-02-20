@@ -1,0 +1,11 @@
+{
+  "keepStatsVisible": false,
+  "enableContinueGeneration": true,
+  "alwaysShowSidebarOnDesktop": true,
+  "autoShowSidebarOnNewChat": true,
+  "temperature": 0.1,
+  "top_k": 0,
+  "top_p": 0.95,
+  "min_p": 0.0,
+  "repeat_penalty": 1.0
+}

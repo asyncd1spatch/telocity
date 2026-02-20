@@ -1,0 +1,137 @@
+= Management Commands: remove and config
+
+Beyond processing text, you'll occasionally need to clean up or adjust the program's settings. Two commands help you manage your workspace: *`remove`* (alias `rm`) and *`config`* (alias `cfg`). They interact with the state directory (`~/.config/telocity/` on Linux, `%APPDATA%\telocity\` on Windows) where progress files, the main configuration, and your locale preference are stored.
+
+== The `remove` Command: `rm`
+
+*Purpose:* Delete progress files created by `translate` or `transform` jobs. Each long‑running job saves its state in a `<hash>.json` file (and a matching `<hash>.lock` while running). Over time these can pile up; `rm` lets you remove them selectively or in bulk.
+
+=== Basic Usage
+
+[source,bash]
+----
+telocity rm source.txt           # delete progress for a specific source file
+telocity rm --all                 # delete all progress files (after confirmation)
+telocity rm --all --force         # delete all progress files without asking
+telocity rm source.txt --force    # delete progress for source.txt without confirmation
+----
+
+=== How It Works
+
+When you run `translate` or `transform` on a file, the program computes a hash of its content. That hash becomes the base name for two files in the state directory:
+
+* `<hash>.json` – contains the last processed index and all model parameters (so you can resume later).
+* `<hash>.lock` – a lock file that prevents multiple instances from processing the same file simultaneously.
+
+The `rm` command looks up these files using the hash of the file you provide (or, with `--all`, scans the entire state directory). It then asks for confirmation (unless `--force` is used) and deletes them.
+
+=== Protected Files
+
+The program keeps two important files that are *never* deleted by `rm`:
+
+* `config.json` – your main configuration.
+* `locale.json` – your chosen language preference.
+
+These are excluded even when you use `--all`.
+
+=== CLI Options for `rm`
+
+[cols="1,1,3,1", options="header"]
+|===
+| Option | Short | Description | Default
+
+| `--help`  
+| `-h`  
+| Show help                                                     
+| 
+
+| `--all`   
+| `-a`  
+| Delete *all* program state files (except config and locale) 
+| `false`
+
+| `--force` 
+| `-f`  
+| Skip confirmation prompts (useful for scripting)              
+| `false`
+|===
+
+'''
+
+== The `config` Command: `cfg`
+
+*Purpose:* View, edit, or reset your configuration and locale settings. The program stores two JSON files in the state directory:
+
+* `config.json` – all your presets, templates, and global defaults.
+* `locale.json` – your chosen language for UI messages (e.g., `en-US`, `fr-FR`).
+
+With `cfg` you can open the config in your preferred editor, delete both files, or change the language on the fly.
+
+=== Basic Usage
+
+[source,bash]
+----
+telocity cfg                      # show help (or if no arguments, also shows help)
+telocity cfg --edit                # open config.json in your $EDITOR
+telocity cfg --lang zh-CN          # set UI language to Simplified Chinese
+telocity cfg --remove               # delete config.json and locale.json (with confirmation)
+telocity cfg --remove --force       # delete without asking
+----
+
+=== How It Works
+
+* *`--edit`* launches your system editor (determined by the `$EDITOR` environment variable, or by searching common editors like `code`, `vim`, `nano`, etc.) with the path to `config.json`. After you save and exit, the changes will take effect the next time you run any command.
+* *`--lang`* writes a simple `{"locale": "xx-XX"}` to `locale.json`. The program reads this file at startup to determine which language to use for help texts and messages. If the file doesn't exist, it falls back to your system locale (or `en-US`).
+* *`--remove`* deletes both `config.json` and `locale.json`. On the next run, a fresh `config.json` will be created from the default template (embedded in the program). This is a quick way to reset everything to factory defaults.
+* *`--force`* suppresses the confirmation prompt when used with `--remove`.
+
+=== Choosing an Editor
+
+The command tries to respect your `$EDITOR` environment variable. If it's not set, it searches for a list of common editors (VS Code, Vim, Nano, etc.) and uses the first one found. If none are available, it prints a warning and exits.
+
+=== CLI Options for `cfg`
+
+[cols="1,1,3,1", options="header"]
+|===
+| Option | Short | Description | Default
+
+| `--help`   
+| `-h`  
+| Show help                                                       
+| 
+
+| `--edit`   
+| `-e`  
+| Open the main configuration file in your editor                 
+| `false`
+
+| `--remove` 
+| `-r`  
+| Delete both `config.json` and `locale.json` (with confirmation) 
+| `false`
+
+| `--force`  
+| `-f`  
+| Skip confirmation when used with `--remove`                     
+| `false`
+
+| `--lang`   
+| `-l`  
+| Set the UI language (e.g., `en-US`, `fr-FR`, `ja-JP`, `zh-CN`)  
+| (none)
+|===
+
+=== Notes
+
+* The `--lang` option only accepts locales that are bundled with the program. Currently supported: `en-US`, `fr-FR`, `ja-JP`, `zh-CN`. If you specify an unsupported locale, you'll get an error.
+* Editing `config.json` directly lets you tweak presets, add new ones, or change the `TEMPLATES` section. See the link:#[Configuration Guide] for details.
+* Removing the config files does *not* delete any progress files (those are handled by `rm`). It only resets the program's own settings.
+
+'''
+
+== Common Notes
+
+* *State Directory:*
+** Windows: `%APPDATA%\telocity\`
+** Linux: `~/.config/telocity/`
+** macOS: `~/Library/Application Support/telocity/`
