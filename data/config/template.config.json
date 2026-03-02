@@ -1,0 +1,172 @@
+{
+  "DEFAULT_MODEL": "qwen",
+  "MAX_SIZE_MB": 100,
+  "TIMEOUT": 1,
+  "SOURCE_LANGUAGE": "the detected language",
+  "TARGET_LANGUAGE": "{{EN_IN_ZH}}",
+  "TERMINAL_PREPEND": "{{TERMINAL}}",
+  "DEFAULT_TF_PROMPT": "{{TERMINAL}} Write a summary of the following file.",
+  "TEMPLATES": {
+    "EN_TL_INSTRUCTIONS": "{{ .ContextualInformation }}Translate the following text into {{ .LanguageTarget }}. Output only the translated result and do not add any extra explanation:\n\n{{ .TextToInject }}",
+    "ZH_TL_INSTRUCTIONS": "{{ .ContextualInformation }}将以下文本翻译为{{ .LanguageTarget }}，注意只需要输出翻译后的结果，不要额外解释：\n\n{{ .TextToInject }}",
+    "JA_TL_INSTRUCTIONS": "{{ .ContextualInformation }}以下のテキストを{{ .LanguageTarget }}に翻訳してください。翻訳結果のみを出力し、余計な説明は加えないでください：\n\n{{ .TextToInject }}",
+    "KO_TL_INSTRUCTIONS": "{{ .ContextualInformation }}다음 텍스트를 {{ .LanguageTarget }}로 번역하십시오. 번역된 결과만 출력하고, 추가적인 설명은 하지 마십시오:\n\n{{ .TextToInject }}",
+    "ALT_EN_TL_INSTRUCTIONS": "{{ .ContextualInformation }}Translate the following text from {{ .LanguageSource }} into {{ .LanguageTarget }}. Output only the translated result and do not add any extra explanation:\n\n{{ .TextToInject }}",
+    "EN_IN_EN": "English",
+    "EN_IN_ZH": "英语",
+    "EN_IN_JA": "英語",
+    "EN_IN_KO": "영어",
+    "TERMINAL": "No markdown.\n\n"
+  },
+  "FALLBACK_VALUES": {
+    "chunkSize": "10",
+    "batchSize": "128",
+    "parallel": "4",
+    "delay": "1",
+    "model": [false, ""],
+    "url": "http://localhost:8080/v1/chat/completions",
+    "apiKey": "",
+    "temperature": [false, 1.0],
+    "top_p": [false, 1.0]
+  },
+  "PARAM_CONFIGS": {
+    "onlineapi": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.fallback",
+        "display": true
+      },
+      "default": {
+        "prompt": {
+          "defPrep": [
+            true,
+            "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+            "user",
+            false
+          ]
+        },
+        "model": {
+          "chunkSize": 200,
+          "batchSize": 4,
+          "delay": 60000,
+          "maxAttempts": 3,
+          "tempIncrement": 0.2,
+          "temperature": [true, 1],
+          "url": "http://SOMEDARNTHING:8080/v1/chat/completions",
+          "timeout": 1,
+          "model": [true, "SOMETHING"]
+        }
+      }
+    },
+    "qwen": {
+      "reasoningType": "reason_and_instruct",
+      "metadata": {
+        "helptext_key": "models.dual",
+        "stripTags": { "start": "<think>", "end": "</think>" },
+        "display": true
+      },
+      "instruct": {
+        "prompt": {
+          "defPrep": [
+            true,
+            "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+            "user",
+            false
+          ]
+        },
+        "model": {
+          "temperature": [true, 0],
+          "top_k": [true, 20],
+          "top_p": [true, 0.8],
+          "presence_penalty": [true, 1.5],
+          "model": [true, "qwenmoe"],
+          "chat_template_kwargs": [true, { "enable_thinking": false }]
+        }
+      },
+      "reasoning": {
+        "prompt": {
+          "defPrep": [true, "{{ZH_TL_INSTRUCTIONS}}", "user", false]
+        },
+        "model": {
+          "temperature": [true, 0.6],
+          "top_k": [true, 20],
+          "top_p": [true, 0.95],
+          "presence_penalty": [true, 1.5],
+          "timeout": 8,
+          "model": [true, "qwenmoe"],
+          "chat_template_kwargs": [true, { "enable_thinking": true }]
+        }
+      }
+    },
+    "qwen3": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.instruct",
+        "display": true
+      },
+      "default": {
+        "prompt": {
+          "defPrep": [
+            true,
+            "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+            "user",
+            false
+          ]
+        },
+        "model": {
+          "temperature": [true, 0],
+          "top_k": [true, 20],
+          "top_p": [true, 0.8],
+          "model": [true, "qwen"]
+        }
+      }
+    },
+    "hymt": {
+      "reasoningType": "instruct_only",
+      "metadata": { "helptext_key": "models.instruct", "display": true },
+      "default": {
+        "prompt": {
+          "defPrep": [
+            true,
+            "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+            "user",
+            false
+          ]
+        },
+        "model": {
+          "temperature": [true, 0],
+          "top_k": [true, 20],
+          "top_p": [true, 0.6],
+          "model": [true, "zhymt"]
+        }
+      }
+    },
+    "mistral": {
+      "reasoningType": "instruct_only",
+      "metadata": {
+        "helptext_key": "models.instruct",
+        "stripTags": {
+          "start": "[THINK]",
+          "end": "[/THINK]"
+        },
+        "display": true
+      },
+      "default": {
+        "prompt": {
+          "defPrep": [
+            true,
+            "{{ZH_TL_INSTRUCTIONS}}\n\n{{ZH_TL_INSTRUCTIONS}}",
+            "user",
+            false
+          ]
+        },
+        "model": {
+          "temperature": [true, 0],
+          "top_k": [true, 64],
+          "top_p": [true, 0.95],
+          "model": [true, "ymistral"]
+        }
+      }
+    }
+  }
+}

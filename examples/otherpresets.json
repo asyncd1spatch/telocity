@@ -1,0 +1,30 @@
+{
+  "rwkv": {
+    "reasoningType": "instruct_only",
+    "metadata": { "helptext_key": "models.completion", "display": true },
+    "default": {
+      "prompt": {
+        "defSys": [
+          true,
+          "Instruction: 将以下文本翻译为{{ .LanguageTarget }}，注意只需要输出翻译后的结果，不要额外解释：:\n\n",
+          "system",
+          false
+        ],
+        "defPrep": [
+          true,
+          "Input: {{ .TextToInject }}\n\n{{ .TextToInject }}\n\n",
+          "user",
+          false
+        ],
+        "defPrefill": [true, "Response:<think></think>"]
+      },
+      "model": {
+        "temperature": [true, 0],
+        "top_k": [true, 64],
+        "top_p": [true, 1.0],
+        "model": [true, "rwkv"],
+        "url": "http://localhost:8080/v1/completions"
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "name": "telocity",
+  "version": "1.0.1",
+  "description": "A CLI script for basic local LLM interactions.",
+  "author": "asyncd1spatch",
+  "type": "module",
+  "private": true,
+  "files": [
+    "start.ts",
+    "tokenworker.ts",
+    "src/",
+    "data/",
+    "LICENSE-APACHE-2.0",
+    "NOTICE"
+  ],
+  "bin": {
+    "telocity": "./bin/start.ts"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/index.ts"
+    },
+    "./core": {
+      "import": "./src/libs/core/index.ts"
+    },
+    "./LLM": {
+      "import": "./src/libs/LLM/index.ts"
+    },
+    "./thirdparty": {
+      "import": "./src/libs/thirdparty/index.ts"
+    },
+    "./types": {
+      "import": "./src/libs/types/index.ts"
+    }
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "clean:strings": "bun ./scripts/cleanstrings.ts",
+    "pretest": "bun clean:strings && bun typecheck && bun lint && bun i18ns && bun confs",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier . --write",
+    "i18ns": "bun ./scripts/i18nvalidator.ts",
+    "confs": "bun ./scripts/configvalidator.ts",
+    "test": "vitest",
+    "start": "bun ./bin/start.ts",
+    "build:bin": "bun build.bin.ts",
+    "build:bin:a": "bun build.bin.js --all",
+    "build:bin:c": "bun build.bin.js --compress",
+    "build:bin:ac": "bun build.bin.js --all --compress",
+    "build:node:esm": "bun build ./bin/start.ts --outdir ./dist --target=node --splitting --minify --format=esm && mkdir -p dist/worker && cp src/libs/thirdparty/worker/tokenworker.js dist/worker/tokenworker.js",
+    "build:node:cjs": "bun build ./bin/startiife.ts --outfile ./dist/start.cjs --target=node --bundle --minify --format=cjs",
+    "translate": "bun ./scripts/make_project_translations.ts",
+    "mockserv": "bun ./scripts/mockserv.ts",
+    "mockfail": "bun ./scripts/mockfail.ts",
+    "mocktimeout": "bun ./scripts/mockfail.ts --timeout"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.3",
+    "@types/bun": "^1.3.9",
+    "ajv": "^8.18.0",
+    "ajv-formats": "^3.0.1",
+    "eslint": "^9.39.3",
+    "globals": "^17.4.0",
+    "jiti": "^2.6.1",
+    "prettier": "^3.8.1",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "rimraf": "^6.1.3",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1",
+    "vitest": "^4.0.18"
+  },
+  "dependencies": {
+    "fast-string-width": "^3.0.2",
+    "glob": "^13.0.6",
+    "marked": "^17.0.3"
+  }
+}

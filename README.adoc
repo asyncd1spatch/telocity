@@ -1,0 +1,45 @@
+= telocity
+
+A CLI thing for poking at local LLMs. Only works with plain text files (use link:https://github.com/kovidgoyal/calibre[calibre]'s ebook-convert, luke) Not a srs program, just a playground for myself.  
+Program's strings are a testbed for tiny local llm translation, all UI strings other than `en-US.json` are translated with link:https://huggingface.co/bartowski/Qwen_Qwen3.5-35B-A3B-GGUF[bartowski/Qwen_Qwen3.5-35B-A3B-GGUF], `scripts/make_project_translations.ts` shows how it's done, program uses the defaults other than what is specified in its cli run (and a timeout of 15 minutes in the json config because it's a long running task).
+
+== Installation
+
+Use the prepackaged bun+script executable releases if provided, or install the link:https://bun.com/[Bun javascript runtime], unpack the project where you want it installed and then:
+
+[source,bash]
+----
+bun install
+bun link
+----
+
+It is also compatible with Node (but slower startup), to install, unpack the repository where you want to run it and:
+
+[source,bash]
+----
+npm install
+npm install -g .
+----
+
+Generate bash completions with:
+
+[source,bash]
+----
+telocity co > _telocity_completions
+----
+
+== Recommended local models for us vramlets
+
+Recommended quants: Q8_0 for anything under 4B, Qx_K_L otherwise.
+
+link:https://huggingface.co/bartowski/Qwen_Qwen3.5-35B-A3B-GGUF[bartowski/Qwen_Qwen3.5-35B-A3B-GGUF] the most wonderful, bite size MoE. Use this over anything else if you have some system ram to spare. This is a large improvement over the previous Qwen in terms of general trivia/knowledge/niche vocabulary.  
+
+link:https://huggingface.co/bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF[bartowski/Qwen_Qwen3-4B-Instruct-2507-GGUF] Just the best of the size class. Strong large context handling.  
+
+link:https://huggingface.co/mradermacher/HY-MT1.5-7B-i1-GGUF[mradermacher/HY-MT1.5-7B-i1-GGUF] && link:https://huggingface.co/tencent/HY-MT1.5-1.8B-GGUF[tencent/HY-MT1.5-1.8B-GGUF] A specialized translation model. Like many I've tried, it does better than the general purpose ones in many cases, but when it fails, it fails more spectacularly, and this style of model is less flexible in instructions and injection of context. This one is my current favorite in this class of models.
+
+link:https://huggingface.co/ggml-org/Qwen2.5-Coder-1.5B-Q8_0-GGUF[ggml-org/Qwen2.5-Coder-1.5B-Q8_0-GGUF] Pretty decent fill-in-the-middle. It won't code for you, but it'll do decent completions on repetitive patterns and save you some typing which is all I want from a completion style model.
+
+link:https://huggingface.co/Qwen/Qwen3-1.7B-GGUF[Qwen/Qwen3-1.7B-GGUF] Most coherent micro-sized generalist. Surprisingly solid for its size; no other model in that class worth mentioning.
+
+link:https://huggingface.co/shoumenchougou/RWKV7-G1d-7.2B-GGUF[shoumenchougou/RWKV7-G1d-7.2B-GGUF] This one's not so much a hearty "recommended" as much as it is a "keep track of, it's interesting". Not quite as stable and reliable (if you could say that about LLMs) as what you may be used to, but with the right prompting, it can surprise you by its qualities considering the fact that it's not a model made by a major lab with big $. Whether it's due to the architecture or training regimen, it's very sensitive to the way you prompt it, the template and some of the input formatting itself. It's unclear whether this is something that can be made up for in the future, but interesting model nonetheless.
